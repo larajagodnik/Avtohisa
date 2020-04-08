@@ -40,7 +40,6 @@ CREATE TABLE novi(
 CREATE TABLE prodaja(
   id INTEGER PRIMARY KEY,
   id_avto TEXT REFERENCES avto(id),
-  cena INTEGER,
   datum DATE,
   nacim_placila TEXT,
   prodajalec TEXT NOT NULL REFERENCES prodajalec(emso)

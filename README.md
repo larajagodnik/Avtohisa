@@ -12,5 +12,5 @@ Projekt pri OPB
  * Ker pa avte tudi prodajamo, v tabeli Prodaja, beležimo številko računa, način plačila, ter datum kdaj je bil avto prodan. Vsako prodajo izvede en prodajalec, kateri tudi sestavlja ekipo zaposlenih.
 
 ## Opis aplikacije
-V aplikaciji bodo vsi uporabniki imeli možnost, da si ogledajo katere avte lahko kupijo ter njihove lastnosti. Iskali bodo lahko po različnih parametrih, naprimer po ceni, tipu vozila, barvi, starosti in podobno.
-Zaposleni v podjetju, pa bodo imeli možnost nakupa oziroma dodajanja novega avta v bazo, vnašali bodo lahko podatke o opravljenem servisu in pregledu. 
+V aplikaciji bodo vsi uporabniki imeli možnost, da si ogledajo katere avte lahko kupijo ter njihove lastnosti. Iskali bodo lahko po različnih parametrih, na primer po ceni, tipu vozila, barvi, starosti in podobno.
+Zaposleni v podjetju, pa bodo imeli možnost nakupa oziroma dodajanja novega avta v bazo, vnašali bodo lahko podatke o opravljenem servisu in pregledu. Avto bodo "prodali" torej odstranili iz baze.

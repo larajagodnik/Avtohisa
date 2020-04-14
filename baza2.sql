@@ -4,7 +4,6 @@ CREATE TABLE zaposleni(
   telefon INTEGER,
   placa INTEGER NOT NULL,
   naslov TEXT NOT NULL,
-  serviser BOOL NOT NULL,
   prodajalec BOOL NOT NULL
 );
 CREATE TABLE avto(

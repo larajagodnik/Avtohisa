@@ -1,5 +1,5 @@
 CREATE TABLE zaposleni(
-  emso INTEGER PRIMARY KEY,
+  emso TEXT PRIMARY KEY,
   ime TEXT NOT NULL,
   telefon INTEGER,
   placa INTEGER NOT NULL,

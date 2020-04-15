@@ -1,5 +1,4 @@
 # Avtohisa
-Test
 Projekt pri OPB
 
 ## ER diagram

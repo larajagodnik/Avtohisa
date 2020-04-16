@@ -27,14 +27,14 @@ CREATE TABLE prodaja(
   tip_zaposlenega VARCHAR(255) NOT NULL,
   FOREIGN KEY (id_zaposlenega, tip_zaposlenega)
     REFERENCES zaposleni(id_zaposlenega, tip_zaposlenega)
-    ON DELETE CASCADE
+    ON DELETE NO ACTION
     ON UPDATE CASCADE,
   CHECK (tip_zaposlenega = 'Prodajalec')
 );
 
 CREATE TABLE rabljeni(
   id INTEGER PRIMARY KEY REFERENCES avto(id)
-    ON DELETE CASCADE
+    ON DELETE NO ACTION
     ON UPDATE CASCADE,
   st_kilometrov INTEGER,
   leto_izdelave DATE
@@ -42,7 +42,7 @@ CREATE TABLE rabljeni(
 
 CREATE TABLE novi(
   id INTEGER PRIMARY KEY REFERENCES avto(id)
-    ON DELETE CASCADE
+    ON DELETE NO ACTION
     ON UPDATE CASCADE
 );
 
@@ -55,7 +55,7 @@ CREATE TABLE servis(
   tip_zaposlenega VARCHAR(255) NOT NULL,
   FOREIGN KEY (id_zaposlenega, tip_zaposlenega)
     REFERENCES zaposleni(id_zaposlenega, tip_zaposlenega)
-    ON DELETE CASCADE
+    ON DELETE NO ACTION
     ON UPDATE CASCADE,
   CHECK (tip_zaposlenega = 'Serviser')
 );
@@ -67,7 +67,7 @@ CREATE TABLE priprava(
   tip_zaposlenega VARCHAR(255) NOT NULL,
   FOREIGN KEY (id_zaposlenega, tip_zaposlenega)
     REFERENCES zaposleni(id_zaposlenega, tip_zaposlenega)
-    ON DELETE CASCADE
+    ON DELETE NO ACTION
     ON UPDATE CASCADE,
   CHECK (tip_zaposlenega = 'Serviser')
 );

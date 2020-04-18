@@ -2,7 +2,7 @@
 Projekt pri OPB
 
 ## ER diagram
-![ER DIAGRAM](ER_diagram.jpeg)
+![ER DIAGRAM](baza/ER_diagram.jpeg)
 
 ## Opis ER diagrama
  * Imamo tabelo Avto, v kateri beležimo ID, ki je številka šasije, barvo, tip avta, znamko, ter njegovo ceno.

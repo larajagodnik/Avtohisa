@@ -11,4 +11,5 @@ with psycopg2.connect(conn_string) as con:
     #cur.execute("INSERT INTO avto VALUES(103, 'rumena', 'karavan', 'peguot', 200, true)")
     #cur.execute("INSERT INTO avto VALUES(104, 'rumena', 'karavan', 'peguot', 200, true)")
     #cur.execute("INSERT INTO avto VALUES(1, 'rumena', 'karavan', 'ford', 200, false)")
+    #cur.execute("INSERT INTO avto VALUES(20, 'rumena', 'karavan', 'ford', 200.2, false)")
     #con.commit()

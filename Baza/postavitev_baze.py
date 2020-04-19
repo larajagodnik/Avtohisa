@@ -1,4 +1,6 @@
 import psycopg2
+psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo problemov s šumniki
+import csv
 
 from conf_baza import *
 
@@ -16,6 +18,7 @@ def izbrisi():
         cur.execute("DROP TABLE IF EXISTS zaposleni CASCADE")
     print("Baza je izbrisana!")
 
+#id_zaposlenega spremenimo v emso?
 def ustvari_tabelo_zaposleni():
     with psycopg2.connect(conn_string) as con:
         cur = con.cursor()
@@ -132,6 +135,7 @@ def ustvari_tabelo_priprava():
         """) 
     print("Tabela pripravljenih avtov ustvarjena!") 
 
+
 #Urejanje pravic
 
 def pravice():
@@ -159,3 +163,20 @@ ustvari_tabelo_servis()
 ustvari_tabelo_priprava()
 
 pravice()
+
+#Uvoz podatkov
+def uvoziCSV(cur, tabela):
+    with open('podatki/{0}.csv'.format(tabela)) as csvfile:
+        podatki = csv.reader(csvfile)
+        vsiPodatki = [vrstica for vrstica in podatki]
+        glava = vsiPodatki[0]
+        vrstice = vsiPodatki[1:]
+        cur.executemany("INSERT INTO {0} ({1}) VALUES ({2})".format(
+            tabela, ",".join(glava), ",".join(['%s']*len(glava))), vrstice)
+
+# ne dela dokler v bazi ne postavimo na decimalke ne integer, bazo lahko brise samo jan
+with psycopg2.connect(conn_string) as con:
+    cur = con.cursor()
+    #uvoziCSV(cur, 'avto')
+    #uvoziCSV(cur, 'rabljeni')
+    #uvoziCSV(cur, 'zaposleni')

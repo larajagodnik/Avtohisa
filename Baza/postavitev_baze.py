@@ -1,5 +1,5 @@
 import psycopg2
-psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo problemov s šumniki
+#psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo problemov s šumniki
 import csv
 
 from conf_baza import *
@@ -28,7 +28,7 @@ def ustvari_tabelo_zaposleni():
               tip_zaposlenega VARCHAR(255) NOT NULL,
               ime TEXT NOT NULL,
               telefon TEXT,
-              placa INTEGER NOT NULL,
+              placa FLOAT(2) NOT NULL,
               naslov TEXT NOT NULL,
               UNIQUE (id_zaposlenega, tip_zaposlenega),
               CHECK (tip_zaposlenega = 'Prodajalec' OR tip_zaposlenega = 'Serviser' OR tip_zaposlenega = 'Lastnik')
@@ -41,11 +41,11 @@ def ustvari_tabelo_avto():
         cur = con.cursor()
         cur.execute("""
             CREATE TABLE IF NOT EXISTS avto(
-              id INTEGER PRIMARY KEY,
+              id TEXT PRIMARY KEY,
               barva TEXT,
               tip TEXT NOT NULL,
               znamka TEXT NOT NULL,
-              cena INTEGER NOT NULL,
+              cena FLOAT(2) NOT NULL,
               novi BOOL NOT NULL
             );
         """)
@@ -57,7 +57,7 @@ def ustvari_tabelo_prodaja():
         cur.execute("""
             CREATE TABLE IF NOT EXISTS prodaja(
               id INTEGER PRIMARY KEY,
-              id_avto INTEGER REFERENCES avto(id),
+              id_avto TEXT REFERENCES avto(id),
               datum DATE,
               nacim_placila TEXT NOT NULL,
               id_zaposlenega TEXT NOT NULL,
@@ -76,10 +76,10 @@ def ustvari_tabelo_rabljeni():
         cur = con.cursor()
         cur.execute("""
             CREATE TABLE IF NOT EXISTS rabljeni(
-              id INTEGER PRIMARY KEY REFERENCES avto(id)
+              id_avto TEXT PRIMARY KEY REFERENCES avto(id)
                 ON DELETE NO ACTION
                 ON UPDATE CASCADE,
-              st_kilometrov INTEGER,
+              st_kilometrov FLOAT(2),
               leto_izdelave DATE
             );
         """)
@@ -90,7 +90,7 @@ def ustvari_tabelo_novi():
         cur = con.cursor()
         cur.execute("""
             CREATE TABLE IF NOT EXISTS novi(
-              id INTEGER PRIMARY KEY REFERENCES avto(id)
+              id TEXT PRIMARY KEY REFERENCES avto(id)
                 ON DELETE NO ACTION
                 ON UPDATE CASCADE
             );
@@ -103,7 +103,7 @@ def ustvari_tabelo_servis():
         cur.execute("""
             CREATE TABLE IF NOT EXISTS servis(
               id INTEGER PRIMARY KEY,
-              id_avto INTEGER NOT NULL REFERENCES avto(id),
+              id_avto TEXT NOT NULL REFERENCES avto(id),
               datum DATE,
               tip_servisa TEXT,
               id_zaposlenega TEXT NOT NULL,
@@ -123,7 +123,7 @@ def ustvari_tabelo_priprava():
         cur.execute("""
             CREATE TABLE IF NOT EXISTS priprava(
               id INTEGER PRIMARY KEY,
-              id_avto INTEGER NOT NULL REFERENCES avto(id),
+              id_avto TEXT NOT NULL REFERENCES avto(id),
               id_zaposlenega TEXT NOT NULL,
               tip_zaposlenega VARCHAR(255) NOT NULL,
               FOREIGN KEY (id_zaposlenega, tip_zaposlenega)
@@ -149,6 +149,50 @@ def pravice():
         """)
     print("Pravice dodane osebi: laraj!")
 
+#Funkcija za uvoz podatkov
+def uvoziCSV(cur, tabela):
+    with open('podatki/{0}.csv'.format(tabela), encoding='utf-8') as csvfile:
+        podatki = csv.reader(csvfile)
+        vsiPodatki = [vrstica for vrstica in podatki]
+        glava = vsiPodatki[0]
+        vrstice = vsiPodatki[1:]
+        cur.executemany("INSERT INTO {0} ({1}) VALUES ({2})".format(
+            tabela[:-3], ",".join(glava), ",".join(['%s']*len(glava))), vrstice)
+    print("Dodal podatke o {0}!".format(tabela))
+
+#Dejanski uvoz podatkov
+def uvozi():
+    try:
+        with psycopg2.connect(conn_string) as con:
+            cur = con.cursor()
+            uvoziCSV(cur, 'avto001')
+    except:
+        print("Neka napaka, podatki verjetno že obstajajo!")
+    try:
+        with psycopg2.connect(conn_string) as con:
+            cur = con.cursor()
+            uvoziCSV(cur, 'zaposleni001')
+    except:
+        print("Neka napaka, podatki verjetno že obstajajo!")
+    try:
+        with psycopg2.connect(conn_string) as con:
+            cur = con.cursor()
+            uvoziCSV(cur, 'novi001')
+    except:
+        print("Neka napaka, podatki verjetno že obstajajo!") 
+    
+    try:
+        with psycopg2.connect(conn_string) as con:
+            cur = con.cursor()
+            uvoziCSV(cur, 'rabljeni001')
+    except:
+        print("Neka napaka, podatki verjetno že obstajajo!")   
+    
+#uvoziCSV(cur, 'avto001')
+#uvoziCSV(cur, 'zaposleni001')
+#uvoziCSV(cur, 'novi001')
+#uvoziCSV(cur, 'rabljeni001')
+
 #Klicanje funkcij
 
 
@@ -164,19 +208,4 @@ ustvari_tabelo_priprava()
 
 pravice()
 
-#Uvoz podatkov
-def uvoziCSV(cur, tabela):
-    with open('podatki/{0}.csv'.format(tabela)) as csvfile:
-        podatki = csv.reader(csvfile)
-        vsiPodatki = [vrstica for vrstica in podatki]
-        glava = vsiPodatki[0]
-        vrstice = vsiPodatki[1:]
-        cur.executemany("INSERT INTO {0} ({1}) VALUES ({2})".format(
-            tabela, ",".join(glava), ",".join(['%s']*len(glava))), vrstice)
-
-# ne dela dokler v bazi ne postavimo na decimalke ne integer, bazo lahko brise samo jan
-with psycopg2.connect(conn_string) as con:
-    cur = con.cursor()
-    #uvoziCSV(cur, 'avto')
-    #uvoziCSV(cur, 'rabljeni')
-    #uvoziCSV(cur, 'zaposleni')
+uvozi()

@@ -147,6 +147,7 @@ def pravice():
 
 #Klicanje funkcij
 
+
 #izbrisi() #če želimo zbrisati celo bazo! NOT GOOD IDEA ;)!!
 
 ustvari_tabelo_zaposleni()

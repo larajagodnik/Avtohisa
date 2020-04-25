@@ -1,5 +1,6 @@
 # Avtohisa
 Projekt pri OPB
+* [![bottle.py](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/larajagodnik/Avtohisa/master?urlpath=proxy/8080/) Aplikacija `bottle.py`
 
 ## ER diagram
 ![ER DIAGRAM](Baza/ER_diagram.jpeg)

@@ -1,5 +1,5 @@
 import psycopg2
-#psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo problemov s šumniki
+psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo problemov s šumniki
 import csv
 
 from conf_baza import *
@@ -147,7 +147,12 @@ def pravice():
             GRANT ALL ON ALL TABLES IN SCHEMA public TO laraj;
             GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO laraj; 
         """)
-    print("Pravice dodane osebi: laraj!")
+        cur.execute("""
+            GRANT ALL ON DATABASE sem2020_jansi TO javnost;
+            GRANT SELECT ON ALL TABLES IN SCHEMA public TO javnost;
+            GRANT USAGE ON ALL SEQUENCES IN SCHEMA public TO javnost;
+        """)
+    print("Pravice dodane osebi: laraj in javnosti!")
 
 #Funkcija za uvoz podatkov
 def uvoziCSV(cur, tabela):

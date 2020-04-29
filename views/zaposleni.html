@@ -1,0 +1,23 @@
+%rebase('osnova.html', naslov='Tabela zaposlenih')
+
+<table cellpadding="0" cellspacing="2" border="1">
+    <tr>
+        <th>Id_zaposlenega</th>
+        <th>Ime</th>
+        <th>Tip_zaposlenega</th>
+        <th>Placa</th>
+        <th>Telefon</th>
+        <th>Naslov</th>
+    </tr>
+    %for (id_zaposlenega,tip_zaposlenega,ime,telefon,placa,naslov) in zaposleni:
+        <tr>
+            <th>{{id_zaposlenega}}</th>
+            <th>{{ime}}</th>
+            <th>{{tip_zaposlenega}}</th>
+            <th>{{placa}}</th>
+            <th>{{telefon}}</th>
+            <th>{{naslov}}</th>
+        </tr>
+    %end
+</table>
+

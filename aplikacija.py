@@ -11,6 +11,10 @@ psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo prob
 
 import os
 
+# moras imet skupaj z reloader = true, da ne rabis usakic na novo
+# poganjat pythona -- oboje izklopis ko oodajas aplikacijo profesorju
+debug(True)
+
 #Privzete nastavitve
 SERVER_PORT = os.environ.get('BOTTLE_PORT', 8080)
 RELOADER = os.environ.get('BOTTLE_RELOADER', True)
@@ -36,7 +40,12 @@ def razvrsti(x):
     cur.execute("SELECT * FROM avto WHERE cena < %s", [int(x)])
     return rtemplate('avto.html', avto=cur)
     
-
+@get('/zaposleni')
+def zaposleni():
+    cur.execute("""
+        SELECT * FROM zaposleni
+        ORDER BY zaposleni.ime""")
+    return template('zaposleni.html', zaposleni=cur)
 
 
 

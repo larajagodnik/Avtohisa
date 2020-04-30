@@ -40,7 +40,12 @@ def avto():
     cur.execute("SELECT * FROM avto")
     return rtemplate('avto.html', avto=cur)
 
-@get('/avto/dodaj')
+@get('/avto_prijavljen')
+def avto_prijavljen():
+    cur.execute("SELECT * FROM avto")
+    return rtemplate('avto_prijavljen.html', avto=cur)
+
+@post('/avto_prijavljen/dodaj')
 def dodaj_avto():
     Id = request.forms.id
     barva = request.forms.barva
@@ -48,8 +53,17 @@ def dodaj_avto():
     znamka = request.forms.znamka
     cena = request.forms.cena
     novi = request.forms.novi
-    cur.execute("INSERT INTO avto (id, barva, tip, znamka, cena, novi) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')", (Id, barva, tip, znamka, cena, novi))
-    redirect('/avto')
+    #try:
+    sql = "INSERT INTO avto (id, barva, tip, znamka, cena, novi) VALUES (%s, %s, %s, %s, %s, %s)"
+    val = (Id, barva, tip, znamka, cena, novi)
+    cur.execute(sql,val)
+    # except Exception as ex:
+    #     conn.rollback()
+    #     return rtemplate('avto_prijavljen/dodaj.html', Id=id, barva=barva, tip=tip, znamka=znamka, cena=cena, novi=novi,
+    #                     napaka='Dodajanje ni bilo uspešno: %s' % ex)   
+    redirect('/avto_prijavljen')
+
+
 
 @get('/manjse/:x/')
 def razvrsti(x):

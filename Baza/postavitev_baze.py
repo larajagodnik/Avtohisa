@@ -150,6 +150,7 @@ def pravice():
         cur.execute("""
             GRANT ALL ON DATABASE sem2020_jansi TO javnost;
             GRANT SELECT ON ALL TABLES IN SCHEMA public TO javnost;
+            GRANT INSERT ON ALL TABLES IN SCHEMA public TO javnost;
             GRANT USAGE ON ALL SEQUENCES IN SCHEMA public TO javnost;
         """)
     print("Pravice dodane osebi: laraj in javnosti!")

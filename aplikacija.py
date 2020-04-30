@@ -35,21 +35,21 @@ def index():
     return rtemplate('avto.html', avto=cur)
     #return 'HELLO'
 
-# @get('/avto')
-# def avto():
-#     cur.execute("SELECT * FROM avto")
-#     return rtemplate('avto.html', avto=cur)
+@get('/avto')
+def avto():
+    cur.execute("SELECT * FROM avto")
+    return rtemplate('avto.html', avto=cur)
 
-# @get('/avto/dodaj')
-# def dodaj_avto():
-#     Id = request.forms.id
-#     barva = request.forms.barva
-#     tip = request.forms.tip
-#     znamka = request.forms.znamka
-#     cena = request.forms.cena
-#     novi = request.forms.novi
-#     cur.execute("INSERT INTO avto (Id, barva, tip, znamka, cena) VALUES('%s', '%s', '%s', '%s', '%s')", (Id, barva, tip, znamka, cena))
-#     redirect('/avto')
+@get('/avto/dodaj')
+def dodaj_avto():
+    Id = request.forms.id
+    barva = request.forms.barva
+    tip = request.forms.tip
+    znamka = request.forms.znamka
+    cena = request.forms.cena
+    novi = request.forms.novi
+    cur.execute("INSERT INTO avto (id, barva, tip, znamka, cena, novi) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')", (Id, barva, tip, znamka, cena, novi))
+    redirect('/avto')
 
 @get('/manjse/:x/')
 def razvrsti(x):

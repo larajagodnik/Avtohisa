@@ -32,7 +32,7 @@ def rtemplate(*largs, **kwargs):
 @get('/')
 def index():
     cur.execute("SELECT * FROM avto")
-    return rtemplate('avto.html', avto=cur)
+    return rtemplate('zacetna.html', avto=cur)
     #return 'HELLO'
 
 @get('/avto')

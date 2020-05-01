@@ -1,5 +1,49 @@
 %rebase('osnova.html', naslov='Tabela avtov')
 
+<style>
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%; /* Could be more or less, depending on screen size */
+    font-size: 16px;
+  }
+
+  /* The Close Button */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .input{
+      margin-bottom: 10px;
+  }
+</style>
+
+<script src="/static/avtohisa.js"></script>
 
 <form action="/avto_prijavljen/dodaj" method="post">
   <span>Id:</span> <input name="id" type="text" />
@@ -7,10 +51,21 @@
   <span>Tip:</span> <input name="tip" type="text" />
   <span>Znamka:</span> <input name="znamka" type="text" />
   <span>Cena:</span> <input name="cena" type="float(2)" />
-  <span>Stanje:<select name="novi">
+  <span>Stanje:<select id="izberi_starost" name="novi"  onchange="odpri_okno()">
     <option value="true">Nov</option>
     <option value="false">Star</option>
   </select>
+  <div id="hidden_div" class="modal" style="display: none">
+    <div class="modal-content">
+        <span class="close" onclick="zapri_okno()">&times;</span>
+          <h3>Vpišite podatke o rabljenem avtomobilu</h3>
+        <span class="input">Št kilometrov:</span> <input name="st_kilometrov" type="text" /><br>
+        <span class="input">Ima servis:</span>
+          <input type="radio" id="true" name="servis" value="male" />Ima
+          <input type="radio" id="false" name="servis" value="male" />Nima<br>
+        <button type="button" onclick="zapri_okno()">Shrani</button>
+    </div>
+</div>
   <input value="Dodaj" type="submit" />
 </form>
 

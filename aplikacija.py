@@ -63,7 +63,10 @@ def dodaj_avto():
     #                     napaka='Dodajanje ni bilo uspešno: %s' % ex)   
     redirect('/avto_prijavljen')
 
-
+static_dir = "./static"
+@route("/static/<filename:path>")
+def static(filename):
+    return static_file(filename, root=static_dir)
 
 @get('/manjse/:x/')
 def razvrsti(x):

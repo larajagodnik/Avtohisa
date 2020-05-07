@@ -33,9 +33,14 @@ def rtemplate(*largs, **kwargs):
 def index():
     return rtemplate('zacetna.html')
 
-@get('/avto')
-def avto():
-    cur.execute("SELECT * FROM avto")
+@get('/avto/:x')
+def avto(x):
+    if str(x) == 'novi':
+        cur.execute("SELECT * FROM avto WHERE novi = 'true'")
+    if str(x) == 'rabljeni':
+        cur.execute("SELECT * FROM avto WHERE novi = 'false'")
+    if str(x) == 'vsi':
+        cur.execute("SELECT * FROM avto")
     return rtemplate('avto.html', avto=cur)
 
 @get('/avto_prijavljen')

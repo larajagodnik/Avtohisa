@@ -43,7 +43,7 @@
         padding: 20px;
         width: 52%;
         background-color: #f1f1f1;
-        height: 300px; /* only for demonstration, should be removed */
+        /* height: 300px; /* only for demonstration, should be removed */
         color: red;
       }
       za_uporabnika form {
@@ -67,16 +67,16 @@
 <section>
     <navigacija>
       <ul>
-        <li><a href="{{ROOT}}avto">Vsi avtomobili</a></li>
-        <li><a href="#">Novi avti</a></li>
-        <li><a href="#">Rabljeni avti</a></li>
+        <li><p onclick="Nastavi_povezavo()">Vsi avtomobili</p></li>
+        <li><p onclick="Nastavi_povezavo_novi()">Novi avti</p></li>
+        <li><p onclick="Nastavi_povezavo_rabljeni()">Rabljeni avti</p></li>
       </ul>
     </navigacija>
     <za_tabele>
-      <h1>Vsi avtomobili</h1>
+      <h1 id="naslov">Dobrodošli v Avtohiši</h1>
       <p>Nekak spravmo tabelo sem za avte :) Kao nekaj na tako sceno.</p>
-      <iframe src="{{ROOT}}avto" width="100%"></iframe>
-      <p>NE DELA PREKO BNDERJA KER NEZNAM NASTAVITI ROOTA!!</p>
+      <!-- <iframe id="povezava" src="{{ROOT}}avto/vsi" width="100%" height="100%"></iframe> -->
+{{!base}}
     </za_tabele>
     <navigacija>
       <form action="/action_page.php" method="post">
@@ -96,16 +96,28 @@
       </form>
     </navigacija>
 
-  </section>
+</section>
 
 <footer>
   <p>Pozdravljeni Jan!</p>
   <p>Če se želite odjaviti, kliknite: TOLE</p>
 
-  <p>
-    <a href="{{ROOT}}manjse/10000/">Avti</a>
-  </p>
 
 </footer>
+
+<script>
+  function Nastavi_povezavo() {
+    document.getElementById("naslov").innerHTML = "Vsi avtomobili"
+    document.getElementById("povezava").src = "{{ROOT}}avto/vsi";
+  }
+  function Nastavi_povezavo_novi() {
+    document.getElementById("naslov").innerHTML = "Novi avtomobili"
+    document.getElementById("povezava").src = "{{ROOT}}avto/novi";
+  }
+  function Nastavi_povezavo_rabljeni() {
+    document.getElementById("naslov").innerHTML = "Rabljeni avtomobili"
+    document.getElementById("povezava").src = "{{ROOT}}avto/rabljeni";
+  }
+</script>
 </body>
 </html>

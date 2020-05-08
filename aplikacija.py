@@ -31,7 +31,8 @@ def rtemplate(*largs, **kwargs):
 
 @get('/')
 def index():
-    return rtemplate('zacetna.html')
+    redirect('/avto/vsi') #To ni to kar sem hotu, ampak sedaj usaj prižge stran
+    #return rtemplate('zacetna.html')
 
 @get('/avto/:x')
 def avto(x):

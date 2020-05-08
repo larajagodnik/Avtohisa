@@ -1,0 +1,54 @@
+p {color: blue;}
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+img {
+  position:inherit;
+  margin-left: auto;
+  margin-right: auto;
+  width: 75%;
+  z-index: -1;
+}
+header {
+  padding-top: 10px;
+  padding-bottom: 0px;
+  text-align:center;
+}
+header h1{
+  background-color: lightblue;
+  color: red;
+  padding: 1em;
+}
+navigacija {
+  float: left;
+  width: 20%;
+  height: 300px; /* only for demonstration, should be removed */
+  background: #ccc;
+  padding: 20px;
+}
+navigacija ul {
+  list-style-type: none;
+  padding: 20%;
+}
+za_tabele {
+  float: left;
+  padding: 20px;
+  width: 52%;
+  background-color: #f1f1f1;
+  /* height: 300px; /* only for demonstration, should be removed */
+  color: red;
+}
+za_uporabnika form {
+  display: inline;
+  padding: 20%;
+}
+section:after {
+  content: "";
+  display: table;
+  clear: both;
+}

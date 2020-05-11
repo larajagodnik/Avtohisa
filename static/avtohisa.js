@@ -5,6 +5,7 @@ function odpri_okno() {
     var select_value = e.options[e.selectedIndex].value ;
     if(select_value == "false"){
         document.getElementById("hidden_div").style.display = "inherit";
+        //document.getElementById("st_kilometrov").required = true;
     }
 
 }

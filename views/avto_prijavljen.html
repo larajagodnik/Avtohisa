@@ -46,11 +46,11 @@
 <script src="/static/avtohisa.js"></script>
 
 <form action="/avto_prijavljen/dodaj" method="post">
-  <span>Id:</span> <input name="id" type="text" />
-  <span>Barva:</span> <input name="barva" type="text" />
-  <span>Tip:</span> <input name="tip" type="text" />
-  <span>Znamka:</span> <input name="znamka" type="text" />
-  <span>Cena:</span> <input name="cena" type="float(2)" />
+  <span>Id:</span> <input name="id" type="text" required />
+  <span>Barva:</span> <input name="barva" type="text" required />
+  <span>Tip:</span> <input name="tip" type="text" required />
+  <span>Znamka:</span> <input name="znamka" type="text" required />
+  <span>Cena:</span> <input name="cena" type="number" min="0" step = ".01" lang="en" required/>
   <span>Stanje:<select id="izberi_starost" name="novi"  onchange="odpri_okno()">
     <option value="true">Nov</option>
     <option value="false">Star</option>

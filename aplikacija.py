@@ -16,8 +16,8 @@ import os
 # poganjat pythona -- oboje izklopis ko oodajas aplikacijo profesorju
 debug(True)
 
-
-skrivnost = "RHk4eVmtJfPQKEbafYO6VRDkwCcg8BNrS7gYeE8ZlZZBmopYwoOBRf1svmHeZvD1T2j22qv5wMZwgcOPrgglhSWi9AVI8nwA62vbc3kXYTdPrNFwrHSfsTY1f4V"
+#skrivnost ='1'
+skrivnost = "SWiY1234"
 
 #Privzete nastavitve
 SERVER_PORT = os.environ.get('BOTTLE_PORT', 8080)
@@ -32,10 +32,21 @@ def rtemplate(*largs, **kwargs):
     """
     return template(ROOT=ROOT, *largs, **kwargs)
 
+static_dir = "./static"
+@route("/static/<filename:path>")
+def static(filename):
+    return static_file(filename, root=static_dir)
+
 
 @get('/')
 def index():
-    redirect('/avto/vsi') #To ni to kar sem hotu, ampak sedaj usaj prižge stran
+    cur.execute("SELECT * FROM avto")
+    naslov = 'Vsi avti'
+    #response.set_cookie("kaj", 'blalba', secret='skrivnost')
+    uporabnik = request.get_cookie('account', secret=skrivnost)
+    #print(uporabnik)
+    return rtemplate('avto.html', avto=cur, naslov=naslov, uporabnik=uporabnik)
+    #redirect('/avto/vsi') #To ni to kar sem hotu, ampak sedaj usaj prižge stran
     #return rtemplate('zacetna.html')
 
 @get('/avto/:x')
@@ -47,9 +58,8 @@ def avto(x):
         cur.execute("SELECT * FROM avto WHERE novi = 'false'")
         naslov = 'Rabljeni avti'
     if str(x) == 'vsi':
-        cur.execute("SELECT * FROM avto")
-        naslov = 'Vsi avti'
-    uporabnik = request.get_cookie("username", secret=skrivnost)
+        redirect('/')
+    uporabnik = request.get_cookie('account', secret=skrivnost)
     return rtemplate('avto.html', avto=cur, naslov=naslov, uporabnik=uporabnik)
 
 @get('/avto_prijavljen')
@@ -75,11 +85,6 @@ def dodaj_avto():
     #                     napaka='Dodajanje ni bilo uspešno: %s' % ex)   
     redirect('/avto_prijavljen')
 
-static_dir = "./static"
-@route("/static/<filename:path>")
-def static(filename):
-    return static_file(filename, root=static_dir)
-
 @get('/manjse/:x/')
 def razvrsti(x):
     cur.execute("SELECT * FROM avto WHERE cena < %s", [int(x)])
@@ -95,25 +100,25 @@ def zaposleni():
 #########################################################
 #### Prijava
 #########################################################
-@get('/prijava')
-def prijava_get():
-    redirect('/')
+#@get('/prijava')
+#def prijava_get():
+#    redirect('/')
 
 @post('/prijava')
 def prijava_post():
-    username = request.forms.username
-    password = request.forms.password
+    username = request.forms.get('username')
+    password = request.forms.get('password')
     print(username, password)
     #if username is None or password is None:
     #
     #else:
-    response.set_cookie('username', username, secret=skrivnost)
+    response.set_cookie('account', username, secret=skrivnost)
     redirect('/avto/vsi')
 
 
 @get('/odjava')
 def odjava():
-    response.delete_cookie('username')
+    response.delete_cookie('account')
     redirect('/avto/vsi')
 
     

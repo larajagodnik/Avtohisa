@@ -1,6 +1,7 @@
 <html>
 <head>
   <link rel="stylesheet" type="text/css" href="/static/stili.css" />
+  <title>{{naslov}}</title>
 </head>
 <header>
   <div style="background-color: lightseagreen;">
@@ -12,26 +13,26 @@
 <section>
     <navigacija>
       <ul>
-        <li><p onclick="Nastavi_povezavo()">Vsi avtomobili</p></li>
-        <li><p onclick="Nastavi_povezavo_novi()">Novi avti</p></li>
-        <li><p onclick="Nastavi_povezavo_rabljeni()">Rabljeni avti</p></li>
+        <li><div style="padding-top: 20px;"><b><a href="{{ROOT}}avto/vsi" style="text-decoration: none; color:blue;">Seznam vseh avtov</a></b></div></li>
+        <li><div style="padding-top: 20px;"><b><a href="{{ROOT}}avto/novi" style="text-decoration: none; color:blue;">Seznam novih avtov</a></b></div></li>
+        <li><div style="padding-top: 20px;"><b><a href="{{ROOT}}avto/rabljeni" style="text-decoration: none; color:blue;">Seznam rabljenih avtov</a></b></div></li>
       </ul>
     </navigacija>
     <za_tabele>
-      <h1 id="naslov">Dobrodošli v Avtohiši</h1>
+      <h1>{{naslov}}</h1>
       <p>Nekak spravmo tabelo sem za avte :) Kao nekaj na tako sceno.</p>
       <!--<iframe id="povezava" src="{{ROOT}}avto/vsi" width="100%" height="100%"></iframe> -->
-{{!base}}
+      {{!base}}
     </za_tabele>
     <navigacija>
-      <form action="/action_page.php" method="post">
+      <form action="/prijava" method="post">
     
         <div>
-          <label for="uname"><b>Uporabniško ime</b></label>
-          <input type="text" placeholder="Vpišite uporabniško ime" name="uname" required>
+          <label for="username"><b>Uporabniško ime</b></label>
+          <input type="text" placeholder="Vpišite uporabniško ime" name="username" required>
       
-          <label for="psw"><b>Vpišite geslo</b></label>
-          <input type="password" placeholder="Vpišite geslo" name="psw" required>
+          <label for="password"><b>Vpišite geslo</b></label>
+          <input type="text" placeholder="Vpišite geslo" name="password" required>
               
           <button type="submit">Prijava</button>
           <label>
@@ -44,7 +45,7 @@
 </section>
 
 <footer>
-  <p>Pozdravljeni Jan!</p>
+  <p>Pozdravljeni {{uporabnik}}!</p>
   <p>Če se želite odjaviti, kliknite: TOLE</p>
 
 

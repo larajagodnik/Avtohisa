@@ -2,6 +2,7 @@
 from bottle import *
 
 
+
 #Uvoz podatkov za povezavo
 import auth_public as auth
 
@@ -14,6 +15,9 @@ import os
 # moras imet skupaj z reloader = true, da ne rabis usakic na novo
 # poganjat pythona -- oboje izklopis ko oodajas aplikacijo profesorju
 debug(True)
+
+
+skrivnost = "RHk4eVmtJfPQKEbafYO6VRDkwCcg8BNrS7gYeE8ZlZZBmopYwoOBRf1svmHeZvD1T2j22qv5wMZwgcOPrgglhSWi9AVI8nwA62vbc3kXYTdPrNFwrHSfsTY1f4V"
 
 #Privzete nastavitve
 SERVER_PORT = os.environ.get('BOTTLE_PORT', 8080)
@@ -38,11 +42,15 @@ def index():
 def avto(x):
     if str(x) == 'novi':
         cur.execute("SELECT * FROM avto WHERE novi = 'true'")
+        naslov = 'Novi avti'
     if str(x) == 'rabljeni':
         cur.execute("SELECT * FROM avto WHERE novi = 'false'")
+        naslov = 'Rabljeni avti'
     if str(x) == 'vsi':
         cur.execute("SELECT * FROM avto")
-    return rtemplate('avto.html', avto=cur)
+        naslov = 'Vsi avti'
+    uporabnik = request.get_cookie("username", secret=skrivnost)
+    return rtemplate('avto.html', avto=cur, naslov=naslov, uporabnik=uporabnik)
 
 @get('/avto_prijavljen')
 def avto_prijavljen():
@@ -84,12 +92,37 @@ def zaposleni():
         ORDER BY zaposleni.ime""")
     return template('zaposleni.html', zaposleni=cur)
 
+#########################################################
+#### Prijava
+#########################################################
+@get('/prijava')
+def prijava_get():
+    redirect('/')
 
+@post('/prijava')
+def prijava_post():
+    username = request.forms.username
+    password = request.forms.password
+    print(username, password)
+    #if username is None or password is None:
+    #
+    #else:
+    response.set_cookie('username', username, secret=skrivnost)
+    redirect('/avto/vsi')
+
+
+@get('/odjava')
+def odjava():
+    response.delete_cookie('username')
+    redirect('/avto/vsi')
+
+    
 
 #Povezava na bazo
 conn = psycopg2.connect(database=auth.dbname, host=auth.host, user=auth.user, password=auth.password, port=DB_PORT)
 #conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)) #Onemogočimo transakcije #### Za enkrat ne rabimo
 cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
 
 #Poženemo strežnik na podani vratih, npr. http://localhost:8080/
 run(host='localhost', port=SERVER_PORT, reloader=RELOADER)

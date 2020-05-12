@@ -49,7 +49,7 @@ def index():
     #redirect('/avto/vsi') #To ni to kar sem hotu, ampak sedaj usaj prižge stran
     #return rtemplate('zacetna.html')
 
-@get('/avto/<x>')
+@get('/avto/<x:re:[a-z]+>')
 def avto(x):
     if str(x) == 'novi':
         cur.execute("SELECT * FROM avto WHERE novi = 'true'")

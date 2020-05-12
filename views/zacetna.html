@@ -20,35 +20,45 @@
     </navigacija>
     <za_tabele>
       <h1>{{naslov}}</h1>
-      <p>Nekak spravmo tabelo sem za avte :) Kao nekaj na tako sceno.</p>
-      <!--<iframe id="povezava" src="{{ROOT}}avto/vsi" width="100%" height="100%"></iframe> -->
+      <!--<p>Nekak spravmo tabelo sem za avte :) Kao nekaj na tako sceno.</p>
+      <iframe id="povezava" src="{{ROOT}}avto/vsi" width="100%" height="100%"></iframe> -->
       {{!base}}
     </za_tabele>
     <navigacija>
-      <form action="/prijava" method="post">
-    
-        <div>
-          <label for="username"><b>Uporabniško ime</b></label>
-          <input type="text" placeholder="Vpišite uporabniško ime" name="username" required>
-      
-          <label for="password"><b>Vpišite geslo</b></label>
-          <input type="password" placeholder="Vpišite geslo" name="password" required>
-              
-          <button type="submit">Prijava</button>
-          <label>
-            <input type="checkbox" checked="checked" name="remember"> Zapovni si me
-          </label>
-        </div>
-      </form>
+      %if uporabnik == None:
+        <form action="/prijava" method="post">
+        
+          <div>
+            <label for="username"><b>Uporabniško ime</b></label>
+            <input type="text" placeholder="Vpišite uporabniško ime" name="username" required>
+          
+            <label for="password"><b>Vpišite geslo</b></label>
+            <input type="password" placeholder="Vpišite geslo" name="password" required>
+            <button type="submit">Prijava</button>
+            <label>
+              <input type="checkbox" checked="checked" name="remember"> Zapovni si me
+            </label>
+          </div>
+        </form>
+      %else:
+      <ul>
+        <li><div><b><a href="{{ROOT}}avto_prijavljen">Dodaj avto</a></b></div></li>
+        <li><div><b><a href="{{ROOT}}zaposleni">Poglej zaposlene</a></b></div></li>
+      </ul>
+      %end
     </navigacija>
+
 
 </section>
 
+
 <footer>
-  <p>Pozdravljeni {{uporabnik}}!</p>
-  <p>Če se želite odjaviti, kliknite: <a href="{{ROOT}}odjava">TOLE</a></p>
-
-
+  %if uporabnik:
+    <p>Pozdravljeni {{uporabnik}}!</p>
+    <p>Če se želite odjaviti, kliknite: <a href="{{ROOT}}odjava">TOLE</a></p>
+  %else:
+    <p>Dobrodošli na naši strani, prosimo prijavite se!</p>
+  %end
 </footer>
 
 <!--<script>

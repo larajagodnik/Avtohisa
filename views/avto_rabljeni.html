@@ -1,0 +1,26 @@
+%rebase('zacetna.html', naslov=naslov, uporabnik=uporabnik)
+
+<!-- PRIPRAVA, NOVI-->
+<table cellpadding="0" cellspacing="2" border="1">
+    <tr>
+        <th>Id</th>
+        <th>Barva</th>
+        <th>Tip</th>
+        <th>Znamka</th>
+        <th>Leto izdelave</th>
+        <th>Število kilometrov</th>
+        <th>Cena</th>
+    </tr>
+    %for (id_avto,st_kilometrov,servis,barva,tip,znamka,cena,leto_izdelave) in avto:
+        <tr>
+            <td>{{id_avto}}</td>
+            <td>{{barva}}</td>
+            <td>{{tip}}</td>
+            <td>{{znamka}}</td>
+            <td>{{leto_izdelave}}</td>
+            <td>{{st_kilometrov}}</td>
+            <td>{{cena}}</td>
+        </tr>
+    %end
+</table>
+

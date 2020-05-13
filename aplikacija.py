@@ -45,22 +45,25 @@ def index():
     #response.set_cookie("kaj", 'blalba', secret='skrivnost')
     uporabnik = request.get_cookie('account', secret=skrivnost)
     #print(uporabnik)
-    return rtemplate('avto.html', avto=cur, naslov=naslov, uporabnik=uporabnik)
+    return rtemplate('avto_vsi.html', avto=cur, naslov=naslov, uporabnik=uporabnik)
     #redirect('/avto/vsi') #To ni to kar sem hotu, ampak sedaj usaj prižge stran
     #return rtemplate('zacetna.html')
 
 @get('/avto/<x:re:[a-z]+>')
 def avto(x):
+    uporabnik = request.get_cookie('account', secret=skrivnost)
     if str(x) == 'novi':
-        cur.execute("SELECT * FROM avto WHERE novi = 'true'")
+        cur.execute("SELECT * FROM novi INNER JOIN avto USING(id)")
         naslov = 'Novi avti'
+        return rtemplate('avto_novi.html', avto=cur, naslov=naslov, uporabnik=uporabnik)
     if str(x) == 'rabljeni':
-        cur.execute("SELECT * FROM avto WHERE novi = 'false'")
+        cur.execute("""SELECT id_avto,st_kilometrov,servis,barva,tip,znamka,cena,leto_izdelave
+                         FROM rabljeni INNER JOIN avto ON avto.id=rabljeni.id_avto""")
         naslov = 'Rabljeni avti'
+        return rtemplate('avto_rabljeni.html', avto=cur, naslov=naslov, uporabnik=uporabnik)
     if str(x) == 'vsi':
         redirect('/')
-    uporabnik = request.get_cookie('account', secret=skrivnost)
-    return rtemplate('avto.html', avto=cur, naslov=naslov, uporabnik=uporabnik)
+        return rtemplate('avto_vsi.html', avto=cur, naslov=naslov, uporabnik=uporabnik)
 
 @get('/avto_prijavljen')
 def avto_prijavljen():
@@ -97,7 +100,7 @@ def dodaj_avto():
 @get('/manjse/<x:int>')
 def razvrsti(x):
     cur.execute("SELECT * FROM avto WHERE cena < %s", x)
-    return rtemplate('avto.html', avto=cur)
+    return rtemplate('avto_vsi.html', avto=cur)
     
 @get('/zaposleni')
 def zaposleni():

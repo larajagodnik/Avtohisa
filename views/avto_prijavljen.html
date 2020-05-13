@@ -46,14 +46,15 @@
 <script src="/static/avtohisa.js"></script>
 
 <form action="/avto_prijavljen/dodaj" method="post">
-  <span>Id:</span> <input name="id" type="text" required />
+  <span>Id:</span> <input name="Id_avta" type="text" required />
   <span>Barva:</span> <input name="barva" type="text" required />
   <span>Tip:</span> <input name="tip" type="text" required />
   <span>Znamka:</span> <input name="znamka" type="text" required />
   <span>Cena:</span> <input name="cena" type="number" min="0" step = ".01" lang="en" required/>
+  <span>Leto izdelave:</span> <input name="leto_izdelave" type="number" min="1970" max="2020" />
   <span>Stanje:<select id="izberi_starost" name="novi"  onchange="odpri_okno()">
     <option value="true">Nov</option>
-    <option value="false">Star</option>
+    <option value="false">Rabljen</option>
   </select>
   <div id="hidden_div" class="modal" style="display: none">
     <div class="modal-content">
@@ -61,8 +62,8 @@
           <h3>Vpišite podatke o rabljenem avtomobilu</h3>
         <span class="input">Št kilometrov:</span> <input name="st_kilometrov" type="text" /><br>
         <span class="input">Ima servis:</span>
-          <input type="radio" id="true" name="servis" value="male" />Ima
-          <input type="radio" id="false" name="servis" value="male" />Nima<br>
+          <input type="radio" id="true" name="servis" value="true" />Ima
+          <input type="radio" id="false" name="servis" value="false" />Nima<br>
         <button type="button" onclick="zapri_okno()">Shrani</button>
     </div>
 </div>
@@ -76,9 +77,11 @@
       <th>Tip</th>
       <th>Znamka</th>
       <th>Cena</th>
+      <th>Leto izdelave</th>
       <th>Ali je nov</th>
+      <th>Število kilometrov</th>
   </tr>
-  %for (id,barva,tip,znamka,cena,novi) in avto:
+  %for (id,barva,tip,znamka,cena,novi,leto, izdelave,st_kilometrov) in avto:
       <tr>
           <td>{{id}}</td>
           <td>{{barva}}</td>
@@ -86,6 +89,8 @@
           <td>{{znamka}}</td>
           <td>{{cena}}</td>
           <td>{{novi}}</td>
+          <td>{{leto_izdelave}}</td>
+          <td>{{st_kilometrov}}</td>
       </tr>
   %end
 </table>

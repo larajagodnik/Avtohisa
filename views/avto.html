@@ -7,14 +7,16 @@
         <th>Barva</th>
         <th>Tip</th>
         <th>Znamka</th>
+        <th>Leto izdelave</th>
         <th>Cena</th>
     </tr>
-    %for (id,barva,tip,znamka,cena,novi) in avto:
+    %for (id,barva,tip,znamka,cena,leto_izdelave,novi) in avto:
         <tr>
             <td>{{id}}</td>
             <td>{{barva}}</td>
             <td>{{tip}}</td>
             <td>{{znamka}}</td>
+            <td>{{leto_izdelave}}</td>
             <td>{{cena}}</td>
         </tr>
     %end

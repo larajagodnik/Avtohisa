@@ -46,6 +46,7 @@ def ustvari_tabelo_avto():
               tip TEXT NOT NULL,
               znamka TEXT NOT NULL,
               cena FLOAT(2) NOT NULL,
+              leto_izdelave INTEGER NOT NULL,
               novi BOOL NOT NULL
             );
         """)
@@ -79,8 +80,8 @@ def ustvari_tabelo_rabljeni():
               id_avto TEXT PRIMARY KEY REFERENCES avto(id)
                 ON DELETE NO ACTION
                 ON UPDATE CASCADE,
-              st_kilometrov FLOAT(2),
-              leto_izdelave DATE
+              st_kilometrov FLOAT(2) NOT NULL,
+              servis BOOL NOT NULL
             );
         """)
     print("Tabela rabljenih avtov ustvarjena!")
@@ -92,7 +93,8 @@ def ustvari_tabelo_novi():
             CREATE TABLE IF NOT EXISTS novi(
               id TEXT PRIMARY KEY REFERENCES avto(id)
                 ON DELETE NO ACTION
-                ON UPDATE CASCADE
+                ON UPDATE CASCADE,
+              pripravljen BOOL NOT NULL
             );
         """)
     print("Tabela novih avtov ustvarjena!")   
@@ -194,10 +196,10 @@ def uvozi():
     except:
         print("Neka napaka, podatki verjetno že obstajajo!")   
     
-#uvoziCSV(cur, 'avto001')
-#uvoziCSV(cur, 'zaposleni001')
-#uvoziCSV(cur, 'novi001')
-#uvoziCSV(cur, 'rabljeni001')
+# uvoziCSV(cur, 'avto001')
+# uvoziCSV(cur, 'zaposleni001')
+# uvoziCSV(cur, 'novi001')
+# uvoziCSV(cur, 'rabljeni001')
 
 #Klicanje funkcij
 

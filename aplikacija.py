@@ -64,25 +64,34 @@ def avto(x):
 
 @get('/avto_prijavljen')
 def avto_prijavljen():
-    cur.execute("SELECT * FROM avto")
+    cur.execute("SELECT a.*,r.st_kilometrov FROM avto a LEFT JOIN rabljeni r on a.id = r.id_avto")
+    
     return rtemplate('avto_prijavljen.html', avto=cur)
 
 @post('/avto_prijavljen/dodaj')
 def dodaj_avto():
-    Id = request.forms.id
+   
+    Id_avta = request.forms.Id_avta
     barva = request.forms.barva
     tip = request.forms.tip
     znamka = request.forms.znamka
     cena = request.forms.cena
+    leto_izdelave = request.forms.leto_izdelave
     novi = request.forms.novi
     #try:
-    sql = "INSERT INTO avto (id, barva, tip, znamka, cena, novi) VALUES (%s, %s, %s, %s, %s, %s)"
-    val = (Id, barva, tip, znamka, cena, novi)
+    sql = "INSERT INTO avto (id, barva, tip, znamka, cena, leto_izdelave, novi) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+    val = (Id_avta, barva, tip, znamka, cena, leto_izdelave, novi)
     cur.execute(sql,val)
     # except Exception as ex:
     #     conn.rollback()
     #     return rtemplate('avto_prijavljen/dodaj.html', Id=id, barva=barva, tip=tip, znamka=znamka, cena=cena, novi=novi,
-    #                     napaka='Dodajanje ni bilo uspešno: %s' % ex)   
+    #                     napaka='Dodajanje ni bilSo uspešno: %s' % ex)   
+    if not request.forms.izberi_starost:    
+        st_kilometrov = request.forms.st_kilometrov
+        servis = request.forms.servis
+        sql = "INSERT INTO rabljeni (id_avto, st_kilometrov, servis) VALUES (%s, %s, %s)"
+        val = (Id_avta, st_kilometrov, servis)
+        cur.execute(sql,val)       
     redirect('/avto_prijavljen')
 
 @get('/manjse/<x:int>')

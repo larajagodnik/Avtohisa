@@ -80,7 +80,7 @@ def ustvari_tabelo_rabljeni():
               id_avto TEXT PRIMARY KEY REFERENCES avto(id)
                 ON DELETE NO ACTION
                 ON UPDATE CASCADE,
-              st_kilometrov FLOAT(2) NOT NULL,
+              st_kilometrov INTEGER NOT NULL,
               servis BOOL NOT NULL
             );
         """)
@@ -148,8 +148,7 @@ def pravice():
             GRANT ALL ON SCHEMA public TO laraj;
             GRANT ALL ON ALL TABLES IN SCHEMA public TO laraj;
             GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO laraj; 
-        """)
-        cur.execute("""
+
             GRANT ALL ON DATABASE sem2020_jansi TO javnost;
             GRANT SELECT ON ALL TABLES IN SCHEMA public TO javnost;
             GRANT INSERT ON ALL TABLES IN SCHEMA public TO javnost;

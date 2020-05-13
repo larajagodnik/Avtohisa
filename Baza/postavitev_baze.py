@@ -165,7 +165,7 @@ def uvoziCSV(cur, tabela):
         glava = vsiPodatki[0]
         vrstice = vsiPodatki[1:]
         cur.executemany("INSERT INTO {0} ({1}) VALUES ({2})".format(
-            tabela[:-3], ",".join(glava), ",".join(['%s']*len(glava))), vrstice)
+            tabela, ",".join(glava), ",".join(['%s']*len(glava))), vrstice)
     print("Dodal podatke o {0}!".format(tabela))
 
 #Dejanski uvoz podatkov
@@ -173,39 +173,34 @@ def uvozi():
     try:
         with psycopg2.connect(conn_string) as con:
             cur = con.cursor()
-            uvoziCSV(cur, 'avto001')
+            uvoziCSV(cur, 'avto')
     except:
         print("Neka napaka, podatki verjetno že obstajajo!")
     try:
         with psycopg2.connect(conn_string) as con:
             cur = con.cursor()
-            uvoziCSV(cur, 'zaposleni001')
+            uvoziCSV(cur, 'zaposleni')
     except:
         print("Neka napaka, podatki verjetno že obstajajo!")
     try:
         with psycopg2.connect(conn_string) as con:
             cur = con.cursor()
-            uvoziCSV(cur, 'novi001')
+            uvoziCSV(cur, 'novi')
     except:
         print("Neka napaka, podatki verjetno že obstajajo!") 
     
     try:
         with psycopg2.connect(conn_string) as con:
             cur = con.cursor()
-            uvoziCSV(cur, 'rabljeni001')
+            uvoziCSV(cur, 'rabljeni')
     except:
         print("Neka napaka, podatki verjetno že obstajajo!")   
     
-# uvoziCSV(cur, 'avto001')
-# uvoziCSV(cur, 'zaposleni001')
-# uvoziCSV(cur, 'novi001')
-# uvoziCSV(cur, 'rabljeni001')
 
 #Klicanje funkcij
 
 
-#izbrisi() #če želimo zbrisati celo bazo! NOT GOOD IDEA ;)!!
-
+izbrisi() #če želimo zbrisati celo bazo! NOT GOOD IDEA ;)!!
 ustvari_tabelo_zaposleni()
 ustvari_tabelo_avto()
 ustvari_tabelo_prodaja()

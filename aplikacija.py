@@ -49,7 +49,7 @@ def index():
     #redirect('/avto/vsi') #To ni to kar sem hotu, ampak sedaj usaj prižge stran
     #return rtemplate('zacetna.html')
 
-@get('/avto/:x')
+@get('/avto/<x:re:[a-z]+>')
 def avto(x):
     if str(x) == 'novi':
         cur.execute("SELECT * FROM avto WHERE novi = 'true'")
@@ -85,9 +85,9 @@ def dodaj_avto():
     #                     napaka='Dodajanje ni bilo uspešno: %s' % ex)   
     redirect('/avto_prijavljen')
 
-@get('/manjse/:x/')
+@get('/manjse/<x:int>')
 def razvrsti(x):
-    cur.execute("SELECT * FROM avto WHERE cena < %s", [int(x)])
+    cur.execute("SELECT * FROM avto WHERE cena < %s", x)
     return rtemplate('avto.html', avto=cur)
     
 @get('/zaposleni')
@@ -95,19 +95,16 @@ def zaposleni():
     cur.execute("""
         SELECT * FROM zaposleni
         ORDER BY zaposleni.ime""")
-    return template('zaposleni.html', zaposleni=cur)
+    return rtemplate('zaposleni.html', zaposleni=cur)
 
 #########################################################
 #### Prijava
 #########################################################
-#@get('/prijava')
-#def prijava_get():
-#    redirect('/')
 
 @post('/prijava')
 def prijava_post():
-    username = request.forms.get('username')
-    password = request.forms.get('password')
+    username = request.forms.username
+    password = request.forms.password
     print(username, password)
     #if username is None or password is None:
     #

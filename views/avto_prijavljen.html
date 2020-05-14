@@ -71,7 +71,7 @@
 </form>
 <br>
 <div id="napaka_za_rabljen" class="alert alert-danger" style="display: none">
-    <span style="color: red">Its meeee error meseege(spremeni na karkol zelis napisat ko neizpolne vse pri rabljenem)
+    <span style="color: red"> Za dodanje rabljenega avtomobila morate izpolniti vsa polja.
 </div>
 <table cellpadding="0" cellspacing="2" border="1">
   <tr>
@@ -82,9 +82,9 @@
       <th>Cena</th>
       <th>Leto izdelave</th>
       <th>Ali je nov</th>
-      <th>Število kilometrov</th>
+      
   </tr>
-  %for (id,barva,tip,znamka,cena,novi,leto_izdelave,st_kilometrov) in avto:
+  %for (id,barva,tip,znamka,cena,novi,leto_izdelave,   ) in avto:
       <tr>
           <td>{{id}}</td>
           <td>{{barva}}</td>
@@ -93,7 +93,7 @@
           <td>{{cena}}</td>
           <td>{{novi}}</td>
           <td>{{leto_izdelave}}</td>
-          <td>{{st_kilometrov}}</td>
+          
       </tr>
   %end
 </table>

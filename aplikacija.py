@@ -89,7 +89,7 @@ def dodaj_avto():
     #     conn.rollback()
     #     return rtemplate('avto_prijavljen/dodaj.html', Id=id, barva=barva, tip=tip, znamka=znamka, cena=cena, novi=novi,
     #                     napaka='Dodajanje ni bilSo uspešno: %s' % ex)   
-    if not request.forms.izberi_starost:    
+    if request.forms.izberi_starost == False:    
         st_kilometrov = request.forms.st_kilometrov
         servis = request.forms.servis
         sql = "INSERT INTO rabljeni (id_avto, st_kilometrov, servis) VALUES (%s, %s, %s)"

@@ -6,10 +6,41 @@ function odpri_okno() {
     if(select_value == "false"){
         document.getElementById("hidden_div").style.display = "inherit";
         //document.getElementById("st_kilometrov").required = true;
+    }else{
+         document.getElementById("st_kilometrov").value = '';
+         var ima_servis = document.getElementsByName("servis");
+         for (var i = 0, length = ima_servis.length; i < length; i++) {
+            if (ima_servis[i].checked) {
+                ima_servis[i].checked = false
+                break;
+
+            }
+        }
+         document.getElementsByName("servis").value = '';
     }
 
 }
 function zapri_okno(){
-    document.getElementById("hidden_div").style.display = "none";
+        document.getElementById("hidden_div").style.display = "none";
+        var st_kilometrov = document.getElementById("st_kilometrov");
+        var ima_servis = document.getElementsByName("servis");
+        var status_servisa = null;
+        for (var i = 0, length = ima_servis.length; i < length; i++) {
+            if (ima_servis[i].checked) {
+                status_servisa = ima_servis[i].value;
+                break;
+
+            }
+        }
+
+        if(!st_kilometrov.value || !status_servisa){
+            document.getElementById("Nov").selected = true;
+            document.getElementById("napaka_za_rabljen").style.display = "inherit";
+
+
+        }else{
+            document.getElementById("napaka_za_rabljen").style.display = "none";
+
+        }
 
 }

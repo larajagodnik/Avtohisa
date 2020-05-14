@@ -53,23 +53,26 @@
   <span>Cena:</span> <input name="cena" type="number" min="0" step = ".01" lang="en" required/>
   <span>Leto izdelave:</span> <input name="leto_izdelave" type="number" min="1970" max="2020" />
   <span>Stanje:<select id="izberi_starost" name="novi"  onchange="odpri_okno()">
-    <option value="true">Nov</option>
-    <option value="false">Rabljen</option>
+    <option id="Nov" value="true">Nov</option>
+    <option id="Rabljen" value="false">Rabljen</option>
   </select>
   <div id="hidden_div" class="modal" style="display: none">
     <div class="modal-content">
         <span class="close" onclick="zapri_okno()">&times;</span>
           <h3>Vpišite podatke o rabljenem avtomobilu</h3>
-        <span class="input">Št kilometrov:</span> <input name="st_kilometrov" type="text" /><br>
+        <span class="input">Št kilometrov:</span> <input id="st_kilometrov" name="st_kilometrov" type="text" /><br>
         <span class="input">Ima servis:</span>
-          <input type="radio" id="true" name="servis" value="true" />Ima
-          <input type="radio" id="false" name="servis" value="false" />Nima<br>
+          <input type="radio" name="servis" value="true" />Ima
+          <input type="radio" name="servis" value="false" />Nima<br>
         <button type="button" onclick="zapri_okno()">Shrani</button>
     </div>
 </div>
   <input value="Dodaj" type="submit" />
 </form>
-
+<br>
+<div id="napaka_za_rabljen" class="alert alert-danger" style="display: none">
+    <span style="color: red">Its meeee error meseege(spremeni na karkol zelis napisat ko neizpolne vse pri rabljenem)
+</div>
 <table cellpadding="0" cellspacing="2" border="1">
   <tr>
       <th>Id</th>

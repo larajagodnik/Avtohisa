@@ -98,6 +98,11 @@ def dodaj_avto():
         cur.execute(sql,val)       
     redirect('/avto_prijavljen')
 
+@post('/avto_prijavljen/brisi/<id>')
+def brisi_avto(id):
+    cur.execute("DELETE FROM avto WHERE id = %s", (id, ))
+    redirect('/avto_prijavljen')
+
 @get('/manjse/<x:int>')
 def razvrsti(x):
     cur.execute("SELECT * FROM avto WHERE cena < %s", x)

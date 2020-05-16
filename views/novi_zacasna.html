@@ -1,0 +1,14 @@
+%rebase('osnova.html', naslov='Seznam pripravljenih avtov')
+
+
+<table cellpadding="0" cellspacing="2" border="1">
+    <tr>
+        <th>Id</th>
+        <th>Pripravljen</th>
+    %for (id_avto, pripravljen) in novi:
+        <tr>
+            <td>{{id_avto}}</td>
+            <td>{{pripravljen}}</td>
+        </tr>
+    %end
+</table>

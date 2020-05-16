@@ -91,10 +91,10 @@ def ustvari_tabelo_novi():
         cur = con.cursor()
         cur.execute("""
             CREATE TABLE IF NOT EXISTS novi(
-              id TEXT PRIMARY KEY REFERENCES avto(id)
+              id_avto TEXT PRIMARY KEY REFERENCES avto(id)
                 ON DELETE NO ACTION
                 ON UPDATE CASCADE,
-              pripravljen BOOL NOT NULL
+              pripravljen BOOL DEFAULT false
             );
         """)
     print("Tabela novih avtov ustvarjena!")   

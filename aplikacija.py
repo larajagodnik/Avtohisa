@@ -2,9 +2,10 @@
 from bottle import *
 
 
-
 #Uvoz podatkov za povezavo
 import auth_public as auth
+import conf_baza as auth
+
 
 #Uvoz psycopg2
 import psycopg2, psycopg2.extensions, psycopg2.extras
@@ -67,8 +68,8 @@ def avto(x):
 
 @get('/avto_prijavljen')
 def avto_prijavljen():
-    cur.execute("SELECT * FROM avto")
-    #cur.execute("SELECT avto.*,rabljeni.st_kilometrov FROM avto LEFT JOIN rabljeni on avto.id = rabljeni.id_avto")
+    #cur.execute("SELECT * FROM avto")
+    cur.execute("SELECT avto.*,novi.pripravljen FROM avto LEFT JOIN novi on avto.id_avto = novi.id")
     
     return rtemplate('avto_prijavljen.html', avto=cur)
 
@@ -95,13 +96,25 @@ def dodaj_avto():
         servis = request.forms.servis
         sql = "INSERT INTO rabljeni (id_avto, st_kilometrov, servis) VALUES (%s, %s, %s)"
         val = (Id_avta, st_kilometrov, servis)
-        cur.execute(sql,val)       
+        cur.execute(sql,val)
+    elif request.forms.izberi_starost == True:   
+        sql = "INSERT INTO novi (id_avto) VALUES (%s)"
+        val = (Id_avta)
+        cur.execute(sql,val)             
     redirect('/avto_prijavljen')
 
+# prej morem se zbrisat avto iz rabljen oziroma novi
 @post('/avto_prijavljen/brisi/<id>')
 def brisi_avto(id):
     cur.execute("DELETE FROM avto WHERE id = %s", (id, ))
     redirect('/avto_prijavljen')
+
+@get('/novi_zacasna')
+def novi_zacasna():
+    cur.execute("SELECT * FROM novi")
+    return rtemplate('novi_zacasna.html', novi=cur)
+
+
 
 @get('/manjse/<x:int>')
 def razvrsti(x):

@@ -94,7 +94,7 @@ def ustvari_tabelo_novi():
               id_avto TEXT PRIMARY KEY REFERENCES avto(id)
                 ON DELETE NO ACTION
                 ON UPDATE CASCADE,
-              pripravljen BOOL DEFAULT false
+              pripravljen BOOL DEFAULT 0
             );
         """)
     print("Tabela novih avtov ustvarjena!")   

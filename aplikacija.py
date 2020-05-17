@@ -4,7 +4,6 @@ from bottle import *
 
 #Uvoz podatkov za povezavo
 import auth_public as auth
-import conf_baza as auth
 
 
 #Uvoz psycopg2
@@ -69,7 +68,7 @@ def avto(x):
 @get('/avto_prijavljen')
 def avto_prijavljen():
     #cur.execute("SELECT * FROM avto")
-    cur.execute("SELECT avto.*,novi.pripravljen FROM avto LEFT JOIN novi on avto.id_avto = novi.id")
+    cur.execute("SELECT avto.*, novi.pripravljen FROM avto LEFT JOIN novi ON avto.id = novi.id_avto")
     
     return rtemplate('avto_prijavljen.html', avto=cur)
 
@@ -98,7 +97,7 @@ def dodaj_avto():
         val = (Id_avta, st_kilometrov, servis)
         cur.execute(sql,val)
     elif request.forms.izberi_starost == True:   
-        sql = "INSERT INTO novi (id_avto) VALUES (%s)"
+        sql = "INSERT INTO novi VALUES (%s)"
         val = (Id_avta)
         cur.execute(sql,val)             
     redirect('/avto_prijavljen')

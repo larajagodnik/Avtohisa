@@ -72,7 +72,7 @@ def ustvari_tabelo_prodaja():
         """)
     print("Tabela prodanih avtov ustvarjena!")
 
-def ustvari_tabelo_rabljeni():
+def ustvari_tabelo_rabljeni():  ############################################servis popravi vrednost, ni treba da je default!!!
     with psycopg2.connect(conn_string) as con:
         cur = con.cursor()
         cur.execute("""
@@ -81,7 +81,7 @@ def ustvari_tabelo_rabljeni():
                 ON DELETE NO ACTION
                 ON UPDATE CASCADE,
               st_kilometrov INTEGER NOT NULL,
-              servis BOOL NOT NULL
+              servis BOOL DEFAULT false 
             );
         """)
     print("Tabela rabljenih avtov ustvarjena!")
@@ -152,6 +152,7 @@ def pravice():
             GRANT ALL ON DATABASE sem2020_jansi TO javnost;
             GRANT SELECT ON ALL TABLES IN SCHEMA public TO javnost;
             GRANT INSERT ON ALL TABLES IN SCHEMA public TO javnost;
+            GRANT DELETE ON ALL TABLES IN SCHEMA public TO javnost;
             GRANT USAGE ON ALL SEQUENCES IN SCHEMA public TO javnost;
         """)
     print("Pravice dodane osebi: laraj in javnosti!")
@@ -199,7 +200,7 @@ def uvozi():
 #Klicanje funkcij
 
 
-izbrisi() #če želimo zbrisati celo bazo! NOT GOOD IDEA ;)!!
+#izbrisi() #če želimo zbrisati celo bazo! NOT GOOD IDEA ;)!!
 ustvari_tabelo_zaposleni()
 ustvari_tabelo_avto()
 ustvari_tabelo_prodaja()

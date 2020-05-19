@@ -53,7 +53,7 @@ def index():
 def avto(x):
     uporabnik = request.get_cookie('account', secret=skrivnost)
     if str(x) == 'novi':
-        cur.execute("SELECT * FROM novi INNER JOIN avto USING(id)")
+        cur.execute("SELECT * FROM novi INNER JOIN avto ON novi.id_avto = avto.id")
         naslov = 'Novi avti'
         return rtemplate('avto_novi.html', avto=cur, naslov=naslov, uporabnik=uporabnik)
     if str(x) == 'rabljeni':
@@ -90,15 +90,17 @@ def dodaj_avto():
     #     conn.rollback()
     #     return rtemplate('avto_prijavljen/dodaj.html', Id=id, barva=barva, tip=tip, znamka=znamka, cena=cena, novi=novi,
     #                     napaka='Dodajanje ni bilSo uspešno: %s' % ex)   
-    if request.forms.izberi_starost == False:    
+    #if request.forms.izberi_starost == False:  
+    if novi == 'false':    
         st_kilometrov = request.forms.st_kilometrov
         servis = request.forms.servis
         sql = "INSERT INTO rabljeni (id_avto, st_kilometrov, servis) VALUES (%s, %s, %s)"
         val = (Id_avta, st_kilometrov, servis)
         cur.execute(sql,val)
-    elif request.forms.izberi_starost == True:   
-        sql = "INSERT INTO novi VALUES (%s)"
-        val = (Id_avta)
+    #elif request.forms.izberi_starost == True: 
+    elif novi == 'true':   
+        sql = "INSERT INTO novi VALUES (%s, %s)"
+        val = (Id_avta, 'false')
         cur.execute(sql,val)             
     redirect('/avto_prijavljen')
 
@@ -152,7 +154,7 @@ def odjava():
 
 #Povezava na bazo
 conn = psycopg2.connect(database=auth.dbname, host=auth.host, user=auth.user, password=auth.password, port=DB_PORT)
-#conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)) #Onemogočimo transakcije #### Za enkrat ne rabimo
+conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) #Onemogočimo transakcije #### Za enkrat ne rabimo
 cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 

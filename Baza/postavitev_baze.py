@@ -78,10 +78,10 @@ def ustvari_tabelo_rabljeni():  ############################################serv
         cur.execute("""
             CREATE TABLE IF NOT EXISTS rabljeni(
               id_avto TEXT PRIMARY KEY REFERENCES avto(id)
-                ON DELETE NO ACTION
+                ON DELETE CASCADE
                 ON UPDATE CASCADE,
               st_kilometrov INTEGER NOT NULL,
-              servis BOOL DEFAULT false 
+              servis BOOL DEFAULT false
             );
         """)
     print("Tabela rabljenih avtov ustvarjena!")
@@ -92,9 +92,9 @@ def ustvari_tabelo_novi():
         cur.execute("""
             CREATE TABLE IF NOT EXISTS novi(
               id_avto TEXT PRIMARY KEY REFERENCES avto(id)
-                ON DELETE NO ACTION
+                ON DELETE CASCADE
                 ON UPDATE CASCADE,
-              pripravljen BOOL DEFAULT 0
+              pripravljen BOOL DEFAULT false
             );
         """)
     print("Tabela novih avtov ustvarjena!")   
@@ -200,7 +200,7 @@ def uvozi():
 #Klicanje funkcij
 
 
-#izbrisi() #če želimo zbrisati celo bazo! NOT GOOD IDEA ;)!!
+izbrisi() #če želimo zbrisati celo bazo! NOT GOOD IDEA ;)!!
 ustvari_tabelo_zaposleni()
 ustvari_tabelo_avto()
 ustvari_tabelo_prodaja()

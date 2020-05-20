@@ -1,0 +1,21 @@
+%rebase('osnova.html', naslov='Tabela prodanih avtov')
+
+<table cellpadding="0" cellspacing="2" border="1">
+    <tr>
+        <th>Id</th>
+        <th>Id avta</th>
+        <th>Datum</th>
+        <th>Nacin placila</th>
+        <th>Id zaposlenega</th>
+    </tr>
+    %for (id,, id_avta, datum, nacin_placila, id_zaposlenega) in prodaja:
+        <tr>
+            <td>{{id}</td>
+            <td>{{id_avta}}</td>
+            <td>{{datum}}</td>
+            <td>{{nacin_placila}}</td>
+            <td>{{id_zaposlenega}}</td>
+
+        </tr>
+    %end
+</table>

@@ -60,7 +60,7 @@ def ustvari_tabelo_prodaja():
               id INTEGER PRIMARY KEY,
               id_avto TEXT REFERENCES avto(id),
               datum DATE,
-              nacim_placila TEXT NOT NULL,
+              nacin_placila TEXT NOT NULL,
               id_zaposlenega TEXT NOT NULL,
               tip_zaposlenega VARCHAR(255) NOT NULL,
               FOREIGN KEY (id_zaposlenega, tip_zaposlenega)

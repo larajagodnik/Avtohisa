@@ -83,10 +83,11 @@
       <th>Leto izdelave</th>
       <th>Ali je nov</th>
       <th>Pripravljen</th>
-      <th>Akcije</th>
+      <th>Servisiran</th>
+      <th></th>
       
   </tr>
-  %for (id,barva,tip,znamka,cena,novi,leto_izdelave, pripravljen ) in avto:
+  %for (id,barva,tip,znamka,cena,novi,leto_izdelave, pripravljen, servisiran ) in avto:
       <tr>
           <td>{{id}}</td>
           <td>{{barva}}</td>
@@ -96,6 +97,7 @@
           <td>{{novi}}</td>
           <td>{{leto_izdelave}}</td>
           <td>{{pripravljen}}</td>
+          <td>{{servisiran}}</td>
           <td>
             <form action="/avto_prijavljen/brisi/{{id}}" method="post">
               <input value="Briši" type="submit" />

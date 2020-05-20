@@ -68,7 +68,7 @@ def avto(x):
 @get('/avto_prijavljen')
 def avto_prijavljen():
     #cur.execute("SELECT * FROM avto")
-    cur.execute("SELECT avto.*, novi.pripravljen FROM avto LEFT JOIN novi ON avto.id = novi.id_avto")
+    cur.execute("SELECT avto.*, novi.pripravljen, rabljeni.servis FROM avto LEFT JOIN novi ON avto.id = novi.id_avto LEFT JOIN rabljeni ON avto.id = rabljeni.id_avto")
     
     return rtemplate('avto_prijavljen.html', avto=cur)
 

@@ -107,6 +107,8 @@ def dodaj_avto():
 # prej morem se zbrisat avto iz rabljen oziroma novi
 @post('/avto_prijavljen/brisi/<id>')
 def brisi_avto(id):
+    cur.execute("DELETE FROM novi WHERE id_avto = %s", (id, ))
+    cur.execute("DELETE FROM rabljeni WHERE id_avto = %s", (id, ))
     cur.execute("DELETE FROM avto WHERE id = %s", (id, ))
     redirect('/avto_prijavljen')
 

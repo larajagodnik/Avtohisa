@@ -117,6 +117,11 @@ def dodaj_servis(id):
    
     return rtemplate('dodaj_servis_pogled.html', id=id)
 
+@post('/avto_prijavljen/dodaj_pripravo_pogled/<id>')
+def dodaj_pripravo_pogled(id):
+   
+    return rtemplate('dodaj_pripravo_pogled.html', id=id)
+
 @get('/novi_zacasna')
 def novi_zacasna():
     cur.execute("SELECT * FROM novi")

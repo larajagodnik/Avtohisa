@@ -69,12 +69,12 @@ def avto(x):
 def avto_prijavljen():
     #cur.execute("SELECT * FROM avto")
     cur.execute("SELECT avto.*, novi.pripravljen, rabljeni.servis FROM avto LEFT JOIN novi ON avto.id = novi.id_avto LEFT JOIN rabljeni ON avto.id = rabljeni.id_avto")
-    
-    return rtemplate('avto_prijavljen.html', avto=cur)
+    uporabnik = request.get_cookie('account', secret=skrivnost)
+    return rtemplate('avto_prijavljen.html', avto=cur, uporabnik=uporabnik)
 
 @post('/avto_prijavljen/dodaj')
 def dodaj_avto():
-   
+    
     Id_avta = request.forms.Id_avta
     barva = request.forms.barva
     tip = request.forms.tip
@@ -134,22 +134,29 @@ def zaposleni():
 #########################################################
 #### Prijava
 #########################################################
+def preveri_uporabnika(uporabnik, password):
+    cur.execute("SELECT * FROM prijava WHERE uporabnik = %s", (uporabnik, ))
+    geslo,dovoljenje = cur.fetchone()[1:]
+    if geslo != password:
+        return False
+    if geslo == password:
+        return dovoljenje
 
 @post('/prijava')
 def prijava_post():
     username = request.forms.username
     password = request.forms.password
     print(username, password)
-    #if username is None or password is None:
-    #
-    #else:
+    #preverjam = preveri_uporabnika(username, password)
+    #if preverjam:
     response.set_cookie('account', username, secret=skrivnost)
+    #response.set_cookie('dovoljenje', preverjam, secret=skrivnost)
     redirect('/avto/vsi')
-
 
 @get('/odjava')
 def odjava():
     response.delete_cookie('account')
+    response.delete_cookie('dovoljenje')
     redirect('/avto/vsi')
 
     

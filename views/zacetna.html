@@ -26,8 +26,7 @@
     </za_tabele>
     <navigacija>
       %if uporabnik == None:
-        <form action="/prijava" method="post">
-        
+        <form action="/prijava" method="post"  id="prijava">
           <div>
             <label for="username"><b>Uporabniško ime</b></label>
             <input type="text" placeholder="Vpišite uporabniško ime" name="username" required>
@@ -35,14 +34,12 @@
             <label for="password"><b>Vpišite geslo</b></label>
             <input type="password" placeholder="Vpišite geslo" name="password" required>
             <button type="submit">Prijava</button>
-            <label>
-              <input type="checkbox" checked="checked" name="remember"> Zapomni si me
-            </label>
+            <a href="{{ROOT}}registracija">Registriraj se</a>
           </div>
         </form>
       %else:
       <ul>
-        <li><div><b><a href="{{ROOT}}avto_prijavljen">Dodaj avto</a></b></div></li>
+        <li><div><b><a href="{{ROOT}}avto_prijavljen">Opravljaj avte</a></b></div></li>
         <li><div><b><a href="{{ROOT}}zaposleni">Poglej zaposlene</a></b></div></li>
       </ul>
       %end
@@ -55,7 +52,7 @@
 <footer>
   %if uporabnik:
     <p>Pozdravljeni {{uporabnik}}!</p>
-    <p>Če se želite odjaviti, kliknite: <a href="{{ROOT}}odjava">TOLE</a></p>
+    <p>Če se želite odjaviti, kliknite: <a href="{{ROOT}}odjava">ODJAVA</a></p>
   %else:
     <p>Dobrodošli na naši strani, prosimo prijavite se!</p>
   %end
@@ -75,5 +72,6 @@
     document.getElementById("povezava").src = "{{ROOT}}avto/rabljeni";
   }
 </script> -->
+
 </body>
 </html>

@@ -85,24 +85,41 @@
       <th>Pripravljen</th>
       <th>Servisiran</th>
       <th></th>
+      <th></th>
+      
       
   </tr>
-  %for (id,barva,tip,znamka,cena,novi,leto_izdelave, pripravljen, servisiran ) in avto:
+  %for (id,barva,tip,znamka,cena,leto_izdelave,novi, pripravljen, servisiran ) in avto:
       <tr>
           <td>{{id}}</td>
           <td>{{barva}}</td>
           <td>{{tip}}</td>
           <td>{{znamka}}</td>
           <td>{{cena}}</td>
-          <td>{{novi}}</td>
           <td>{{leto_izdelave}}</td>
+          <td>{{novi}}</td>
           <td>{{pripravljen}}</td>
           <td>{{servisiran}}</td>
           <td>
             <form action="/avto_prijavljen/brisi/{{id}}" method="post">
               <input value="Briši" type="submit" />
             </form>
-          </td>       
+          </td>     
+          
+              <td>
+                %if novi == True:
+                  <form action="/avto_prijavljen/dodaj_servis_pogled/{{id}}" method="post">
+                    <input value="Dodaj servis" type="submit" />
+                  </form>
+                %else:
+                  <form action="/avto_prijavljen/dodaj_pripravljenost/{{id}}" method="post">
+                    <input value="Dodaj pripravljenost" type="submit" />
+                  </form>
+                %end   
+                
+              </td> 
+    
+              
       </tr>
   %end
 </table>

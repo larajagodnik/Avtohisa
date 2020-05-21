@@ -112,6 +112,11 @@ def brisi_avto(id):
     cur.execute("DELETE FROM avto WHERE id = %s", (id, ))
     redirect('/avto_prijavljen')
 
+@post('/avto_prijavljen/dodaj_servis_pogled/<id>')
+def dodaj_servis(id):
+   
+    return rtemplate('dodaj_servis_pogled.html', id=id)
+
 @get('/novi_zacasna')
 def novi_zacasna():
     cur.execute("SELECT * FROM novi")
@@ -120,7 +125,7 @@ def novi_zacasna():
 
 
 @get('/manjse/<x:int>')
-def razvrsti(x):
+def razvrsti(x):    
     cur.execute("SELECT * FROM avto WHERE cena < %s", x)
     return rtemplate('avto_vsi.html', avto=cur)
     

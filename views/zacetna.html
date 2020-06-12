@@ -10,6 +10,9 @@
   </div>
 </header>
 <body>
+%if napaka != None:
+  <div style="background-color: red; padding: 10px;"><p style="color: white; text-align: center; font-size: 20px;">{{napaka}}</p></div>
+%end
 <section>
     <navigacija>
       <ul>
@@ -26,20 +29,44 @@
     </za_tabele>
     <navigacija>
       %if uporabnik == None:
-        <form action="/prijava" method="post"  id="prijava">
-          <div>
-            <label for="username"><b>Uporabniško ime</b></label>
-            <input type="text" placeholder="Vpišite uporabniško ime" name="username" required>
-          
-            <label for="password"><b>Vpišite geslo</b></label>
-            <input type="password" placeholder="Vpišite geslo" name="password" required>
-            <button type="submit">Prijava</button>
-            <a href="{{ROOT}}registracija">Registriraj se</a>
-          </div>
-        </form>
+        %if registracija == None:
+          <form action="/prijava" method="post"  id="prijava">
+            <div>
+              <label for="username"><b>Uporabniško ime</b></label>
+              <input type="text" placeholder="Vpišite uporabniško ime" name="username" required>
+            
+              <label for="password"><b>Vpišite geslo</b></label>
+              <input type="password" placeholder="Vpišite geslo" name="password" required>
+              <button type="submit">Prijava</button>
+              <a href="{{ROOT}}registracija">Registriraj se</a>
+            </div>
+          </form>
+        %else:
+          <form action="/registracija" method="post"  id="registracija">
+            <div>
+              <label for="username"><b>Ime</b></label>
+              <input type="text" placeholder="Vpišite vaše ime" name="username1" required>
+
+              <label for="username"><b>Priimek</b></label>
+              <input type="text" placeholder="Vpišite vaš priimek" name="username2" required>
+
+              <label for="username"><b>Uporabniško ime</b></label>
+              <input type="text" placeholder="Vpišite uporabniško ime" name="username" required>
+            
+              <label for="password"><b>Vpišite geslo</b></label>
+              <input type="password" placeholder="Vpišite geslo" name="password1" required>
+
+              <label for="password"><b>Ponovno vpišite geslo</b></label>
+              <input type="password" placeholder="Vpišite geslo" name="password2" required>
+
+              <button type="submit">Registracija</button>
+              <a href="{{ROOT}}za_prijavo">Prijavi se</a>
+            </div>
+          </form>
+        %end
       %else:
       <ul>
-        <li><div><b><a href="{{ROOT}}avto_prijavljen">Opravljaj avte</a></b></div></li>
+        <li><div><b><a href="{{ROOT}}avto_prijavljen">Upravljaj avte</a></b></div></li>
         <li><div><b><a href="{{ROOT}}zaposleni">Poglej zaposlene</a></b></div></li>
       </ul>
       %end

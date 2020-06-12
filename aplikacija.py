@@ -11,6 +11,7 @@ import psycopg2, psycopg2.extensions, psycopg2.extras
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo problemov s šumniki
 
 import os
+import binascii
 
 # moras imet skupaj z reloader = true, da ne rabis usakic na novo
 # poganjat pythona -- oboje izklopis ko oodajas aplikacijo profesorju
@@ -44,33 +45,39 @@ def index():
     naslov = 'Vsi avti'
     #response.set_cookie("kaj", 'blalba', secret='skrivnost')
     uporabnik = request.get_cookie('account', secret=skrivnost)
+    registracija = request.get_cookie('registracija', secret=skrivnost)
+    napaka = request.get_cookie('napaka', secret=skrivnost)
     #print(uporabnik)
-    return rtemplate('avto_vsi.html', avto=cur, naslov=naslov, uporabnik=uporabnik)
+    return rtemplate('avto_vsi.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka)
     #redirect('/avto/vsi') #To ni to kar sem hotu, ampak sedaj usaj prižge stran
     #return rtemplate('zacetna.html')
 
 @get('/avto/<x:re:[a-z]+>')
 def avto(x):
     uporabnik = request.get_cookie('account', secret=skrivnost)
+    registracija = request.get_cookie('registracija', secret=skrivnost)
+    napaka = request.get_cookie('napaka', secret=skrivnost)
     if str(x) == 'novi':
         cur.execute("SELECT * FROM novi INNER JOIN avto ON novi.id_avto = avto.id")
         naslov = 'Novi avti'
-        return rtemplate('avto_novi.html', avto=cur, naslov=naslov, uporabnik=uporabnik)
+        return rtemplate('avto_novi.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka)
     if str(x) == 'rabljeni':
         cur.execute("""SELECT id_avto,st_kilometrov,servis,barva,tip,znamka,cena,leto_izdelave
                          FROM rabljeni INNER JOIN avto ON avto.id=rabljeni.id_avto""")
         naslov = 'Rabljeni avti'
-        return rtemplate('avto_rabljeni.html', avto=cur, naslov=naslov, uporabnik=uporabnik)
+        return rtemplate('avto_rabljeni.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka)
     if str(x) == 'vsi':
         redirect('/')
-        return rtemplate('avto_vsi.html', avto=cur, naslov=naslov, uporabnik=uporabnik)
+        return rtemplate('avto_vsi.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka)
 
 @get('/avto_prijavljen')
 def avto_prijavljen():
     #cur.execute("SELECT * FROM avto")
     cur.execute("SELECT avto.*, novi.pripravljen, rabljeni.servis FROM avto LEFT JOIN novi ON avto.id = novi.id_avto LEFT JOIN rabljeni ON avto.id = rabljeni.id_avto")
     uporabnik = request.get_cookie('account', secret=skrivnost)
-    return rtemplate('avto_prijavljen.html', avto=cur, uporabnik=uporabnik)
+    napaka = request.get_cookie('napaka', secret=skrivnost)
+    registracija = request.get_cookie('registracija', secret=skrivnost)
+    return rtemplate('avto_prijavljen.html', avto=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka)
 
 @post('/avto_prijavljen/dodaj')
 def dodaj_avto():
@@ -145,23 +152,87 @@ def zaposleni():
 #### Prijava
 #########################################################
 def preveri_uporabnika(uporabnik, password):
-    cur.execute("SELECT * FROM prijava WHERE uporabnik = %s", (uporabnik, ))
-    geslo,dovoljenje = cur.fetchone()[1:]
-    if geslo != password:
+    try:
+        cur.execute("SELECT * FROM prijava WHERE uporabnik = %s", (uporabnik, ))
+        uporabnik,geslo,dovoljenje = cur.fetchone()
+        salt = geslo[:64]
+        geslo = geslo[64:]
+        pwdhash = hashlib.pbkdf2_hmac('sha512', 
+                                  password.encode('utf-8'), 
+                                  salt.encode('ascii'), 
+                                  100000)
+        pwdhash = binascii.hexlify(pwdhash).decode('ascii')
+        return pwdhash == geslo
+    except:
         return False
-    if geslo == password:
-        return dovoljenje
+
+def preveri_za_uporabnika(uporabnik):
+    try:
+        cur.execute("SELECT * FROM prijava WHERE uporabnik = %s", (uporabnik, ))
+        uporabnik = cur.fetchone([0])
+        print (uporabnik)
+        if len(uporabnik)==0:
+            return True
+    except:
+        return True
+
+def dodaj_uporabnika(uporabnik, geslo, dovoljenje):
+    salt = hashlib.sha256(os.urandom(60)).hexdigest().encode('ascii')
+    pwdhash = hashlib.pbkdf2_hmac('sha512', geslo.encode('utf-8'), salt, 100000)
+    pwdhash = binascii.hexlify(pwdhash)
+    geslo = (salt + pwdhash).decode('ascii')
+    cur.execute("INSERT INTO prijava (uporabnik, geslo, status) VALUES (%s, %s, %s)", (uporabnik, geslo, dovoljenje, ))
+
+
+@get('/registracija')
+def registracija():
+    response.set_cookie('registracija', 'DA', secret=skrivnost)
+    redirect('/avto/vsi')
+
+@get('/za_prijavo')
+def za_prijavo():
+    response.delete_cookie('registracija')
+    response.delete_cookie('napaka')
+    redirect('/avto/vsi')
+
+@post('/registracija')
+def registriraj():
+    ime = request.forms.username1
+    priimek = request.forms.username2
+    username = request.forms.username
+    geslo1 = request.forms.password1
+    geslo2 = request.forms.password2
+    if geslo1 == geslo2:
+        preveri = preveri_za_uporabnika(username)
+        if preveri:
+            dodaj_uporabnika(username, geslo1, 1)
+            response.delete_cookie('registracija')
+            response.delete_cookie('napaka')
+            response.set_cookie('account', username, secret=skrivnost)
+        else:
+            napaka = 'Uporabniško ime je že zasedeno'
+            response.set_cookie('napaka', napaka, secret=skrivnost)
+    else:
+        napaka = 'Gesli se ne ujemata'
+        response.set_cookie('napaka', napaka, secret=skrivnost)
+    redirect('/avto/vsi')
+
+    
 
 @post('/prijava')
 def prijava_post():
     username = request.forms.username
     password = request.forms.password
     print(username, password)
-    #preverjam = preveri_uporabnika(username, password)
+    preverjam = preveri_uporabnika(username, password)
     #if preverjam:
     response.set_cookie('account', username, secret=skrivnost)
+    response.delete_cookie('napaka')
+    #else:
+    #    napaka = 'Uporabniško ime in geslo se ne ujemata - Namig: jan asd, ali pa se registriraj'
+    #    response.set_cookie('napaka', napaka, secret=skrivnost)
     #response.set_cookie('dovoljenje', preverjam, secret=skrivnost)
-    redirect('/avto/vsi')
+    #redirect('/avto/vsi')
 
 @get('/odjava')
 def odjava():

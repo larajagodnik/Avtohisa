@@ -35,7 +35,7 @@ header h1{
 navigacija {
   float: left;
   width: 20%;
-  height: 300px; /* only for demonstration, should be removed */
+  /*height: 3000px; /* only for demonstration, should be removed */
   background: #ccc;
   padding: 20px;
 }

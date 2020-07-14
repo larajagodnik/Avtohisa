@@ -1,5 +1,35 @@
 %rebase('zacetna.html', naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka)
 
+<script src="/static/index.js"></script>
+
+<select id="leto_izdelave" onchange="filtertabela()">
+    <option value="null" selected>Vsa leta</option>
+    %for leto_izdelave in leta:
+        <option value="{{leto_izdelave[0]}}">{{leto_izdelave[0]}}</option>
+        
+    %end
+</select>  
+
+<select id="barve" onchange="filtertabela()">
+    <option value="null" selected>Vse barve</option>
+    %for b in barve:
+        <option value="{{b[0]}}">{{b[0]}}</option>   
+    %end
+</select>
+
+<select id="tipi" onchange="filtertabela()">
+    <option value="null" selected>Vsi tipi</option>
+    %for t in tipi:
+        <option value="{{t[0]}}">{{t[0]}}</option>   
+    %end
+</select>
+
+<select id="tipi" onchange="filtertabela()">
+    <option value="null" selected>Vse znamke</option>
+    %for z in znamke:
+        <option value="{{z[0]}}">{{z[0]}}</option>   
+    %end
+</select>
 
 <table cellpadding="0" cellspacing="2" border="1">
     <tr>

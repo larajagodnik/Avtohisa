@@ -41,15 +41,33 @@ def static(filename):
 
 @get('/')
 def index():
+
+    #dodamo se select po vseh, rabljenih, novih da ne rabimo 3 tabel tm met
+    #izbor se ne dela
+
+    cur.execute("SELECT DISTINCT leto_izdelave FROM avto ORDER BY leto_izdelave")
+    leta = cur.fetchall()
+
+    cur.execute("SELECT DISTINCT barva FROM avto")
+    barve = cur.fetchall()
+
+    cur.execute("SELECT DISTINCT tip FROM avto")
+    tipi = cur.fetchall()
+
+    cur.execute("SELECT DISTINCT znamka FROM avto")
+    znamke = cur.fetchall()
+   
     cur.execute("SELECT * FROM avto")
+    #leta = cur.execute("SELECT DISTINCT leto_izdelave from avto")
     naslov = 'Vsi avti'
+    
     #response.set_cookie("kaj", 'blalba', secret='skrivnost')
     uporabnik = request.get_cookie('account', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
-    napaka = request.get_cookie('napaka', secret=skrivnost)
+    napaka = request.get_cookie('napaka', secret    =skrivnost)
     #print(uporabnik)
-    return rtemplate('avto_vsi.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka)
-    #redirect('/avto/vsi') #To ni to kar sem hotu, ampak sedaj usaj prižge stran
+    return rtemplate('avto_vsi.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, leta=leta, barve=barve, tipi=tipi, znamke=znamke)
+    #redirect('/avto/vsi') #To ni to kar sem hotu, ampak sedaj ussaj prižge stran
     #return rtemplate('zacetna.html')
 
 @get('/avto/<x:re:[a-z]+>')
@@ -79,6 +97,15 @@ def avto_prijavljen():
     registracija = request.get_cookie('registracija', secret=skrivnost)
     return rtemplate('avto_prijavljen.html', avto=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka)
 
+# @post('/avto_prijavljen/filtriraj_po_barvah')
+# def filtriraj_po_barvah():
+#     cur.execute("SELECT avto.* FROM avto WHERE barva LIKE 'Rdeča'")
+#     rows = cur.fetchall()
+#     row_dict = [{k:v for k, v in record.items()} for record in rows]
+    
+#     return "{}".format(row_dict)
+
+    
 @post('/avto_prijavljen/dodaj')
 def dodaj_avto():
     

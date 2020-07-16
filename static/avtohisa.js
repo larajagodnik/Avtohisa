@@ -44,3 +44,13 @@ function zapri_okno(){
         }
 
 }
+
+function odpri_okno_brisi() {
+    
+    document.getElementById("hidden_div1").style.display = "inherit";
+}
+
+function zapri_okno_brisi(e) {
+   
+    document.getElementById("hidden_div1").style.display = "none";
+}

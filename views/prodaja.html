@@ -1,5 +1,25 @@
 %rebase('osnova.html', naslov='Tabela prodanih avtov')
 
+<form action="/avto_prijavljen/brisi" method="post">
+    <input type="text" name="id_avta" hidden value={{id}}>
+    <p>Datum: </span> <input name="datum" type="date" required /></p>
+    <p>Način plačila:
+        <select id="izberi_nacin_placila" name="nacin_placila" required>
+            <option id="gotovina" value="gotovina">Gotovina</option>
+            <option id="kartica" value="kartica">Kartica</option>
+        </select>
+    </p>
+    <p>Prodajalec:
+        <select name="Prodajalec" required>
+            <option value="null" selected>Izberite prodajalca</option>
+            %for z in zaposleni:
+                <option value="{{z[0]}}">{{z[1]}}</option>   
+            %end
+        </select>
+    </p>
+    <input type="submit" value="Shrani"></input>
+</form>
+<h3>Prodani avti</h3>
 <table cellpadding="0" cellspacing="2" border="1">
     <tr>
         <th>Id</th>
@@ -8,9 +28,9 @@
         <th>Nacin placila</th>
         <th>Id zaposlenega</th>
     </tr>
-    %for (id,, id_avta, datum, nacin_placila, id_zaposlenega) in prodaja:
+    %for (id,id_avta, datum, nacin_placila, id_zaposlenega) in prodaja:
         <tr>
-            <td>{{id}</td>
+            <td>{{id}}</td>
             <td>{{id_avta}}</td>
             <td>{{datum}}</td>
             <td>{{nacin_placila}}</td>

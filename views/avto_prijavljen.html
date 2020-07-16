@@ -52,13 +52,13 @@
   <span>Znamka:</span> <input name="znamka" type="text" required />
   <span>Cena:</span> <input name="cena" type="number" min="0" step = ".01" lang="en" required/>
   <span>Leto izdelave:</span> <input name="leto_izdelave" type="number" min="1970" max="2020" />
-  <span>Stanje:<select id="izberi_starost" name="novi"  onchange="odpri_okno()">
+  <span>Stanje:<select id="izberi_starost" name="novi" onchange="odpri_okno()">
     <option id="Nov" value="true">Nov</option>
     <option id="Rabljen" value="false">Rabljen</option>
   </select>
   <div id="hidden_div" class="modal" style="display: none">
     <div class="modal-content">
-        <span class="close" onclick="zapri_okno()">&times;</span>
+        <span class="close" onclick="zapri_oknoi()">&times;</span>
           <h3>Vpišite podatke o rabljenem avtomobilu</h3>
         <span class="input">Št kilometrov:</span> <input id="st_kilometrov" name="st_kilometrov" type="text" /><br>
         <span class="input">Ima servis:</span>
@@ -89,9 +89,9 @@
       
       
   </tr>
-  %for (id,barva,tip,znamka,cena,leto_izdelave,novi, pripravljen, servisiran ) in avto:
+  %for (id,barva,tip,znamka,cena,leto_izdelave,novi, pripravljen, servisiran,je_prodan) in avto:
       <tr>
-          <td>{{id}}</td>
+          <td >{{id}}</td>
           <td>{{barva}}</td>
           <td>{{tip}}</td>
           <td>{{znamka}}</td>
@@ -101,10 +101,21 @@
           <td>{{pripravljen}}</td>
           <td>{{servisiran}}</td>
           <td>
-            <form action="/avto_prijavljen/brisi/{{id}}" method="post">
-              <input value="Briši" type="submit" />
-            </form>
-          </td>     
+            %if je_prodan == None:
+              <form action="/avto_prijavljen/prodaja/{{id}}" method="post">
+                <button type="button" onclick="odpri_okno_brisi()">Prodaj</button>
+                <div id="hidden_div1" class="modal" style="display: none">
+                  <div class="modal-content">
+                      <span class="close" onclick="zapri_okno_brisi()">&times;</span>
+                        <h3>Ali ste prepričani da želite prodati avto s serijsko številko {{id}}</h3>
+                      <input type="submit" value="Prodaj"></input>
+                  </div>
+                </div>
+              </form>
+            %else:
+              <b> Prodan</b>
+            %end 
+          </td>   
           
               <td>
                 %if novi == True:

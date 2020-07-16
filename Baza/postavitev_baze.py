@@ -19,6 +19,7 @@ def izbrisi():
     print("Baza je izbrisana!")
 
 #id_zaposlenega spremenimo v emso?
+# LIKE
 def ustvari_tabelo_zaposleni():
     with psycopg2.connect(conn_string) as con:
         cur = con.cursor()
@@ -31,7 +32,7 @@ def ustvari_tabelo_zaposleni():
               placa FLOAT(2) NOT NULL,
               naslov TEXT NOT NULL,
               UNIQUE (id_zaposlenega, tip_zaposlenega),
-              CHECK (tip_zaposlenega = 'Prodajalec' OR tip_zaposlenega = 'Serviser' OR tip_zaposlenega = 'Lastnik')
+              CHECK (tip_zaposlenega LIKE 'Prodajalec' OR tip_zaposlenega LIKE 'Serviser' OR tip_zaposlenega LIKE 'Lastnik')
             );
         """)
     print("Tabela zaposleni ustvarjena!")
@@ -53,6 +54,8 @@ def ustvari_tabelo_avto():
     print("Tabela avtov ustvarjena!")
 
 def ustvari_tabelo_prodaja():
+    # id autoincrement???
+    # tip zaposlenega LIKE prodajalec
     with psycopg2.connect(conn_string) as con:
         cur = con.cursor()
         cur.execute("""
@@ -67,7 +70,7 @@ def ustvari_tabelo_prodaja():
                 REFERENCES zaposleni(id_zaposlenega, tip_zaposlenega)
                 ON DELETE NO ACTION
                 ON UPDATE CASCADE,
-              CHECK (tip_zaposlenega = 'Prodajalec')
+              CHECK (tip_zaposlenega LIKE 'Prodajalec')
             );
         """)
     print("Tabela prodanih avtov ustvarjena!")
@@ -100,11 +103,15 @@ def ustvari_tabelo_novi():
     print("Tabela novih avtov ustvarjena!")   
 
 def ustvari_tabelo_servis():
+    ## id mora bit se  AUTOINCREMENT
+    # tip zaposlenega ne sme bit noter ker imamo to posebej v tabeli zaposleni
+    # check je treba potem joinat na tabelo zaposleni in pogledat a je tip zaposlenega glede na njegou id uredu
+    # check tip_zaposlenega z LIKE
     with psycopg2.connect(conn_string) as con:
         cur = con.cursor()
         cur.execute("""
             CREATE TABLE IF NOT EXISTS servis(
-              id INTEGER PRIMARY KEY,
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
               id_avto TEXT NOT NULL REFERENCES avto(id),
               datum DATE,
               tip_servisa TEXT,
@@ -114,12 +121,13 @@ def ustvari_tabelo_servis():
                 REFERENCES zaposleni(id_zaposlenega, tip_zaposlenega)
                 ON DELETE NO ACTION
                 ON UPDATE CASCADE,
-              CHECK (tip_zaposlenega = 'Serviser')
+              CHECK (tip_zaposlenega LIKE 'Serviser')
             );
         """)  
     print("Tabela servisiranih avtov ustvarjena!")  
 
 def ustvari_tabelo_priprava():
+    #LIKE
     with psycopg2.connect(conn_string) as con:
         cur = con.cursor()
         cur.execute("""
@@ -132,7 +140,7 @@ def ustvari_tabelo_priprava():
                 REFERENCES zaposleni(id_zaposlenega, tip_zaposlenega)
                 ON DELETE NO ACTION
                 ON UPDATE CASCADE,
-              CHECK (tip_zaposlenega = 'Serviser')
+              CHECK (tip_zaposlenega LIKE 'Serviser')
             );
         """) 
     print("Tabela pripravljenih avtov ustvarjena!") 

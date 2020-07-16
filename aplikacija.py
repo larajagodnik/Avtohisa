@@ -57,7 +57,7 @@ def index():
     cur.execute("SELECT DISTINCT znamka FROM avto")
     znamke = cur.fetchall()
    
-    cur.execute("SELECT * FROM avto")
+    cur.execute("SELECT * FROM avto WHERE id NOT IN (SELECT DISTINCT id_avto FROM prodaja)")
     #leta = cur.execute("SELECT DISTINCT leto_izdelave from avto")
     naslov = 'Vsi avti'
     
@@ -91,7 +91,7 @@ def avto(x):
 @get('/avto_prijavljen')
 def avto_prijavljen():
     #cur.execute("SELECT * FROM avto")
-    cur.execute("SELECT avto.*, novi.pripravljen, rabljeni.servis FROM avto LEFT JOIN novi ON avto.id = novi.id_avto LEFT JOIN rabljeni ON avto.id = rabljeni.id_avto")
+    cur.execute("SELECT avto.*, novi.pripravljen, rabljeni.servis,(select id from prodaja where prodaja.id_avto = avto.id) as je_prodan FROM avto LEFT JOIN novi ON avto.id = novi.id_avto LEFT JOIN rabljeni ON avto.id = rabljeni.id_avto")
     uporabnik = request.get_cookie('account', secret=skrivnost)
     napaka = request.get_cookie('napaka', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
@@ -138,9 +138,28 @@ def dodaj_avto():
         cur.execute(sql,val)             
     redirect('/avto_prijavljen')
 
+@post('/avto_prijavljen/prodaja/<id>')
+def prodaja(id):
+    cur.execute("SELECT id_zaposlenega,ime FROM zaposleni WHERE tip_zaposlenega LIKE 'Prodajalec'")
+    zaposleni = cur.fetchall()
+    cur.execute("SELECT id,id_avto, datum, nacin_placila, id_zaposlenega FROM prodaja")
+    return rtemplate('prodaja.html', id=id,prodaja=cur,zaposleni=zaposleni)
+
+
 # prej morem se zbrisat avto iz rabljen oziroma novi
-@post('/avto_prijavljen/brisi/<id>')
-def brisi_avto(id):
+@post('/avto_prijavljen/brisi')
+def brisi_avto():
+
+
+    
+    id_avta = request.forms.id_avta
+    datum = request.forms.datum
+    nacin_placila = request.forms.nacin_placila
+    id_zaposlenega = request.forms.Prodajalec
+    sql = "INSERT INTO prodaja (id, id_avto, datum, nacin_placila, id_zaposlenega, tip_zaposlenega) VALUES (%s, %s, %s, %s, %s, %s)"
+    val = (2, id_avta, datum, nacin_placila, id_zaposlenega, "Prodajalec" )
+    cur.execute(sql,val)
+
     cur.execute("DELETE FROM novi WHERE id_avto = %s", (id, ))
     cur.execute("DELETE FROM rabljeni WHERE id_avto = %s", (id, ))
     cur.execute("DELETE FROM avto WHERE id = %s", (id, ))
@@ -148,6 +167,20 @@ def brisi_avto(id):
 
 @post('/avto_prijavljen/dodaj_servis_pogled/<id>')
 def dodaj_servis(id):
+    # datum = request.forms.datum
+    # tip = request.forms.tip
+    # id_zaposlenega = request.forms.id_zaposlenega
+    # tip_zaposlenega = request.forms.tip_zaposlenega
+    # #try:
+    # sql = "INSERT INTO servis (id_avto, datum, tip_servisa, id_zaposlenega, tip_zaposlenega) VALUES ( %s, %s, %s, %s, %s)"
+    # val = (id, datum, tip, id_zaposlenega, tip_zaposlenega)
+    # cur.execute(sql,val)
+    # # except Exception as ex:
+    # #     conn.rollback()
+    # #     return rtemplate('avto_prijavljen/dodaj.html', Id=id, barva=barva, tip=tip, znamka=znamka, cena=cena, novi=novi,
+    # #                     napaka='Dodajanje ni bilSo uspešno: %s' % ex)   
+    # #if request.forms.izberi_starost == False:        
+    # #redirect('/avto_prijavljen')
    
     return rtemplate('dodaj_servis_pogled.html', id=id)
 
@@ -174,6 +207,7 @@ def zaposleni():
         SELECT * FROM zaposleni
         ORDER BY zaposleni.ime""")
     return rtemplate('zaposleni.html', zaposleni=cur)
+
 
 #########################################################
 #### Prijava

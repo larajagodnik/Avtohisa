@@ -4,6 +4,7 @@ import csv
 
 from conf_baza import *
 
+
 conn_string = "host='{0}' dbname='{1}' user='{2}' password='{3}'".format(host, dbname, user, password)
 
 def izbrisi():
@@ -54,28 +55,23 @@ def ustvari_tabelo_avto():
     print("Tabela avtov ustvarjena!")
 
 def ustvari_tabelo_prodaja():
-    # id autoincrement???
-    # tip zaposlenega LIKE prodajalec
     with psycopg2.connect(conn_string) as con:
         cur = con.cursor()
         cur.execute("""
             CREATE TABLE IF NOT EXISTS prodaja(
-              id INTEGER PRIMARY KEY,
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
               id_avto TEXT REFERENCES avto(id),
               datum DATE,
               nacin_placila TEXT NOT NULL,
-              id_zaposlenega TEXT NOT NULL,
-              tip_zaposlenega VARCHAR(255) NOT NULL,
-              FOREIGN KEY (id_zaposlenega, tip_zaposlenega)
-                REFERENCES zaposleni(id_zaposlenega, tip_zaposlenega)
+              id_zaposlenega TEXT NOT NULL FOREIGN KEY REFERENCES zaposleni(id_zaposlenega),
                 ON DELETE NO ACTION
                 ON UPDATE CASCADE,
-              CHECK (tip_zaposlenega LIKE 'Prodajalec')
+              CHECK (id_zaposlenega IN (SELECT id_zaposlenega FROM zaposleni WHERE tip_zaposlenega LIKE 'Prodajalec'))
             );
         """)
     print("Tabela prodanih avtov ustvarjena!")
 
-def ustvari_tabelo_rabljeni():  ############################################servis popravi vrednost, ni treba da je default!!!
+def ustvari_tabelo_rabljeni(): 
     with psycopg2.connect(conn_string) as con:
         cur = con.cursor()
         cur.execute("""
@@ -103,10 +99,6 @@ def ustvari_tabelo_novi():
     print("Tabela novih avtov ustvarjena!")   
 
 def ustvari_tabelo_servis():
-    ## id mora bit se  AUTOINCREMENT
-    # tip zaposlenega ne sme bit noter ker imamo to posebej v tabeli zaposleni
-    # check je treba potem joinat na tabelo zaposleni in pogledat a je tip zaposlenega glede na njegou id uredu
-    # check tip_zaposlenega z LIKE
     with psycopg2.connect(conn_string) as con:
         cur = con.cursor()
         cur.execute("""
@@ -115,13 +107,10 @@ def ustvari_tabelo_servis():
               id_avto TEXT NOT NULL REFERENCES avto(id),
               datum DATE,
               tip_servisa TEXT,
-              id_zaposlenega TEXT NOT NULL,
-              tip_zaposlenega VARCHAR(255) NOT NULL,
-              FOREIGN KEY (id_zaposlenega, tip_zaposlenega)
-                REFERENCES zaposleni(id_zaposlenega, tip_zaposlenega)
+              id_zaposlenega TEXT NOT NULL FOREIGN KEY REFERENCES zaposleni(id_zaposlenega),
                 ON DELETE NO ACTION
                 ON UPDATE CASCADE,
-              CHECK (tip_zaposlenega LIKE 'Serviser')
+              CHECK (id_zaposlenega IN (SELECT id_zaposlenega FROM zaposleni WHERE tip_zaposlenega LIKE 'Serviser'))
             );
         """)  
     print("Tabela servisiranih avtov ustvarjena!")  
@@ -132,15 +121,12 @@ def ustvari_tabelo_priprava():
         cur = con.cursor()
         cur.execute("""
             CREATE TABLE IF NOT EXISTS priprava(
-              id INTEGER PRIMARY KEY,
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
               id_avto TEXT NOT NULL REFERENCES avto(id),
-              id_zaposlenega TEXT NOT NULL,
-              tip_zaposlenega VARCHAR(255) NOT NULL,
-              FOREIGN KEY (id_zaposlenega, tip_zaposlenega)
-                REFERENCES zaposleni(id_zaposlenega, tip_zaposlenega)
+              id_zaposlenega TEXT NOT NULL FOREIGN KEY REFERENCES zaposleni(id_zaposlenega)
                 ON DELETE NO ACTION
                 ON UPDATE CASCADE,
-              CHECK (tip_zaposlenega LIKE 'Serviser')
+              CHECK (id_zaposlenega IN (SELECT id_zaposlenega FROM zaposleni WHERE tip_zaposlenega LIKE 'Serviser'))
             );
         """) 
     print("Tabela pripravljenih avtov ustvarjena!") 

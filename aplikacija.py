@@ -92,7 +92,7 @@ def avto(x):
 def avto_prijavljen():
     #cur.execute("SELECT * FROM avto")
     
-    cur.execute("SELECT avto.*, novi.pripravljen, rabljeni.servis,(select id from prodaja where prodaja.id_avto = avto.id) as je_prodan FROM avto LEFT JOIN novi ON avto.id = novi.id_avto LEFT JOIN rabljeni ON avto.id = rabljeni.id_avto")
+    cur.execute("SELECT avto.*, novi.pripravljen, rabljeni.servis,(SELECT id FROM prodaja WHERE prodaja.id_avto = avto.id) AS je_prodan FROM avto LEFT JOIN novi ON avto.id = novi.id_avto LEFT JOIN rabljeni ON avto.id = rabljeni.id_avto")
     uporabnik = request.get_cookie('account', secret=skrivnost)
     napaka = request.get_cookie('napaka', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
@@ -155,8 +155,8 @@ def brisi_avto():
     datum = request.forms.datum
     nacin_placila = request.forms.nacin_placila
     id_zaposlenega = request.forms.Prodajalec
-    sql = "INSERT INTO prodaja (id, id_avto, datum, nacin_placila, id_zaposlenega, tip_zaposlenega) VALUES (%s, %s, %s, %s, %s, %s)"  
-    val = (2, id_avta, datum, nacin_placila, id_zaposlenega, "Prodajalec" )
+    sql = "INSERT INTO prodaja (id_avto, datum, nacin_placila, id_zaposlenega) VALUES (%s, %s, %s, %s)"  
+    val = (id_avta, datum, nacin_placila, id_zaposlenega)
     cur.execute(sql,val)
 
     cur.execute("DELETE FROM novi WHERE id_avto = %s", (id, ))
@@ -181,8 +181,8 @@ def dodaj_servis():
     id_zaposlenega = request.forms.Serviser
 
     #try:
-    sql = "INSERT INTO servis (id, id_avto, datum, tip_servisa, id_zaposlenega, tip_zaposlenega) VALUES (%s, %s, %s, %s, %s, %s)"
-    val = (1, id_avta, datum, tip_servisa, id_zaposlenega, "Serviser")
+    sql = "INSERT INTO servis (id, id_avto, datum, tip_servisa, id_zaposlenega) VALUES (%s, %s, %s, %s, %s)"
+    val = (1, id_avta, datum, tip_servisa, id_zaposlenega)
     cur.execute(sql,val)
 
     cur.execute("UPDATE rabljeni SET servis = True WHERE id_avto =  %s", (id_avta, ))

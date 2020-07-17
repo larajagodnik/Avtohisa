@@ -139,6 +139,10 @@ def dodaj_avto():
         cur.execute(sql,val)             
     redirect('/avto_prijavljen')
 
+
+#
+# Ne dela pravilno! vedno da po vrsti id_avta notri namesto tistega k kliknes
+#
 @post('/avto_prijavljen/prodaja/<id>')
 def prodaja(id):
     cur.execute("SELECT id_zaposlenega,ime FROM zaposleni WHERE tip_zaposlenega LIKE 'Prodajalec'")
@@ -155,8 +159,8 @@ def brisi_avto():
     datum = request.forms.datum
     nacin_placila = request.forms.nacin_placila
     id_zaposlenega = request.forms.Prodajalec
-    sql = "INSERT INTO prodaja (id_avto, datum, nacin_placila, id_zaposlenega) VALUES (%s, %s, %s, %s)"  
-    val = (id_avta, datum, nacin_placila, id_zaposlenega)
+    sql = "INSERT INTO prodaja (id, id_avto, datum, nacin_placila, id_zaposlenega) VALUES (%s, %s, %s, %s, %s)"  
+    val = (1, id_avta, datum, nacin_placila, id_zaposlenega)
     cur.execute(sql,val)
 
     cur.execute("DELETE FROM novi WHERE id_avto = %s", (id, ))
@@ -164,6 +168,9 @@ def brisi_avto():
     cur.execute("DELETE FROM avto WHERE id = %s", (id, ))
     redirect('/avto_prijavljen')
 
+#
+# Naceloma dela, preveri s SERIAL ce dela samodejno id-je
+#
 @post('/avto_prijavljen/dodaj_servis_info/<id>')
 def dodaj_servis_info(id):
     cur.execute("SELECT id_zaposlenega, ime FROM zaposleni WHERE tip_zaposlenega LIKE 'Serviser'")
@@ -182,7 +189,7 @@ def dodaj_servis():
 
     #try:
     sql = "INSERT INTO servis (id, id_avto, datum, tip_servisa, id_zaposlenega) VALUES (%s, %s, %s, %s, %s)"
-    val = (1, id_avta, datum, tip_servisa, id_zaposlenega)
+    val = (2, id_avta, datum, tip_servisa, id_zaposlenega)
     cur.execute(sql,val)
 
     cur.execute("UPDATE rabljeni SET servis = True WHERE id_avto =  %s", (id_avta, ))
@@ -194,11 +201,37 @@ def dodaj_servis():
     #if request.forms.izberi_starost == False:        
     redirect('/avto_prijavljen')
    
+@post('/avto_prijavljen/dodaj_pripravo_info/<id>')
+def dodaj_pripravo_info(id):
+    cur.execute("SELECT id_zaposlenega, ime FROM zaposleni WHERE tip_zaposlenega LIKE 'Serviser'")
+    zaposleni = cur.fetchall()
+    cur.execute("SELECT * FROM priprava")
+    return rtemplate('dodaj_pripravo_info.html', id=id, priprava=cur, zaposleni=zaposleni)
 
-@post('/avto_prijavljen/dodaj_pripravo_pogled/<id>')
-def dodaj_pripravo_pogled(id):
+@post('/avto_prijavljen/dodaj_pripravo')
+def dodaj_pripravo():
+
+    id_avta = request.forms.id_avta
+    datum = request.forms.datum
+    id_zaposlenega = request.forms.Serviser
+
+    #try:
+    sql = "INSERT INTO priprava (id, id_avto, datum, id_zaposlenega) VALUES (%s, %s, %s)"
+    val = (2, id_avta, datum, id_zaposlenega)
+    cur.execute(sql,val)
+
+    cur.execute("UPDATE novi SET pripravljen = True WHERE id_avto =  %s", (id_avta, ))
+
+    # except Exception as ex:
+    #     conn.rollback()
+    #     return rtemplate('avto_prijavljen/dodaj.html', Id=id, barva=barva, tip=tip, znamka=znamka, cena=cena, novi=novi,
+    #                     napaka='Dodajanje ni bilSo uspešno: %s' % ex)   
+    #if request.forms.izberi_starost == False:        
+    redirect('/avto_prijavljen')
    
-    return rtemplate('dodaj_pripravo_pogled.html', id=id)
+#
+#
+#
 
 @get('/novi_zacasna')
 def novi_zacasna():

@@ -59,7 +59,7 @@ def ustvari_tabelo_prodaja():
         cur = con.cursor()
         cur.execute("""
             CREATE TABLE IF NOT EXISTS prodaja(
-              id INTEGER PRIMARY KEY,
+              id SERIAL PRIMARY KEY,
               id_avto TEXT REFERENCES avto(id),
               datum DATE,
               nacin_placila TEXT NOT NULL,
@@ -104,7 +104,7 @@ def ustvari_tabelo_servis():
         cur = con.cursor()
         cur.execute("""
             CREATE TABLE IF NOT EXISTS servis(
-              id INTEGER PRIMARY KEY,
+              id SERIAL PRIMARY KEY,
               id_avto TEXT NOT NULL REFERENCES avto(id),
               datum DATE,
               tip_servisa TEXT,
@@ -118,13 +118,14 @@ def ustvari_tabelo_servis():
     print("Tabela servisiranih avtov ustvarjena!")  
 
 def ustvari_tabelo_priprava():
-    #LIKE
+    # datum??
     with psycopg2.connect(conn_string) as con:
         cur = con.cursor()
         cur.execute("""
             CREATE TABLE IF NOT EXISTS priprava(
-              id INTEGER PRIMARY KEY,
+              id SERIAL PRIMARY KEY,
               id_avto TEXT NOT NULL REFERENCES avto(id),
+              datum DATE,
               id_zaposlenega TEXT NOT NULL,
               FOREIGN KEY (id_zaposlenega)
                 REFERENCES zaposleni(id_zaposlenega)

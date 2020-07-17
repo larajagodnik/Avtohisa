@@ -3,7 +3,7 @@ from bottle import *
 
 
 #Uvoz podatkov za povezavo
-import auth_public as auth
+import conf_baza as auth
 
 
 #Uvoz psycopg2
@@ -91,6 +91,7 @@ def avto(x):
 @get('/avto_prijavljen')
 def avto_prijavljen():
     #cur.execute("SELECT * FROM avto")
+    
     cur.execute("SELECT avto.*, novi.pripravljen, rabljeni.servis,(select id from prodaja where prodaja.id_avto = avto.id) as je_prodan FROM avto LEFT JOIN novi ON avto.id = novi.id_avto LEFT JOIN rabljeni ON avto.id = rabljeni.id_avto")
     uporabnik = request.get_cookie('account', secret=skrivnost)
     napaka = request.get_cookie('napaka', secret=skrivnost)
@@ -142,21 +143,19 @@ def dodaj_avto():
 def prodaja(id):
     cur.execute("SELECT id_zaposlenega,ime FROM zaposleni WHERE tip_zaposlenega LIKE 'Prodajalec'")
     zaposleni = cur.fetchall()
-    cur.execute("SELECT id,id_avto, datum, nacin_placila, id_zaposlenega FROM prodaja")
-    return rtemplate('prodaja.html', id=id,prodaja=cur,zaposleni=zaposleni)
-
+    # spodnaj izberes vse (*), ko bomo dali ven tip zaposlenega
+    cur.execute("SELECT id, id_avto, datum, nacin_placila, id_zaposlenega FROM prodaja")
+    return rtemplate('prodaja.html', id=id, prodaja=cur,zaposleni=zaposleni)
 
 # prej morem se zbrisat avto iz rabljen oziroma novi
 @post('/avto_prijavljen/brisi')
 def brisi_avto():
-
-
     
     id_avta = request.forms.id_avta
     datum = request.forms.datum
     nacin_placila = request.forms.nacin_placila
     id_zaposlenega = request.forms.Prodajalec
-    sql = "INSERT INTO prodaja (id, id_avto, datum, nacin_placila, id_zaposlenega, tip_zaposlenega) VALUES (%s, %s, %s, %s, %s, %s)"
+    sql = "INSERT INTO prodaja (id, id_avto, datum, nacin_placila, id_zaposlenega, tip_zaposlenega) VALUES (%s, %s, %s, %s, %s, %s)"  
     val = (2, id_avta, datum, nacin_placila, id_zaposlenega, "Prodajalec" )
     cur.execute(sql,val)
 
@@ -165,24 +164,36 @@ def brisi_avto():
     cur.execute("DELETE FROM avto WHERE id = %s", (id, ))
     redirect('/avto_prijavljen')
 
-@post('/avto_prijavljen/dodaj_servis_pogled/<id>')
-def dodaj_servis(id):
-    # datum = request.forms.datum
-    # tip = request.forms.tip
-    # id_zaposlenega = request.forms.id_zaposlenega
-    # tip_zaposlenega = request.forms.tip_zaposlenega
-    # #try:
-    # sql = "INSERT INTO servis (id_avto, datum, tip_servisa, id_zaposlenega, tip_zaposlenega) VALUES ( %s, %s, %s, %s, %s)"
-    # val = (id, datum, tip, id_zaposlenega, tip_zaposlenega)
-    # cur.execute(sql,val)
-    # # except Exception as ex:
-    # #     conn.rollback()
-    # #     return rtemplate('avto_prijavljen/dodaj.html', Id=id, barva=barva, tip=tip, znamka=znamka, cena=cena, novi=novi,
-    # #                     napaka='Dodajanje ni bilSo uspešno: %s' % ex)   
-    # #if request.forms.izberi_starost == False:        
-    # #redirect('/avto_prijavljen')
+@post('/avto_prijavljen/dodaj_servis_info/<id>')
+def dodaj_servis_info(id):
+    cur.execute("SELECT id_zaposlenega, ime FROM zaposleni WHERE tip_zaposlenega LIKE 'Serviser'")
+    zaposleni = cur.fetchall()
+     # spodnaj izberes vse (*), ko bomo dali ven tip zaposlenega
+    cur.execute("SELECT id, id_avto, datum, tip_servisa, id_zaposlenega FROM servis")
+    return rtemplate('dodaj_servis_info.html', id=id, servis=cur, zaposleni=zaposleni)
+
+@post('/avto_prijavljen/dodaj_servis')
+def dodaj_servis():
+
+    id_avta = request.forms.id_avta
+    datum = request.forms.datum
+    tip_servisa = request.forms.tip_servisa
+    id_zaposlenega = request.forms.Serviser
+
+    #try:
+    sql = "INSERT INTO servis (id, id_avto, datum, tip_servisa, id_zaposlenega, tip_zaposlenega) VALUES (%s, %s, %s, %s, %s, %s)"
+    val = (1, id_avta, datum, tip_servisa, id_zaposlenega, "Serviser")
+    cur.execute(sql,val)
+
+    cur.execute("UPDATE rabljeni SET servis = True WHERE id_avto =  %s", (id_avta, ))
+
+    # except Exception as ex:
+    #     conn.rollback()
+    #     return rtemplate('avto_prijavljen/dodaj.html', Id=id, barva=barva, tip=tip, znamka=znamka, cena=cena, novi=novi,
+    #                     napaka='Dodajanje ni bilSo uspešno: %s' % ex)   
+    #if request.forms.izberi_starost == False:        
+    redirect('/avto_prijavljen')
    
-    return rtemplate('dodaj_servis_pogled.html', id=id)
 
 @post('/avto_prijavljen/dodaj_pripravo_pogled/<id>')
 def dodaj_pripravo_pogled(id):
@@ -304,6 +315,7 @@ def odjava():
     
 
 #Povezava na bazo
+
 conn = psycopg2.connect(database=auth.dbname, host=auth.host, user=auth.user, password=auth.password, port=DB_PORT)
 conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) #Onemogočimo transakcije #### Za enkrat ne rabimo
 cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)

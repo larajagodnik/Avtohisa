@@ -89,7 +89,7 @@
       
       
   </tr>
-  %for (id,barva,tip,znamka,cena,leto_izdelave,novi, pripravljen, servisiran,je_prodan) in avto:
+  %for (id,barva,tip,znamka,cena,leto_izdelave,novi, pripravljen, servisiran, je_prodan) in avto:
       <tr>
           <td >{{id}}</td>
           <td>{{barva}}</td>
@@ -113,18 +113,18 @@
                 </div>
               </form>
             %else:
-              <b> Prodan</b>
+              <b> Prodan </b>
             %end 
           </td>   
           
               <td>
                 %if novi == True:
-                  <form action="/avto_prijavljen/dodaj_servis_pogled/{{id}}" method="post">
-                    <input value="Dodaj servis" type="submit" />
-                  </form>
-                %else:
                   <form action="/avto_prijavljen/dodaj_pripravo_pogled/{{id}}" method="post">
                     <input value="Dodaj pripravljenost" type="submit" />
+                  </form>
+                %else:
+                  <form action="/avto_prijavljen/dodaj_servis_info/{{id}}" method="post">
+                    <input value="Dodaj servis" type="submit" />
                   </form>
                 %end   
                 

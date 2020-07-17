@@ -1,0 +1,43 @@
+%rebase('osnova.html', naslov='Podatki servisa')
+
+<form action="/avto_prijavljen/dodaj_servis" method="post">
+    <input type="text" name="id_avta" hidden value={{id}}>
+    <p>Datum:</span> <input name="datum" type="date" required /></p>
+    <p>Tip servisa:
+        <select id="izberi_tip_servisa" name="tip_servisa">
+            <option id="mali" value="mali">Mali servis</option>
+            <option id="večji" value="vecji">Večji servis</option>
+            <option id="velik" value="velik">Velik servis</option>
+        </select>
+    </p>
+    <p>Prodajalec:
+        <select name="Serviser" required>
+            <option value="null" selected>Izberite serviserja</option>
+            %for z in zaposleni:
+                <option value="{{z[0]}}">{{z[1]}}</option>   
+            %end
+        </select>
+    </p>
+
+    <input type="submit" value="Shrani"></input>
+</form>
+
+<table cellpadding="0" cellspacing="2" border="1">
+    <tr>
+        <th>Id</th>
+        <th>Id avta</th>
+        <th>Datum</th>
+        <th>Tip servisa</th>
+        <th>Id zaposlenega</th>
+    </tr>
+    %for (id,id_avta, datum, tip_servisa, id_zaposlenega) in servis:
+        <tr>
+            <td>{{id}}</td>
+            <td>{{id_avta}}</td>
+            <td>{{datum}}</td>
+            <td>{{tip_servisa}}</td>
+            <td>{{id_zaposlenega}}</td>
+
+        </tr>
+    %end
+</table>

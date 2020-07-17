@@ -59,14 +59,15 @@ def ustvari_tabelo_prodaja():
         cur = con.cursor()
         cur.execute("""
             CREATE TABLE IF NOT EXISTS prodaja(
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              id INTEGER PRIMARY KEY,
               id_avto TEXT REFERENCES avto(id),
               datum DATE,
               nacin_placila TEXT NOT NULL,
-              id_zaposlenega TEXT NOT NULL FOREIGN KEY REFERENCES zaposleni(id_zaposlenega),
+              id_zaposlenega TEXT NOT NULL,
+              FOREIGN KEY (id_zaposlenega)
+                REFERENCES zaposleni(id_zaposlenega)
                 ON DELETE NO ACTION
-                ON UPDATE CASCADE,
-              CHECK (id_zaposlenega IN (SELECT id_zaposlenega FROM zaposleni WHERE tip_zaposlenega LIKE 'Prodajalec'))
+                ON UPDATE CASCADE
             );
         """)
     print("Tabela prodanih avtov ustvarjena!")
@@ -103,14 +104,15 @@ def ustvari_tabelo_servis():
         cur = con.cursor()
         cur.execute("""
             CREATE TABLE IF NOT EXISTS servis(
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              id INTEGER PRIMARY KEY,
               id_avto TEXT NOT NULL REFERENCES avto(id),
               datum DATE,
               tip_servisa TEXT,
-              id_zaposlenega TEXT NOT NULL FOREIGN KEY REFERENCES zaposleni(id_zaposlenega),
+              id_zaposlenega TEXT NOT NULL,
+              FOREIGN KEY (id_zaposlenega)
+                REFERENCES zaposleni(id_zaposlenega)
                 ON DELETE NO ACTION
-                ON UPDATE CASCADE,
-              CHECK (id_zaposlenega IN (SELECT id_zaposlenega FROM zaposleni WHERE tip_zaposlenega LIKE 'Serviser'))
+                ON UPDATE CASCADE
             );
         """)  
     print("Tabela servisiranih avtov ustvarjena!")  
@@ -121,12 +123,13 @@ def ustvari_tabelo_priprava():
         cur = con.cursor()
         cur.execute("""
             CREATE TABLE IF NOT EXISTS priprava(
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              id INTEGER PRIMARY KEY,
               id_avto TEXT NOT NULL REFERENCES avto(id),
-              id_zaposlenega TEXT NOT NULL FOREIGN KEY REFERENCES zaposleni(id_zaposlenega)
+              id_zaposlenega TEXT NOT NULL,
+              FOREIGN KEY (id_zaposlenega)
+                REFERENCES zaposleni(id_zaposlenega)
                 ON DELETE NO ACTION
-                ON UPDATE CASCADE,
-              CHECK (id_zaposlenega IN (SELECT id_zaposlenega FROM zaposleni WHERE tip_zaposlenega LIKE 'Serviser'))
+                ON UPDATE CASCADE
             );
         """) 
     print("Tabela pripravljenih avtov ustvarjena!") 

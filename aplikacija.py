@@ -304,7 +304,7 @@ def prijava_post():
     #    napaka = 'Uporabniško ime in geslo se ne ujemata - Namig: jan asd, ali pa se registriraj'
     #    response.set_cookie('napaka', napaka, secret=skrivnost)
     #response.set_cookie('dovoljenje', preverjam, secret=skrivnost)
-    #redirect('/avto/vsi')
+    redirect('/avto/vsi')
 
 @get('/odjava')
 def odjava():

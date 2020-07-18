@@ -58,7 +58,7 @@
   </select>
   <div id="hidden_div" class="modal" style="display: none">
     <div class="modal-content">
-        <span class="close" onclick="zapri_oknoi()">&times;</span>
+        <span class="close" onclick="zapri_okno()">&times;</span>
           <h3>Vpišite podatke o rabljenem avtomobilu</h3>
         <span class="input">Št kilometrov:</span> <input id="st_kilometrov" name="st_kilometrov" type="text" /><br>
         <span class="input">Ima servis:</span>
@@ -84,7 +84,7 @@
       <th>Ali je nov</th>
       <th>Pripravljen</th>
       <th>Servisiran</th>
-      <th></th>
+      <th>Prodaj</th>
       <th></th>
       
       
@@ -101,7 +101,11 @@
           <td>{{pripravljen}}</td>
           <td>{{servisiran}}</td>
           <td>
-            %if je_prodan == None:
+
+            %if pripravljen == False:
+              Ni še pripravljen
+            %else:
+              %if je_prodan == None:
               <form action="/avto_prijavljen/prodaja/{{id}}" method="post">
                 <button type="button" onclick="odpri_okno_brisi()">Prodaj</button>
                 <div id="hidden_div1" class="modal" style="display: none">
@@ -112,23 +116,28 @@
                   </div>
                 </div>
               </form>
-            %else:
+              %else:
               <b> Prodan </b>
+              %end
             %end 
           </td>   
           
-              <td>
-                %if novi == True:
-                  <form action="/avto_prijavljen/dodaj_pripravo_info/{{id}}" method="post">
-                    <input value="Dodaj pripravo" type="submit" />
-                  </form>
-                %else:
-                  <form action="/avto_prijavljen/dodaj_servis_info/{{id}}" method="post">
-                    <input value="Dodaj servis" type="submit" />
-                  </form>
-                %end   
-                
-              </td> 
+          <td>
+            %if novi == True:
+              %if pripravljen == False:
+                <form action="/avto_prijavljen/dodaj_pripravo_info/{{id}}" method="post">
+                  <input value="Dodaj pripravo" type="submit" />
+                </form>
+              %else:
+              <b> Že pripravljen </b>
+              %end
+            %else:
+              <form action="/avto_prijavljen/dodaj_servis_info/{{id}}" method="post">
+                <input value="Dodaj servis" type="submit" />
+              </form>
+            %end   
+            
+          </td> 
     
               
       </tr>

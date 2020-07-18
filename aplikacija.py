@@ -216,8 +216,8 @@ def dodaj_pripravo():
     id_zaposlenega = request.forms.Serviser
 
     #try:
-    sql = "INSERT INTO priprava (id, id_avto, datum, id_zaposlenega) VALUES (%s, %s, %s)"
-    val = (2, id_avta, datum, id_zaposlenega)
+    sql = "INSERT INTO priprava (id, id_avto, id_zaposlenega) VALUES (%s, %s, %s)"
+    val = (2, id_avta, id_zaposlenega)
     cur.execute(sql,val)
 
     cur.execute("UPDATE novi SET pripravljen = True WHERE id_avto =  %s", (id_avta, ))

@@ -164,8 +164,8 @@ def brisi_avto():
     datum = request.forms.datum
     nacin_placila = request.forms.nacin_placila
     id_zaposlenega = request.forms.Prodajalec
-    sql = "INSERT INTO prodaja (id, id_avto, datum, nacin_placila, id_zaposlenega) VALUES (%s, %s, %s, %s, %s)"  
-    val = (1, id_avta, datum, nacin_placila, id_zaposlenega)
+    sql = "INSERT INTO prodaja (id_avto, datum, nacin_placila, id_zaposlenega) VALUES (%s, %s, %s, %s)"  
+    val = (id_avta, datum, nacin_placila, id_zaposlenega)
     cur.execute(sql,val)
 
     redirect('/avto_prijavljen')
@@ -190,8 +190,8 @@ def dodaj_servis():
     id_zaposlenega = request.forms.Serviser
 
     #try:
-    sql = "INSERT INTO servis (id, id_avto, datum, tip_servisa, id_zaposlenega) VALUES (%s, %s, %s, %s, %s)"
-    val = (1, id_avta, datum, tip_servisa, id_zaposlenega)
+    sql = "INSERT INTO servis (id_avto, datum, tip_servisa, id_zaposlenega) VALUES (%s, %s, %s, %s)"
+    val = (id_avta, datum, tip_servisa, id_zaposlenega)
     cur.execute(sql,val)
 
     cur.execute("UPDATE rabljeni SET servis = True WHERE id_avto =  %s", (id_avta, ))
@@ -218,8 +218,8 @@ def dodaj_pripravo():
     id_zaposlenega = request.forms.Serviser
 
     #try:
-    sql = "INSERT INTO priprava (id, id_avto, datum, id_zaposlenega) VALUES (%s, %s, %s, %s)"
-    val = (1, id_avta,, datum id_zaposlenega)
+    sql = "INSERT INTO priprava (id_avto, datum, id_zaposlenega) VALUES (%s, %s, %s)"
+    val = (id_avta, datum, id_zaposlenega)
     cur.execute(sql,val)
 
     cur.execute("UPDATE novi SET pripravljen = True WHERE id_avto =  %s", (id_avta, ))

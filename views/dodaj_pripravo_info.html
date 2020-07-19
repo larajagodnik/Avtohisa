@@ -18,12 +18,14 @@
     <tr>
         <th>Id</th>
         <th>Id avta</th>
+        <th>Datum</th>
         <th>Id zaposlenega</th>
     </tr>
-    %for (id, id_avta, id_zaposlenega) in priprava:
+    %for (id, id_avta, datum, id_zaposlenega) in priprava:
         <tr>
             <td>{{id}}</td>
             <td>{{id_avta}}</td>
+            <td>{{datum}}</td>
             <td>{{id_zaposlenega}}</td>
 
         </tr>

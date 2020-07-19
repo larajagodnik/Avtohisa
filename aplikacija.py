@@ -92,7 +92,9 @@ def avto(x):
 def avto_prijavljen():
     #cur.execute("SELECT * FROM avto")
     
-    cur.execute("SELECT avto.*, novi.pripravljen, rabljeni.servis,(SELECT id FROM prodaja WHERE prodaja.id_avto = avto.id) AS je_prodan FROM avto LEFT JOIN novi ON avto.id = novi.id_avto LEFT JOIN rabljeni ON avto.id = rabljeni.id_avto")
+    cur.execute("""SELECT avto.*, novi.pripravljen, rabljeni.servis,
+                (SELECT id FROM prodaja WHERE prodaja.id_avto = avto.id) AS je_prodan FROM avto 
+                LEFT JOIN novi ON avto.id = novi.id_avto LEFT JOIN rabljeni ON avto.id = rabljeni.id_avto""")
     uporabnik = request.get_cookie('account', secret=skrivnost)
     napaka = request.get_cookie('napaka', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
@@ -145,7 +147,7 @@ def dodaj_avto():
 #
 @post('/avto_prijavljen/prodaja/<id>')
 def prodaja(id):
-    cur.execute("SELECT id_zaposlenega,ime FROM zaposleni WHERE tip_zaposlenega LIKE 'Prodajalec'")
+    cur.execute("SELECT id_zaposlenega, ime FROM zaposleni WHERE tip_zaposlenega LIKE 'Prodajalec'")
     zaposleni = cur.fetchall()
     # spodnaj izberes vse (*), ko bomo dali ven tip zaposlenega
     cur.execute("SELECT id, id_avto, datum, nacin_placila, id_zaposlenega FROM prodaja")
@@ -154,7 +156,10 @@ def prodaja(id):
 # prej morem se zbrisat avto iz rabljen oziroma novi
 @post('/avto_prijavljen/brisi')
 def brisi_avto():
-    
+    # cur.execute("DELETE FROM novi WHERE id_avto = %s", (id, ))
+    # cur.execute("DELETE FROM rabljeni WHERE id_avto = %s", (id, ))
+    # cur.execute("DELETE FROM avto WHERE id = %s", (id, ))
+
     id_avta = request.forms.id_avta
     datum = request.forms.datum
     nacin_placila = request.forms.nacin_placila
@@ -163,9 +168,6 @@ def brisi_avto():
     val = (1, id_avta, datum, nacin_placila, id_zaposlenega)
     cur.execute(sql,val)
 
-    cur.execute("DELETE FROM novi WHERE id_avto = %s", (id, ))
-    cur.execute("DELETE FROM rabljeni WHERE id_avto = %s", (id, ))
-    cur.execute("DELETE FROM avto WHERE id = %s", (id, ))
     redirect('/avto_prijavljen')
 
 #
@@ -189,7 +191,7 @@ def dodaj_servis():
 
     #try:
     sql = "INSERT INTO servis (id, id_avto, datum, tip_servisa, id_zaposlenega) VALUES (%s, %s, %s, %s, %s)"
-    val = (2, id_avta, datum, tip_servisa, id_zaposlenega)
+    val = (1, id_avta, datum, tip_servisa, id_zaposlenega)
     cur.execute(sql,val)
 
     cur.execute("UPDATE rabljeni SET servis = True WHERE id_avto =  %s", (id_avta, ))
@@ -216,8 +218,8 @@ def dodaj_pripravo():
     id_zaposlenega = request.forms.Serviser
 
     #try:
-    sql = "INSERT INTO priprava (id, id_avto, id_zaposlenega) VALUES (%s, %s, %s)"
-    val = (2, id_avta, id_zaposlenega)
+    sql = "INSERT INTO priprava (id, id_avto, datum, id_zaposlenega) VALUES (%s, %s, %s, %s)"
+    val = (1, id_avta,, datum id_zaposlenega)
     cur.execute(sql,val)
 
     cur.execute("UPDATE novi SET pripravljen = True WHERE id_avto =  %s", (id_avta, ))

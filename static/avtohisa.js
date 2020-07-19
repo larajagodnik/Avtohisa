@@ -45,12 +45,19 @@ function zapri_okno(){
 
 }
 
-function odpri_okno_brisi() {
-    
-    document.getElementById("hidden_div1").style.display = "inherit";
+function odpri_okno_brisi(element) {
+    let id  = element.dataset.id;
+    document.getElementById("hidden_div1"+id).style.display = "inherit";
+}
+function zapri_okno_brisi(element) {
+    let id  = element.dataset.id;
+    document.getElementById("hidden_div1"+id).style.display = "none";
 }
 
-function zapri_okno_brisi(e) {
-   
-    document.getElementById("hidden_div1").style.display = "none";
-}
+// function odpri_okno_brisi() {
+//     document.getElementById("hidden_div1").style.display = "inherit";
+// }
+
+// function zapri_okno_brisi(e) {
+//     document.getElementById("hidden_div1").style.display = "none";
+// }

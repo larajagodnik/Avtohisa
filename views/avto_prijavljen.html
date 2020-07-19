@@ -89,7 +89,7 @@
       
       
   </tr>
-  %for (id,barva,tip,znamka,cena,leto_izdelave,novi, pripravljen, servisiran, je_prodan) in avto:
+  %for (id,barva,tip,znamka,cena,leto_izdelave,novi,pripravljen,servisiran,je_prodan) in avto:
       <tr>
           <td >{{id}}</td>
           <td>{{barva}}</td>
@@ -105,12 +105,13 @@
             %if pripravljen == False:
               Ni še pripravljen
             %else:
+
               %if je_prodan == None:
               <form action="/avto_prijavljen/prodaja/{{id}}" method="post">
-                <button type="button" onclick="odpri_okno_brisi()">Prodaj</button>
-                <div id="hidden_div1" class="modal" style="display: none">
+                <button type="button" onclick="odpri_okno_brisi(this)" data-id="{{id}}">Prodaj</button>
+                <div id="hidden_div1{{id}}" class="modal" style="display: none">
                   <div class="modal-content">
-                      <span class="close" onclick="zapri_okno_brisi()">&times;</span>
+                      <span class="close" onclick="zapri_okno_brisi(this)" data-id="{{id}}">&times;</span>
                         <h3>Ali ste prepričani da želite prodati avto s serijsko številko {{id}}</h3>
                       <input type="submit" value="Prodaj"></input>
                   </div>

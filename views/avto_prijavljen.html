@@ -73,7 +73,7 @@
 <div id="napaka_za_rabljen" class="alert alert-danger" style="display: none">
     <span style="color: red"> Za dodanje rabljenega avtomobila morate izpolniti vsa polja.
 </div>
-<table cellpadding="0" cellspacing="2" border="1">
+<table cellpadding="0" cellspacing="2" border="1" >
   <tr>
       <th>Id</th>
       <th>Barva</th>
@@ -82,8 +82,7 @@
       <th>Cena</th>
       <th>Leto izdelave</th>
       <th>Ali je nov</th>
-      <th>Pripravljen</th>
-      <th>Servisiran</th>
+      <th>Datum priprave/servisa</th>
       <th>Prodaj</th>
       <th></th>
       
@@ -98,8 +97,7 @@
           <td>{{cena}}</td>
           <td>{{leto_izdelave}}</td>
           <td>{{novi}}</td>
-          <td>{{pripravljen}}</td>
-          <td>{{servisiran}}</td>
+          <td>{{pripravljen}}{{servisiran}}</td>
           <td>
 
             %if pripravljen == False:
@@ -125,7 +123,7 @@
           
           <td>
             %if novi == True:
-              %if pripravljen == False:
+              %if pripravljen == None:
                 <form action="/avto_prijavljen/dodaj_pripravo_info/{{id}}" method="post">
                   <input value="Dodaj pripravo" type="submit" />
                 </form>

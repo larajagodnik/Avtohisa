@@ -2,7 +2,7 @@
 
 <script src="/static/index.js"></script>
 
-<select id="leto_izdelave" onchange="filtertabela()">
+<select id="leto_izdelave" onchange="filtertabela(this)" data-stolpec="4">
     <option value="null" selected>Vsa leta</option>
     %for leto_izdelave in leta:
         <option value="{{leto_izdelave[0]}}">{{leto_izdelave[0]}}</option>
@@ -10,28 +10,28 @@
     %end
 </select>  
 
-<select id="barve" onchange="filtertabela()">
+<select id="barve" onchange="filtertabela(this)" data-stolpec="1">
     <option value="null" selected>Vse barve</option>
     %for b in barve:
         <option value="{{b[0]}}">{{b[0]}}</option>   
     %end
 </select>
 
-<select id="tipi" onchange="filtertabela()">
+<select id="tipi" onchange="filtertabela(this)" data-stolpec="2">
     <option value="null" selected>Vsi tipi</option>
     %for t in tipi:
         <option value="{{t[0]}}">{{t[0]}}</option>   
     %end
 </select>
 
-<select id="tipi" onchange="filtertabela()">
+<select id="znamka" onchange="filtertabela(this)" data-stolpec="3">
     <option value="null" selected>Vse znamke</option>
     %for z in znamke:
         <option value="{{z[0]}}">{{z[0]}}</option>   
     %end
 </select>
 
-<table cellpadding="0" cellspacing="2" border="1">
+<table cellpadding="0" cellspacing="2" border="1" id="tabela_avtov">
     <tr>
         <th>Id</th>
         <th>Barva</th>

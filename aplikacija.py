@@ -92,9 +92,13 @@ def avto(x):
 def avto_prijavljen():
     #cur.execute("SELECT * FROM avto")
     
-    cur.execute("""SELECT avto.*, novi.pripravljen, rabljeni.servis,
-                (SELECT id FROM prodaja WHERE prodaja.id_avto = avto.id) AS je_prodan FROM avto 
-                LEFT JOIN novi ON avto.id = novi.id_avto LEFT JOIN rabljeni ON avto.id = rabljeni.id_avto""")
+    cur.execute("""SELECT avto.*, TO_CHAR(priprava.datum, 'DD. MM. YYYY'), TO_CHAR(servis.datum, 'DD. MM. YYYY'),
+                (SELECT id FROM prodaja WHERE prodaja.id_avto = avto.id) AS je_prodan 
+                FROM avto 
+                LEFT JOIN novi ON avto.id = novi.id_avto 
+                LEFT JOIN priprava ON avto.id = priprava.id_avto
+                LEFT JOIN servis ON avto.id = servis.id_avto
+                LEFT JOIN rabljeni ON avto.id = rabljeni.id_avto""")
     uporabnik = request.get_cookie('account', secret=skrivnost)
     napaka = request.get_cookie('napaka', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)

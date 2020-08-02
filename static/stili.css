@@ -43,13 +43,27 @@ navigacija ul {
   list-style-type: none;
   padding: 20%;
 }
+
+navigacija1 {
+  float: right;
+  width: 20%;
+  /*height: 3000px; /* only for demonstration, should be removed */
+  background: #ccc;
+  padding: 20px;
+}
+navigacija1 ul {
+  list-style-type: none;
+  padding: 20%;
+}
+
 za_tabele {
   float: left;
-  padding: 20px;
+  padding-left: 20px;
   width: 52%;
   background-color: #f1f1f1;
   /* height: 300px; /* only for demonstration, should be removed */
   color: red;
+  overflow-x: auto;
 }
 za_uporabnika form {
   display: inline;

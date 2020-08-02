@@ -1,0 +1,80 @@
+<html>
+<head>
+        <link rel="stylesheet" type="text/css" href="{{ROOT}}static/stili.css" />
+</head>
+<style>
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%; /* Could be more or less, depending on screen size */
+    font-size: 16px;
+  }
+
+  /* The Close Button */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .input{
+      margin-bottom: 10px;
+  }
+</style>
+
+<script src="/static/avtohisa.js"></script>
+
+<za_tabele style="width: 300px;">
+<form action="/avto_prijavljen/dodaj" method="post">
+  <span>Id:</span> <input name="Id_avta" type="text" required />
+  <span>Barva:</span> <input name="barva" type="text" required />
+  <span>Tip:</span> <input name="tip" type="text" required />
+  <span>Znamka:</span> <input name="znamka" type="text" required />
+  <span>Cena:</span> <input name="cena" type="number" min="0" step = ".01" lang="en" required/>
+  <span>Leto izdelave:</span> <input name="leto_izdelave" type="number" min="1970" max="2020" />
+  <span>Stanje:<select id="izberi_starost" name="novi" onchange="odpri_okno()">
+    <option id="Nov" value="true">Nov</option>
+    <option id="Rabljen" value="false">Rabljen</option>
+  </select>
+  <div id="hidden_div" class="modal" style="display: none">
+    <div class="modal-content">
+        <span class="close" onclick="zapri_okno()">&times;</span>
+          <h3>Vpišite podatke o rabljenem avtomobilu</h3>
+        <span class="input">Št kilometrov:</span> <input id="st_kilometrov" name="st_kilometrov" type="text" /><br>
+        <span class="input">Ima servis:</span>
+          <input type="radio" name="servis" value="true" />Ima
+          <input type="radio" name="servis" value="false" />Nima<br>
+        <button type="button" onclick="zapri_okno()">Shrani</button>
+    </div>
+</div>
+  <input value="Dodaj" type="submit" />
+</form>
+<br>
+<div id="napaka_za_rabljen" class="alert alert-danger" style="display: none">
+    <span style="color: red"> Za dodanje rabljenega avtomobila morate izpolniti vsa polja.
+</div>
+</za_tabele>
+</html>

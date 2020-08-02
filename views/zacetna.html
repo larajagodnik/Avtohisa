@@ -13,6 +13,7 @@
 %if napaka != None:
   <div style="background-color: red; padding: 10px;"><p style="color: white; text-align: center; font-size: 20px;">{{napaka}}</p></div>
 %end
+
 <section>
     <navigacija>
       <ul>
@@ -27,7 +28,7 @@
       <iframe id="povezava" src="{{ROOT}}avto/vsi" width="100%" height="100%"></iframe> -->
       {{!base}}
     </za_tabele>
-    <navigacija>
+    <navigacija1>
       %if uporabnik == None:
         %if registracija == None:
           <form action="/prijava" method="post"  id="prijava">
@@ -67,10 +68,13 @@
       %else:
       <ul>
         <li><div><b><a href="{{ROOT}}avto_prijavljen">Upravljaj avte</a></b></div></li>
+        <ul style="padding: 0px; padding-left: 30px; padding-top: 10px; list-style-type: square;">
+          <li><div style="padding-top: 0px;"><b><a href="#" onclick="myFunction()">Dodaj avto</a></b></div></li>
+        </ul>
         <li><div><b><a href="{{ROOT}}zaposleni">Poglej zaposlene</a></b></div></li>
       </ul>
       %end
-    </navigacija>
+    </navigacija1>
 
 
 </section>
@@ -99,6 +103,13 @@
     document.getElementById("povezava").src = "{{ROOT}}avto/rabljeni";
   }
 </script> -->
+
+<script>
+  function myFunction() {
+  var myWindow = window.open("{{ROOT}}avto_prijavljen/dodaj", "", 
+  "top=200,left=500,width=370px,height=500,height=450");
+}
+</script>
 
 </body>
 </html>

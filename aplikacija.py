@@ -111,7 +111,12 @@ def avto_prijavljen():
 #     row_dict = [{k:v for k, v in record.items()} for record in rows]
     
 #     return "{}".format(row_dict)
-
+@get('/avto_prijavljen/dodaj')
+def avto_prijavljen_dodaj():
+    uporabnik = request.get_cookie('account', secret=skrivnost)
+    napaka = request.get_cookie('napaka', secret=skrivnost)
+    registracija = request.get_cookie('registracija', secret=skrivnost)
+    return rtemplate('avto_prijavljen_dodaj.html', uporabnik=uporabnik, registracija=registracija, napaka=napaka)
     
 @post('/avto_prijavljen/dodaj')
 def dodaj_avto():
@@ -256,7 +261,10 @@ def zaposleni():
     cur.execute("""
         SELECT * FROM zaposleni
         ORDER BY zaposleni.ime""")
-    return rtemplate('zaposleni.html', zaposleni=cur)
+    uporabnik = request.get_cookie('account', secret=skrivnost)
+    registracija = request.get_cookie('registracija', secret=skrivnost)
+    napaka = request.get_cookie('napaka', secret    =skrivnost)
+    return rtemplate('zaposleni.html', zaposleni=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka)
 
 
 #########################################################

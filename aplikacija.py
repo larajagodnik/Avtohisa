@@ -64,9 +64,10 @@ def index():
     #response.set_cookie("kaj", 'blalba', secret='skrivnost')
     uporabnik = request.get_cookie('account', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
-    napaka = request.get_cookie('napaka', secret    =skrivnost)
+    napaka = request.get_cookie('napaka', secret=skrivnost)
+    status = request.get_cookie('dovoljenje', secret=skrivnost)
     #print(uporabnik)
-    return rtemplate('avto_vsi.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, leta=leta, barve=barve, tipi=tipi, znamke=znamke)
+    return rtemplate('avto_vsi.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, leta=leta, barve=barve, tipi=tipi, znamke=znamke, status=status)
     #redirect('/avto/vsi') #To ni to kar sem hotu, ampak sedaj ussaj prižge stran
     #return rtemplate('zacetna.html')
 
@@ -75,18 +76,19 @@ def avto(x):
     uporabnik = request.get_cookie('account', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
     napaka = request.get_cookie('napaka', secret=skrivnost)
+    status = request.get_cookie('dovoljenje', secret=skrivnost)
     if str(x) == 'novi':
         cur.execute("SELECT * FROM novi INNER JOIN avto ON novi.id_avto = avto.id")
         naslov = 'Novi avti'
-        return rtemplate('avto_novi.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka)
+        return rtemplate('avto_novi.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
     if str(x) == 'rabljeni':
         cur.execute("""SELECT id_avto,st_kilometrov,servis,barva,tip,znamka,cena,leto_izdelave
                          FROM rabljeni INNER JOIN avto ON avto.id=rabljeni.id_avto""")
         naslov = 'Rabljeni avti'
-        return rtemplate('avto_rabljeni.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka)
+        return rtemplate('avto_rabljeni.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
     if str(x) == 'vsi':
         redirect('/')
-        return rtemplate('avto_vsi.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka)
+        return rtemplate('avto_vsi.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
 @get('/avto_prijavljen')
 def avto_prijavljen():
@@ -102,7 +104,8 @@ def avto_prijavljen():
     uporabnik = request.get_cookie('account', secret=skrivnost)
     napaka = request.get_cookie('napaka', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
-    return rtemplate('avto_prijavljen.html', avto=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka)
+    status = request.get_cookie('dovoljenje', secret=skrivnost)
+    return rtemplate('avto_prijavljen.html', avto=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
 # @post('/avto_prijavljen/filtriraj_po_barvah')
 # def filtriraj_po_barvah():
@@ -116,7 +119,8 @@ def avto_prijavljen_dodaj():
     uporabnik = request.get_cookie('account', secret=skrivnost)
     napaka = request.get_cookie('napaka', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
-    return rtemplate('avto_prijavljen_dodaj.html', uporabnik=uporabnik, registracija=registracija, napaka=napaka)
+    status = request.get_cookie('dovoljenje', secret=skrivnost)
+    return rtemplate('avto_prijavljen_dodaj.html', uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
     
 @post('/avto_prijavljen/dodaj')
 def dodaj_avto():
@@ -263,8 +267,9 @@ def zaposleni():
         ORDER BY zaposleni.ime""")
     uporabnik = request.get_cookie('account', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
-    napaka = request.get_cookie('napaka', secret    =skrivnost)
-    return rtemplate('zaposleni.html', zaposleni=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka)
+    napaka = request.get_cookie('napaka', secret=skrivnost)
+    status = request.get_cookie('dovoljenje', secret=skrivnost)
+    return rtemplate('zaposleni.html', zaposleni=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
 
 #########################################################
@@ -281,7 +286,8 @@ def preveri_uporabnika(uporabnik, password):
                                   salt.encode('ascii'), 
                                   100000)
         pwdhash = binascii.hexlify(pwdhash).decode('ascii')
-        return pwdhash == geslo
+        if pwdhash == geslo:
+            return dovoljenje
     except:
         return False
 
@@ -306,6 +312,7 @@ def dodaj_uporabnika(uporabnik, geslo, dovoljenje):
 @get('/registracija')
 def registracija():
     response.set_cookie('registracija', 'DA', secret=skrivnost)
+    response.delete_cookie('napaka')
     redirect('/avto/vsi')
 
 @get('/za_prijavo')
@@ -326,8 +333,8 @@ def registriraj():
         if preveri:
             dodaj_uporabnika(username, geslo1, 1)
             response.delete_cookie('registracija')
-            response.delete_cookie('napaka')
-            response.set_cookie('account', username, secret=skrivnost)
+            napaka = 'Registracija upešna!'
+            response.set_cookie('napaka', napaka, secret=skrivnost)
         else:
             napaka = 'Uporabniško ime je že zasedeno'
             response.set_cookie('napaka', napaka, secret=skrivnost)
@@ -350,7 +357,7 @@ def prijava_post():
     #else:
     #    napaka = 'Uporabniško ime in geslo se ne ujemata - Namig: jan asd, ali pa se registriraj'
     #    response.set_cookie('napaka', napaka, secret=skrivnost)
-    #response.set_cookie('dovoljenje', preverjam, secret=skrivnost)
+    response.set_cookie('dovoljenje', preverjam, secret=skrivnost)
     redirect('/avto/vsi')
 
 @get('/odjava')

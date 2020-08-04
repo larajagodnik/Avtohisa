@@ -39,6 +39,7 @@
         <th>Znamka</th>
         <th>Leto izdelave</th>
         <th>Cena</th>
+        <th>Dodaj med priljubljene</th>
     </tr>
     %for (id,barva,tip,znamka,cena,leto_izdelave,novi) in avto:
         <tr>
@@ -48,6 +49,9 @@
             <td>{{znamka}}</td>
             <td>{{leto_izdelave}}</td>
             <td>{{cena}}</td>
+            <td>
+                <input type="submit" value="Priljubljen"></input>
+            </td>
         </tr>
     %end
 </table>

@@ -83,7 +83,7 @@ def avto(x):
         return rtemplate('avto_novi.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
     if str(x) == 'rabljeni':
         cur.execute("""SELECT id_avto,st_kilometrov,servis,barva,tip,znamka,cena,leto_izdelave
-                         FROM rabljeni INNER JOIN avto ON avto.id=rabljeni.id_avto""")
+                         FROM rabljeni LEFT JOIN avto ON avto.id=rabljeni.id_avto""")
         naslov = 'Rabljeni avti'
         return rtemplate('avto_rabljeni.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
     if str(x) == 'vsi':

@@ -17,6 +17,7 @@ def izbrisi():
         cur.execute("DROP TABLE IF EXISTS novi CASCADE")
         cur.execute("DROP TABLE IF EXISTS avto CASCADE")
         cur.execute("DROP TABLE IF EXISTS zaposleni CASCADE")
+        cur.execute("DROP TABLE IF EXISTS priljubljeni CASCADE")
     print("Baza je izbrisana!")
 
 #id_zaposlenega spremenimo v emso?
@@ -135,6 +136,20 @@ def ustvari_tabelo_priprava():
         """) 
     print("Tabela pripravljenih avtov ustvarjena!") 
 
+def ustvari_tabelo_priljubljeni():
+    with psycopg2.connect(conn_string) as con:
+        cur = con.cursor()
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS priljubljeni(
+              id SERIAL PRIMARY KEY,
+              uporabnik TEXT NOT NULL
+              id_avto TEXT NOT NULL REFERENCES avto(id)
+                  ON DELETE NO ACTION
+                  ON UPDATE CASCADE
+            );
+        """) 
+    print("Tabela pripravljenih avtov ustvarjena!") 
+
 
 #Urejanje pravic
 
@@ -206,6 +221,7 @@ ustvari_tabelo_rabljeni()
 ustvari_tabelo_novi()
 ustvari_tabelo_servis()
 ustvari_tabelo_priprava()
+ustvari_tabelo_priljubljeni()
 
 pravice()
 

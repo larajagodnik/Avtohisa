@@ -142,13 +142,13 @@ def ustvari_tabelo_priljubljeni():
         cur.execute("""
             CREATE TABLE IF NOT EXISTS priljubljeni(
               id SERIAL PRIMARY KEY,
-              uporabnik TEXT NOT NULL
+              uporabnik TEXT NOT NULL,
               id_avto TEXT NOT NULL REFERENCES avto(id)
                   ON DELETE NO ACTION
                   ON UPDATE CASCADE
             );
         """) 
-    print("Tabela pripravljenih avtov ustvarjena!") 
+    print("Tabela priljubljenih avtov ustvarjena!") 
 
 
 #Urejanje pravic

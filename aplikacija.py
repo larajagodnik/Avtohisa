@@ -41,7 +41,7 @@ def static(filename):
 
 @get('/')
 def index():
-
+    uporabnik = request.get_cookie('account', secret=skrivnost)
     #dodamo se select po vseh, rabljenih, novih da ne rabimo 3 tabel tm met
     #izbor se ne dela
 
@@ -57,16 +57,21 @@ def index():
     cur.execute("SELECT DISTINCT znamka FROM avto")
     znamke = cur.fetchall()
    
-    cur.execute("SELECT * FROM avto WHERE id NOT IN (SELECT DISTINCT id_avto FROM prodaja)")
-    #leta = cur.execute("SELECT DISTINCT leto_izdelave from avto")
+    cur.execute("SELECT avto.*, 1 as je_priljubljen FROM avto WHERE id NOT IN (SELECT DISTINCT id_avto FROM prodaja)")
+    if(request.get_cookie('account', secret=skrivnost)):
+        cur.execute("""SELECT avto.*, priljubljeni.id FROM avto LEFT JOIN priljubljeni ON
+                        (avto.id = priljubljeni.id_avto AND priljubljeni.uporabnik LIKE %s )
+                        WHERE avto.id NOT IN (SELECT DISTINCT id_avto FROM prodaja)""", (uporabnik, ))
+    #avto ki je ze prodan se ne pokaze uporabnikom strani
     naslov = 'Vsi avti'
+
+
     
     #response.set_cookie("kaj", 'blalba', secret='skrivnost')
-    uporabnik = request.get_cookie('account', secret=skrivnost)
+    #uporabnik = request.get_cookie('account', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
     napaka = request.get_cookie('napaka', secret=skrivnost)
     status = request.get_cookie('dovoljenje', secret=skrivnost)
-    #print(uporabnik)
     return rtemplate('avto_vsi.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, leta=leta, barve=barve, tipi=tipi, znamke=znamke, status=status)
     #redirect('/avto/vsi') #To ni to kar sem hotu, ampak sedaj ussaj prižge stran
     #return rtemplate('zacetna.html')
@@ -89,6 +94,11 @@ def avto(x):
     if str(x) == 'vsi':
         redirect('/')
         return rtemplate('avto_vsi.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+    if str(x) == 'priljubljeni':
+        cur.execute("SELECT avto.* FROM avto JOIN priljubljeni ON avto.id = priljubljeni.id_avto WHERE uporabnik LIKE %s", uporabnik)
+        naslov = 'Priljubljeni avti'
+        return rtemplate('priljubljeni.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+
 
 @get('/avto_prijavljen')
 def avto_prijavljen():
@@ -155,9 +165,6 @@ def dodaj_avto():
     redirect('/avto_prijavljen')
 
 
-#
-# Ne dela pravilno! vedno da po vrsti id_avta notri namesto tistega k kliknes
-#
 @post('/avto_prijavljen/prodaja/<id>')
 def prodaja(id):
     cur.execute("SELECT id_zaposlenega, ime FROM zaposleni WHERE tip_zaposlenega LIKE 'Prodajalec'")
@@ -244,15 +251,33 @@ def dodaj_pripravo():
     #if request.forms.izberi_starost == False:        
     redirect('/avto_prijavljen')
    
-#
-#
-#
+
+@get('/avto_vsi/dodaj_pod_priljubljene/<id>')
+def priljubljeni_avto(id):
+    uporabnik = request.get_cookie('account', secret=skrivnost)
+    registracija = request.get_cookie('registracija', secret=skrivnost)
+    napaka = request.get_cookie('napaka', secret=skrivnost)
+    status = request.get_cookie('dovoljenje', secret=skrivnost)
+    cur.execute("INSERT INTO priljubljeni (uporabnik, id_avto) VALUES (%s, %s)", (uporabnik, id))
+    redirect('/') 
+
+   
+# @get('/avto/poglej_priljubljene')
+# def poglej_priljubljene():
+#     uporabnik = request.get_cookie('account', secret=skrivnost)
+#     registracija = request.get_cookie('registracija', secret=skrivnost)
+#     napaka = request.get_cookie('napaka', secret=skrivnost)
+#     status = request.get_cookie('dovoljenje', secret=skrivnost)
+
+#     cur.execute("SELECT avto.* FROM avto JOIN priljubljeni ON avto.id = priljubljeni.id_avto WHERE uporabnik LIKE %s", uporabnik)
+    
+#     return rtemplate('priljubljeni.html', avto=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+
 
 @get('/novi_zacasna')
 def novi_zacasna():
     cur.execute("SELECT * FROM novi")
     return rtemplate('novi_zacasna.html', novi=cur)
-
 
 
 @get('/manjse/<x:int>')

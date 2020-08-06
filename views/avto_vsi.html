@@ -39,9 +39,11 @@
         <th>Znamka</th>
         <th>Leto izdelave</th>
         <th>Cena</th>
-        <th>Dodaj med priljubljene</th>
+        %if status == 3:
+            <th>Dodaj med priljubljene</th>
+        %end
     </tr>
-    %for (id,barva,tip,znamka,cena,leto_izdelave,novi) in avto:
+    %for (id,barva,tip,znamka,cena,leto_izdelave,novi,je_priljubljen) in avto:
         <tr>
             <td>{{id}}</td>
             <td>{{barva}}</td>
@@ -49,9 +51,15 @@
             <td>{{znamka}}</td>
             <td>{{leto_izdelave}}</td>
             <td>{{cena}}</td>
-            <td>
-                <input type="submit" value="Priljubljen"></input>
-            </td>
+            %if status == 3:
+                %if je_priljubljen == None:
+                <td>
+                    <form action="/avto_vsi/dodaj_pod_priljubljene/{{id}}">
+                    <input type="submit" value="Priljubljen"></input>
+                    </form>
+                </td>
+                %end
+            %end
         </tr>
     %end
 </table>

@@ -1,6 +1,6 @@
 %rebase('zacetna.html', naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
-<!-- PRILJUBLJENI AVTI-->
+<!-- PRILJUBLJENI-->
 <table cellpadding="0" cellspacing="2" border="1">
     <tr>
         <th>Id</th>
@@ -10,7 +10,7 @@
         <th>Leto izdelave</th>
         <th>Cena</th>
     </tr>
-    %for (id,pripravljen,id_2,barva,tip,znamka,cena,leto_izdelave,novi) in avto:
+    %for (id,barva,tip,znamka,cena,leto_izdelave,novi) in avto:
         <tr>
             <td>{{id}}</td>
             <td>{{barva}}</td>
@@ -21,4 +21,6 @@
         </tr>
     %end
 </table>
+
+
 

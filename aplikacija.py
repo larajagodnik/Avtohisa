@@ -233,11 +233,8 @@ def dodaj_servis():
     #     return rtemplate('avto_prijavljen/dodaj.html', Id=id, barva=barva, tip=tip, znamka=znamka, cena=cena, novi=novi,
     #                     napaka='Dodajanje ni bilSo uspešno: %s' % ex)   
     #if request.forms.izberi_starost == False:   
-    uporabnik = request.get_cookie('account', secret=skrivnost)
-    napaka = request.get_cookie('napaka', secret=skrivnost)
-    registracija = request.get_cookie('registracija', secret=skrivnost)
-    status = request.get_cookie('dovoljenje', secret=skrivnost)     
-    redirect('/avto_prijavljen', uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+     
+    redirect('/avto_prijavljen')
    
 @post('/avto_prijavljen/dodaj_pripravo_info/<id>')
 def dodaj_pripravo_info(id):
@@ -249,7 +246,7 @@ def dodaj_pripravo_info(id):
     napaka = request.get_cookie('napaka', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
     status = request.get_cookie('dovoljenje', secret=skrivnost) 
-    
+
     return rtemplate('dodaj_pripravo_info.html', id=id, priprava=cur, zaposleni=zaposleni,
     uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 

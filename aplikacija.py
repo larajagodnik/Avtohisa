@@ -171,7 +171,12 @@ def prodaja(id):
     zaposleni = cur.fetchall()
     # spodnaj izberes vse (*), ko bomo dali ven tip zaposlenega
     cur.execute("SELECT id, id_avto, datum, nacin_placila, id_zaposlenega FROM prodaja")
-    return rtemplate('prodaja.html', id=id, prodaja=cur,zaposleni=zaposleni)
+    uporabnik = request.get_cookie('account', secret=skrivnost)
+    napaka = request.get_cookie('napaka', secret=skrivnost)
+    registracija = request.get_cookie('registracija', secret=skrivnost)
+    status = request.get_cookie('dovoljenje', secret=skrivnost)
+    return rtemplate('prodaja.html', id=id, prodaja=cur,zaposleni=zaposleni, uporabnik=uporabnik,
+     registracija=registracija, napaka=napaka, status=status)
 
 # prej morem se zbrisat avto iz rabljen oziroma novi
 @post('/avto_prijavljen/brisi')
@@ -199,7 +204,14 @@ def dodaj_servis_info(id):
     zaposleni = cur.fetchall()
      # spodnaj izberes vse (*), ko bomo dali ven tip zaposlenega
     cur.execute("SELECT id, id_avto, datum, tip_servisa, id_zaposlenega FROM servis")
-    return rtemplate('dodaj_servis_info.html', id=id, servis=cur, zaposleni=zaposleni)
+
+    uporabnik = request.get_cookie('account', secret=skrivnost)
+    napaka = request.get_cookie('napaka', secret=skrivnost)
+    registracija = request.get_cookie('registracija', secret=skrivnost)
+    status = request.get_cookie('dovoljenje', secret=skrivnost) 
+
+    return rtemplate('dodaj_servis_info.html', id=id, servis=cur, zaposleni=zaposleni,
+    uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
 @post('/avto_prijavljen/dodaj_servis')
 def dodaj_servis():
@@ -220,7 +232,8 @@ def dodaj_servis():
     #     conn.rollback()
     #     return rtemplate('avto_prijavljen/dodaj.html', Id=id, barva=barva, tip=tip, znamka=znamka, cena=cena, novi=novi,
     #                     napaka='Dodajanje ni bilSo uspešno: %s' % ex)   
-    #if request.forms.izberi_starost == False:        
+    #if request.forms.izberi_starost == False:   
+     
     redirect('/avto_prijavljen')
    
 @post('/avto_prijavljen/dodaj_pripravo_info/<id>')
@@ -228,7 +241,14 @@ def dodaj_pripravo_info(id):
     cur.execute("SELECT id_zaposlenega, ime FROM zaposleni WHERE tip_zaposlenega LIKE 'Serviser'")
     zaposleni = cur.fetchall()
     cur.execute("SELECT * FROM priprava")
-    return rtemplate('dodaj_pripravo_info.html', id=id, priprava=cur, zaposleni=zaposleni)
+
+    uporabnik = request.get_cookie('account', secret=skrivnost)
+    napaka = request.get_cookie('napaka', secret=skrivnost)
+    registracija = request.get_cookie('registracija', secret=skrivnost)
+    status = request.get_cookie('dovoljenje', secret=skrivnost) 
+
+    return rtemplate('dodaj_pripravo_info.html', id=id, priprava=cur, zaposleni=zaposleni,
+    uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
 @post('/avto_prijavljen/dodaj_pripravo')
 def dodaj_pripravo():

@@ -115,6 +115,7 @@ def avto_prijavljen():
     napaka = request.get_cookie('napaka', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
     status = request.get_cookie('dovoljenje', secret=skrivnost)
+    
     return rtemplate('avto_prijavljen.html', avto=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
 # @post('/avto_prijavljen/filtriraj_po_barvah')

@@ -1,14 +1,29 @@
 <html>
 <head>
   <link rel="stylesheet" type="text/css" href="{{ROOT}}static/stili.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  
   <title>{{naslov}}</title>
 </head>
 <header>
-  <div style="background-color: lightseagreen;">
+  <div style="background-color: #73b4da;">
     <img src="https://raw.githubusercontent.com/larajagodnik/Avtohisa/master/avtohisa.jpg" alt="Avtohisa">
-    <h1>Avtohiša Krneki</h1> 
+ 
   </div>
+  
+  <!-- <div class="header_r">
+    <a href="#default" class="logo">Avtohiša krneki </a>
+    <div class="header-right">
+      <a class="active" href="#home">Home</a>
+      <a style="cursor: pointer;" onclick="openNav()">Menu</a>
+      <a href="#about">About</a>
+    </div>
+  </div> -->
 </header>
+<script src="/static/index.js"></script>
 <body>
 %if napaka != None:
   %if napaka == 'Registracija upešna!':
@@ -17,8 +32,9 @@
     <div style="background-color: red; padding: 10px;"><p style="color: white; text-align: center; font-size: 20px;">{{napaka}}</p></div>
   %end
 %end
-
+<div class="oblivanje"></div> 
 <section>
+    <!--
     <navigacija>
       <ul>
         <li><div><b><a href="{{ROOT}}avto/vsi">Seznam vseh avtov</a></b></div></li>
@@ -29,13 +45,15 @@
         %end
       </ul>
     </navigacija>
+     -->
+     
     <za_tabele>
       <h1>{{naslov}}</h1>
       <!--<p>Nekak spravmo tabelo sem za avte :) Kao nekaj na tako sceno.</p>
       <iframe id="povezava" src="{{ROOT}}avto/vsi" width="100%" height="100%"></iframe> -->
       {{!base}}
     </za_tabele>
-    <navigacija1>
+    <navigacija1 style="margin-top: 56px; background-color: #73b4da;">
       %if uporabnik == None:
         %if registracija == None:
           <form action="/prijava" method="post"  id="prijava">
@@ -45,8 +63,8 @@
             
               <label for="password"><b>Vpišite geslo</b></label>
               <input type="password" placeholder="Vpišite geslo" name="password" required>
-              <button type="submit">Prijava</button>
-              <a href="{{ROOT}}registracija">Registriraj se</a>
+              <button class="btn" type="submit">Prijava</button>
+              <a class="btn btn-info" href="{{ROOT}}registracija">Registriraj se</a>
             </div>
           </form>
         %else:
@@ -83,7 +101,6 @@
       </ul>
       %end
     </navigacija1>
-
 
 </section>
 

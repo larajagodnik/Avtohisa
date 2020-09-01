@@ -73,18 +73,18 @@
 <div id="napaka_za_rabljen" class="alert alert-danger" style="display: none">
     <span style="color: red"> Za dodanje rabljenega avtomobila morate izpolniti vsa polja.
 </div> -->
-<table cellpadding="0" cellspacing="2" border="1">
+<table class="table table-striped" cellpadding="0" cellspacing="2" border="1">
   <tr>
-      <th>Id</th>
-      <th>Barva</th>
-      <th>Tip</th>
-      <th>Znamka</th>
-      <th>Cena</th>
-      <th>Leto izdelave</th>
-      <th>Ali je nov</th>
-      <th>Datum priprave/servisa</th>
-      <th>Prodaj</th>
-      <th></th>
+      <th style="border-top: 1px solid black;">Id</th>
+      <th style="border-top: 1px solid black;">Barva</th>
+      <th style="border-top: 1px solid black;">Tip</th>
+      <th style="border-top: 1px solid black;">Znamka</th>
+      <th style="border-top: 1px solid black;">Cena</th>
+      <th style="border-top: 1px solid black;">Leto izdelave</th>
+      <th style="border-top: 1px solid black;">Ali je nov</th>
+      <th style="border-top: 1px solid black;">Datum priprave/servisa</th>
+      <th style="border-top: 1px solid black;">Prodaj</th>
+      <th style="border-top: 1px solid black;"></th>
       
       
   </tr>
@@ -106,7 +106,7 @@
 
               %if je_prodan == None:
               <form action="/avto_prijavljen/prodaja/{{id}}" method="post">
-                <button type="button" onclick="odpri_okno_brisi(this)" data-id="{{id}}">Prodaj</button>
+                <button class="btn btn-secondary" style="background-color: #f2f2f2; color:black" type="button" onclick="odpri_okno_brisi(this)" data-id="{{id}}">Prodaj</button>
                 <div id="hidden_div1{{id}}" class="modal" style="display: none">
                   <div class="modal-content">
                       <span class="close" onclick="zapri_okno_brisi(this)" data-id="{{id}}">&times;</span>
@@ -125,14 +125,14 @@
             %if novi == True:
               %if pripravljen == None:
                 <form action="/avto_prijavljen/dodaj_pripravo_info/{{id}}" method="post">
-                  <input value="Dodaj pripravo" type="submit" />
+                  <input class="btn btn-secondary" style="background-color: #f2f2f2; color:black" value="Dodaj pripravo" type="submit" />
                 </form>
               %else:
               <b> Že pripravljen </b>
               %end
             %else:
               <form action="/avto_prijavljen/dodaj_servis_info/{{id}}" method="post">
-                <input value="Dodaj servis" type="submit" />
+                <input class="btn btn-secondary" style="background-color: #f2f2f2; color:black" value="Dodaj servis" type="submit" />
               </form>
             %end   
             
@@ -142,4 +142,39 @@
       </tr>
   %end
 </table>
-
+<!-- <za_tabele style="width: 300px;">
+  <form action="/avto_prijavljen/dodaj" method="post">
+    
+    <label for="Id_avta">Id:</label> <input name="Id_avta" type="text" required />
+    <label for="barva">Barva:</label> <input name="barva" type="text" required />
+    <label for="tip">Tip:</label> <input name="tip" type="text" required />
+    <label for="znamka">Znamka:</label> <input name="znamka" type="text" required />
+    <table style="color: red;">
+      <tr><td><label for="cena">Cena:</label> <input name="cena" type="number" min="0" step = ".01" lang="en" required/></td></tr>
+      <tr><td><label for="leto_izdelave">Leto izdelave:</label> <input name="leto_izdelave" type="number" min="1970" max="2020" /></td></tr>
+      <tr><td><label for="novi">Stanje: </label><select id="izberi_starost" name="novi" onchange="odpri_okno()">
+      <option id="Nov" value="true">Nov</option>
+      <option id="Rabljen" value="false">Rabljen</option>
+    </select></td></tr></table>
+    <div id="hidden_div" class="modal" style="display: none">
+      <div class="modal-content">
+          <span class="close" onclick="zapri_okno()">&times;</span>
+            <h3>Vpišite podatke o rabljenem avtomobilu</h3>
+          <span class="input">Št kilometrov:</span> <input id="st_kilometrov" name="st_kilometrov" type="text" /><br>
+          <span class="input">Ima servis:</span>
+          <table>
+            <tr>
+              <td><input type="radio" name="servis" value="true" />Ima </td>
+              <td><input type="radio" name="servis" value="false" />Nima<br> </td>
+            </tr>
+          </table>
+          <button type="button" onclick="zapri_okno()">Shrani</button>
+      </div>
+  </div>
+    <input value="Dodaj" type="submit" />
+  </form>
+  <br>
+  <div id="napaka_za_rabljen" class="alert alert-danger" style="display: none">
+      <span style="color: red"> Za dodanje rabljenega avtomobila morate izpolniti vsa polja.
+  </div>
+  </za_tabele> -->

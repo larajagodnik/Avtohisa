@@ -1,46 +1,48 @@
 %rebase('zacetna.html', naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
 <script src="/static/index.js"></script>
+<div class="selecti_div">
+    <select style="width:auto; display:inline-block;" class="selecti_za_tabelo form-control" id="leto_izdelave" onchange="filtertabela(this)" data-stolpec="4">
+        <option value="null" selected>Vsa leta</option>
+        %for leto_izdelave in leta:
+            <option value="{{leto_izdelave[0]}}">{{leto_izdelave[0]}}</option>
+            
+        %end
+    </select>  
 
-<select id="leto_izdelave" onchange="filtertabela(this)" data-stolpec="4">
-    <option value="null" selected>Vsa leta</option>
-    %for leto_izdelave in leta:
-        <option value="{{leto_izdelave[0]}}">{{leto_izdelave[0]}}</option>
-        
-    %end
-</select>  
+    <select style="width:auto; display:inline-block;" class="selecti_za_tabelo form-control" id="barve" onchange="filtertabela(this)" data-stolpec="1">
+        <option value="null" selected>Vse barve</option>
+        %for b in barve:
+            <option value="{{b[0]}}">{{b[0]}}</option>   
+        %end
+    </select>
 
-<select id="barve" onchange="filtertabela(this)" data-stolpec="1">
-    <option value="null" selected>Vse barve</option>
-    %for b in barve:
-        <option value="{{b[0]}}">{{b[0]}}</option>   
-    %end
-</select>
+    <select style="width:auto; display:inline-block;" class="selecti_za_tabelo form-control" id="tipi" onchange="filtertabela(this)" data-stolpec="2">
+        <option value="null" selected>Vsi tipi</option>
+        %for t in tipi:
+            <option value="{{t[0]}}">{{t[0]}}</option>   
+        %end
+    </select>
 
-<select id="tipi" onchange="filtertabela(this)" data-stolpec="2">
-    <option value="null" selected>Vsi tipi</option>
-    %for t in tipi:
-        <option value="{{t[0]}}">{{t[0]}}</option>   
-    %end
-</select>
+    <select style="width:auto; display:inline-block;" class="selecti_za_tabelo form-control" id="znamka" onchange="filtertabela(this)" data-stolpec="3">
+        <option value="null" selected>Vse znamke</option>
+        %for z in znamke:
+            <option value="{{z[0]}}">{{z[0]}}</option>   
+        %end
+    </select>
+</div>
 
-<select id="znamka" onchange="filtertabela(this)" data-stolpec="3">
-    <option value="null" selected>Vse znamke</option>
-    %for z in znamke:
-        <option value="{{z[0]}}">{{z[0]}}</option>   
-    %end
-</select>
-
-<table cellpadding="0" cellspacing="2" border="1" id="tabela_avtov">
+<table class="table table-striped" cellpadding="0" cellspacing="2" border="1" id="tabela_avtov">
     <tr>
-        <th>Id</th>
-        <th>Barva</th>
-        <th>Tip</th>
-        <th>Znamka</th>
-        <th>Leto izdelave</th>
-        <th>Cena</th>
+        <th style="border-top: 1px solid black;">Id</th>
+        <th style="border-top: 1px solid black;">Barva</th>
+        <th style="border-top: 1px solid black;">Tip</th>
+        <th style="border-top: 1px solid black;">Znamka</th>
+        <th style="border-top: 1px solid black;">Leto izdelave</th>
+        <th style="border-top: 1px solid black;">Ali je nov</th>
+        <th style="border-top: 1px solid black;">Cena</th>
         %if status == 3:
-            <th>Dodaj med priljubljene</th>
+            <th style="border-top: 1px solid black;">Dodaj med priljubljene</th>
         %end
     </tr>
     %for (id,barva,tip,znamka,cena,leto_izdelave,novi,je_priljubljen) in avto:
@@ -50,6 +52,11 @@
             <td>{{tip}}</td>
             <td>{{znamka}}</td>
             <td>{{leto_izdelave}}</td>
+            %if novi == True:
+                <td>DA</td>
+            %else:
+                <td>NE</td>
+            %end
             <td>{{cena}}</td>
             %if status == 3:
                 %if je_priljubljen == None:

@@ -3,11 +3,10 @@
 function filtertabela(el){
 
     let stolpec  = [el.dataset.stolpec];
-
     var vrednost = el.options[el.selectedIndex].value;
     let tabela = document.getElementById('tabela_avtov');
     [...tabela.rows].forEach(vrstica => {  
-        vrstica.style.display = 'inherit'
+        vrstica.style.display = ''
     })
     var leto_el = document.getElementById('leto_izdelave');
     var barva_el = document.getElementById('barve');
@@ -42,3 +41,13 @@ function filtertabela(el){
 
     return vsebina.toLocaleLowerCase().indexOf(vrednost.toLocaleLowerCase()) >= 0
 }
+
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+
+}
+

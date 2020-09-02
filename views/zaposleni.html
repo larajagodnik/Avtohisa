@@ -8,6 +8,7 @@
         <th>Placa</th>
         <th>Telefon</th>
         <th>Naslov</th>
+        <th>Odstrani zaposlenega</th>
     </tr>
     %for (id_zaposlenega,tip_zaposlenega,ime,telefon,placa,naslov) in zaposleni:
         <tr>
@@ -17,6 +18,11 @@
             <td>{{placa}}</td>
             <td>{{telefon}}</td>
             <td>{{naslov}}</td>
+            <td>
+                <form action="/zaposleni/{{id}}">
+                    <input class="btn btn-secondary" style="background-color: #f2f2f2; color:black" value="Odstrani" type="submit" />
+                </form>
+            </td>
         </tr>
     %end
 </table>

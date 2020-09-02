@@ -288,7 +288,7 @@ def odstrani_priljubljeni_avto(id):
     registracija = request.get_cookie('registracija', secret=skrivnost)
     napaka = request.get_cookie('napaka', secret=skrivnost)
     status = request.get_cookie('dovoljenje', secret=skrivnost)
-    cur.execute("DELETE FROM priljubljeni WHERE uporabnik = %s AND id_avto = %s" , (uporabnik, id, ))
+    cur.execute("DELETE FROM priljubljeni WHERE uporabnik = %s AND id_avto = %s", (uporabnik, id, ))
     redirect('/avto/priljubljeni') 
 
    
@@ -326,6 +326,41 @@ def zaposleni():
     status = request.get_cookie('dovoljenje', secret=skrivnost)
     return rtemplate('zaposleni.html', zaposleni=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
+@get('/zaposleni/dodaj')
+def zaposleni_dodaj():
+    uporabnik = request.get_cookie('account', secret=skrivnost)
+    napaka = request.get_cookie('napaka', secret=skrivnost)
+    registracija = request.get_cookie('registracija', secret=skrivnost)
+    status = request.get_cookie('dovoljenje', secret=skrivnost)
+    return rtemplate('zaposleni_dodaj.html', uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+    
+@post('/zaposleni/dodaj')
+def dodaj_zaposlenega():
+    Id_zaposlenega = request.forms.Id_zaposlenega
+    tip = request.forms.tip
+    ime = request.forms.ime
+    telefon = request.forms.telefon
+    placa = request.forms.placa
+    naslov = request.forms.naslov
+    #try:
+    sql = "INSERT INTO zaposleni (id_zaposlenega, tip_zaposlenega, ime, telefon, placa, naslov) VALUES (%s, %s, %s, %s, %s, %s)"
+    val = (Id_zaposlenega, tip, ime, telefon, placa, naslov)
+    cur.execute(sql,val)
+    # except Exception as ex:
+    #     conn.rollback()
+    #     return rtemplate('avto_prijavljen/dodaj.html', Id=id, barva=barva, tip=tip, znamka=znamka, cena=cena, novi=novi,
+    #                     napaka='Dodajanje ni bilSo uspešno: %s' % ex)   
+    #if request.forms.izberi_starost == False:  
+    redirect('/zaposleni')
+
+@get('/zaposleni/<id>')
+def odstrani_zaposlenega(id):
+    uporabnik = request.get_cookie('account', secret=skrivnost)
+    registracija = request.get_cookie('registracija', secret=skrivnost)
+    napaka = request.get_cookie('napaka', secret=skrivnost)
+    status = request.get_cookie('dovoljenje', secret=skrivnost)
+    cur.execute("DELETE FROM zaposleni WHERE id_zaposlenega = %s", (id, ))  
+    redirect('/zaposleni')
 
 #########################################################
 #### Prijava

@@ -32,15 +32,15 @@
     </select>
 </div>
 
-<table class="table table-striped" cellpadding="0" cellspacing="2" border="1" id="tabela_avtov">
+<table class="table table-striped zgornja_meja_tabele" cellpadding="0" cellspacing="2" border="1" id="tabela_avtov">
     <tr>
-        <th style="border-top: 1px solid black;">Id</th>
-        <th style="border-top: 1px solid black;">Barva</th>
-        <th style="border-top: 1px solid black;">Tip</th>
-        <th style="border-top: 1px solid black;">Znamka</th>
-        <th style="border-top: 1px solid black;">Leto izdelave</th>
-        <th style="border-top: 1px solid black;">Ali je nov</th>
-        <th style="border-top: 1px solid black;">Cena</th>
+        <th>Id</th>
+        <th>Barva</th>
+        <th>Tip</th>
+        <th>Znamka</th>
+        <th>Leto izdelave</th>
+        <th>Ali je nov</th>
+        <th>Cena</th>
         %if status == 3:
             <th style="border-top: 1px solid black;">Dodaj med priljubljene</th>
         %end
@@ -60,11 +60,13 @@
             <td>{{cena}}</td>
             %if status == 3:
                 %if je_priljubljen == None:
-                <td>
-                    <form action="/avto_vsi/dodaj_pod_priljubljene/{{id}}">
-                    <input type="submit" value="Priljubljen"></input>
-                    </form>
-                </td>
+                    <td>
+                        <form action="/avto_vsi/dodaj_pod_priljubljene/{{id}}">
+                        <input type="submit" value="Priljubljen"></input>
+                        </form>
+                    </td>
+                %else:
+                    <td></td>
                 %end
             %end
         </tr>

@@ -280,7 +280,16 @@ def priljubljeni_avto(id):
     napaka = request.get_cookie('napaka', secret=skrivnost)
     status = request.get_cookie('dovoljenje', secret=skrivnost)
     cur.execute("INSERT INTO priljubljeni (uporabnik, id_avto) VALUES (%s, %s)", (uporabnik, id))
-    redirect('/') 
+    redirect('/')
+
+@get('/avto/priljubljeni/<id>')
+def odstrani_priljubljeni_avto(id):
+    uporabnik = request.get_cookie('account', secret=skrivnost)
+    registracija = request.get_cookie('registracija', secret=skrivnost)
+    napaka = request.get_cookie('napaka', secret=skrivnost)
+    status = request.get_cookie('dovoljenje', secret=skrivnost)
+    cur.execute("DELETE FROM priljubljeni WHERE uporabnik = %s AND id_avto = %s" , (uporabnik, id, ))
+    redirect('/avto/priljubljeni') 
 
    
 # @get('/avto/poglej_priljubljene')

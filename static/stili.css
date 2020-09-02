@@ -206,10 +206,16 @@ section:after {
     float: none;
   }
 }
+
 .oblivanje{
   background-color: #73b4da;
   height: 40px;
 }
+
 .selecti_div{
   margin-bottom: 5px;
+}
+
+table.zgornja_meja_tabele th {
+  border-top:1px solid #000;
 }

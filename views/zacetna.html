@@ -64,7 +64,7 @@
               <label for="password"><b>Vpišite geslo</b></label>
               <input type="password" placeholder="Vpišite geslo" name="password" required>
               <button class="btn" type="submit">Prijava</button>
-              <a class="btn btn-info" href="{{ROOT}}registracija">Registriraj se</a>
+              <a class="btn btn-info" style="background-color: #24437b;" href="{{ROOT}}registracija">Registriraj se</a>
             </div>
           </form>
         %else:
@@ -91,14 +91,26 @@
           </form>
         %end
       %else:
-      <ul>
-        <li><div><b><a href="{{ROOT}}avto_prijavljen">Upravljaj avte</a></b></div></li>
-        <ul style="padding: 0px; padding-left: 30px; padding-top: 10px; list-style-type: square;">
-          <li><div style="padding-top: 0px;"><b><a href="#" onclick="myFunction()">Dodaj avto</a></b></div></li>
+        %if status == 1:
+          <ul>
+            <li><div><b><a href="{{ROOT}}avto_prijavljen">Upravljaj avte</a></b></div></li>
+            <ul style="padding: 0px; padding-left: 30px; padding-top: 10px; list-style-type: square;">
+              <li><div><b><a href="{{ROOT}}avto_prijavljen/dodaj">Dodaj avto</a></b></div></li>
+            </ul>
+            <li><div><b><a href="{{ROOT}}zaposleni">Poglej zaposlene</a></b></div></li>
+            <li>Status stopnje: {{status}}</li> <!-- ta zadeva se bo zbrisala pol!-->
+          </ul>
+        %end
+        %if status == 2:
+          <ul>
+            <li><div><b><a href="{{ROOT}}avto_prijavljen">Upravljaj avte</a></b></div></li>
+          </ul>
+        %end
+        %if status == 3:
+        <ul>
+          <li><div><b><a href="{{ROOT}}avto/priljubljeni">Seznam priljubljenih avtov</a></b></div></li>
         </ul>
-        <li><div><b><a href="{{ROOT}}zaposleni">Poglej zaposlene</a></b></div></li>
-        <li>Status stopnje: {{status}}</li> <!-- ta zadeva se bo zbrisala pol!-->
-      </ul>
+        %end
       %end
     </navigacija1>
 
@@ -130,12 +142,12 @@
 
 </script> -->
 
-<script>
+<!-- <script>
   function myFunction() {
   var myWindow = window.open("{{ROOT}}avto_prijavljen/dodaj", "", 
   "top=200,left=500,width=370px,height=500,height=450");
 }
-</script>
+</script> -->
 
 </body>
 </html>

@@ -1,7 +1,7 @@
 %rebase('zacetna.html', naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
 <!-- PRILJUBLJENI-->
-<table cellpadding="0" cellspacing="2" border="1">
+<table class="table table-striped zgornja_meja_tabele" cellpadding="0" cellspacing="2" border="1">
     <tr>
         <th>Id</th>
         <th>Barva</th>
@@ -9,6 +9,7 @@
         <th>Znamka</th>
         <th>Leto izdelave</th>
         <th>Cena</th>
+        <th>Odstrani iz priljubljenih</th>
     </tr>
     %for (id,barva,tip,znamka,cena,leto_izdelave,novi) in avto:
         <tr>
@@ -18,6 +19,11 @@
             <td>{{znamka}}</td>
             <td>{{leto_izdelave}}</td>
             <td>{{cena}}</td>
+            <td>
+                <form action="/avto/priljubljeni/{{id}}">
+                <input type="submit" value="Odstrani"></input>
+                </form>
+            </td>
         </tr>
     %end
 </table>

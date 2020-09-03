@@ -1,35 +1,35 @@
 %rebase('zacetna.html', naslov='Dodaj novega zaposlenega', uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
-<form action="/zaposleni/dodaj" method="post" style="width:50%;">
+<form action="/zaposleni/dodaj" method="post" style="width:60%;">
 <div class="form-group row">
-    <label for="Id_zaposlenega" class="col-sm-2 col-form-label">Id:</label>
+    <label for="Id_zaposlenega" class="col-sm-2 col-form-label"><b>Id:</b></label>
     <div class="col-sm-10">
-      <input name="Id_zaposlenega" type="text" class="form-control" required />
+      <input name="Id_zaposlenega" type="text" placeholder="Vpišite emšo zaposlenega" class="form-control" required />
     </div>
     
-    <label for="tip" class="col-sm-2 col-form-label">Tip zaposlenega:</label> 
+    <label for="tip" class="col-sm-2 col-form-label"><b>Tip zaposlenega:</b></label> 
     <div class="col-sm-10">
-      <input name="tip" type="text" class="form-control" required />
+      <input name="tip" type="text" placeholder="Vpišite tip zaposlenega" class="form-control" required />
     </div>
 
-    <label for="ime" class="col-sm-2 col-form-label">Ime in priimek:</label> 
+    <label for="ime" class="col-sm-2 col-form-label"><b>Ime in priimek:</b></label> 
     <div class="col-sm-10">
-      <input name="ime" type="text" class="form-control" required />
+      <input name="ime" type="text" placeholder="Vpišite ime in priimek" class="form-control" required />
     </div>
 
-    <label for="telefon" class="col-sm-2 col-form-label">Telefonska številka:</label>
+    <label for="telefon" class="col-sm-2 col-form-label"><b>Telefonska številka:</b></label>
     <div class="col-sm-10">
-      <input name="telefon" type="text" class="form-control" style="padding:12px 20px; margin:8px 0px;" required/>
+      <input name="telefon" type="text" placeholder="Vpišite telefonsko številko" class="form-control" style="padding:12px 20px; margin:8px 0px;" required/>
     </div> 
 
-    <label for="placa" class="col-sm-2 col-form-label">Plača:</label>
+    <label for="placa" class="col-sm-2 col-form-label"><b>Plača:</b></label>
     <div class="col-sm-10">
-      <input name="placa" type="number" min="0" step = ".01" lang="en" class="form-control" style="padding:12px 20px; margin:8px 0px;" required/>
+      <input name="placa" type="number" min="0" step = ".01" lang="en" placeholder="Vpišite višino plače" class="form-control" style="padding:12px 20px; margin:8px 0px;width:50%;" required/>
     </div> 
 
-    <label for="nalsov" class="col-sm-2 col-form-label">Naslov:</label> 
+    <label for="nalsov" class="col-sm-2 col-form-label"><b>Naslov:</b></label> 
     <div class="col-sm-10">
-      <input name="naslov" type="text" class="form-control" required />
+      <input name="naslov" type="text" placeholder="Vpišite naslov zaposlenega" class="form-control" required />
     </div>
 </div>
 <input class="btn btn-secondary" style="background-color: #f2f2f2; color:black" value="Dodaj zaposlenega" type="submit" />

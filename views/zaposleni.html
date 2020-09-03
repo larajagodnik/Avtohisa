@@ -1,5 +1,6 @@
-%rebase('zacetna.html', naslov='Tabela zaposlenih', uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+%rebase('zacetna.html', naslov='Zaposleni', uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
+<!-- ZAPOSLENI-->
 <table class="table table-striped zgornja_meja_tabele" cellpadding="0" cellspacing="2" border="1">
     <tr>
         <th>Id zaposlenega</th>
@@ -19,8 +20,8 @@
             <td>{{telefon}}</td>
             <td>{{naslov}}</td>
             <td>
-                <form action="/zaposleni/{{id}}">
-                    <input class="btn btn-secondary" style="background-color: #f2f2f2; color:black" value="Odstrani" type="submit" />
+                <form action="/zaposleni/{{id}}" method="get">
+                    <input class="btn btn-secondary" style="background-color: #f2f2f2; color:black" type="submit" value="Odstrani"></input>
                 </form>
             </td>
         </tr>

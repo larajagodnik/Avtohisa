@@ -52,42 +52,43 @@
 
 <!-- <za_tabele style="width: 300px;"> -->
 
-<form action="/avto_prijavljen/dodaj" method="post" style="width:50%;">
+<form action="/avto_prijavljen/dodaj" method="post" style="width:60%;">
   <div class="form-group row">
-    <label for="Id_avta" class="col-sm-2 col-form-label">Id:</label>
+    <label for="Id_avta" class="col-sm-2 col-form-label"><b>Id:</b></label>
     <div class="col-sm-10">
-      <input name="Id_avta" type="text" class="form-control" required />
+      <input name="Id_avta" type="text" placeholder="Vpišite serijsko številko avta" class="form-control" required />
     </div>
     
-    <label for="barva" class="col-sm-2 col-form-label">Barva:</label> 
+    <label for="barva" class="col-sm-2 col-form-label"><b>Barva:</b></label> 
     <div class="col-sm-10">
-      <input name="barva" type="text" class="form-control" required />
+      <input name="barva" type="text" placeholder="Vpišite barvo avta" class="form-control" required />
     </div>
 
-    <label for="tip" class="col-sm-2 col-form-label">Tip:</label>
+    <label for="tip" class="col-sm-2 col-form-label"><b>Tip:</b></label>
     <div class="col-sm-10">
-      <input name="tip" type="text" class="form-control" required />
+      <input name="tip" type="text" placeholder="Vpišite tip avta" class="form-control" required />
     </div>
     
-    <label for="znamka" class="col-sm-2 col-form-label">Znamka:</label> 
+    <label for="znamka" class="col-sm-2 col-form-label"><b>Znamka:</b></label> 
     <div class="col-sm-10">
-      <input name="znamka" type="text" class="form-control" required />
+      <input name="znamka" type="text" placeholder="Vpišite znamko avta" class="form-control" required />
     </div>
 
-    <label for="cena" class="col-sm-2 col-form-label">Cena:</label>
+    <label for="cena" class="col-sm-2 col-form-label"><b>Cena:</b></label>
     <div class="col-sm-10">
-      <input name="cena" type="number" min="0" step = ".01" lang="en" class="form-control" style="padding:12px 20px; margin:8px 0px;" required/>
+      <input name="cena" type="number" min="0" step = ".01" lang="en" placeholder="Vpišite ceno avta" class="form-control" style="padding:12px 20px; margin:8px 0px;" required/>
     </div> 
 
-    <label for="leto_izdelave" class="col-sm-2 col-form-label">Leto izdelave:</label>
+    <label for="leto_izdelave" class="col-sm-2 col-form-label"><b>Leto izdelave:</b></label>
     <div class="col-sm-10">
-      <input name="leto_izdelave" type="number" min="1970" max="2020" class="form-control" style="padding:12px 20px; margin:8px 0px;" />
+      <input name="leto_izdelave" type="number" min="1970" max="2020" placeholder="Vpišite leto izdelave"cclass="form-control" style="padding:12px 20px; margin:8px 0px;width:50%;" required/>
     </div>
 
-    <label for="novi" class="col-sm-2 col-form-label">Stanje: </label><select style="width:auto; display:inline-block; margin:8px 15px;" class="form-control"id="izberi_starost" name="novi" onchange="odpri_okno()">
-      <option id="Nov" value="true">Nov</option>
-      <option id="Rabljen" value="false">Rabljen</option>
-    </select></td></tr>
+    <label for="novi" class="col-sm-2 col-form-label"><b>Stanje:</b></label>
+      <select style="width:auto; display:inline-block; margin:8px 15px;" class="form-control"id="izberi_starost" name="novi" onchange="odpri_okno()">
+        <option id="Nov" value="true">Nov</option>
+        <option id="Rabljen" value="false">Rabljen</option>
+      </select>
     <div id="hidden_div" class="modal" style="display: none">
       <div class="modal-content">
           <span class="close" onclick="zapri_okno()">&times;</span>

@@ -1,8 +1,8 @@
-<!-- <html>
-<head>
+<html>
+<!-- <head>
         <link rel="stylesheet" type="text/css" href="{{ROOT}}static/stili.css" />
-</head>
-<style>
+</head> -->
+<!-- <style>
   .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
@@ -23,15 +23,17 @@
     padding: 20px;
     border: 1px solid #888;
     width: 30%; /* Could be more or less, depending on screen size */
+    height: 47%;
     font-size: 16px;
   }
 
   /* The Close Button */
   .close {
     color: #aaa;
-    float: right;
+    text-align: right;
     font-size: 28px;
     font-weight: bold;
+    margin-bottom: 10px;
   }
 
   .close:hover,
@@ -42,6 +44,16 @@
   }
   .input{
       margin-bottom: 10px;
+  }
+  .desna_poravnava{
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
+
+  .gumbi_radio{
+    margin-right: 5px;
+    margin-left: 5px;
   }
 </style> -->
 
@@ -76,12 +88,12 @@
 
     <label for="cena" class="col-sm-2 col-form-label"><b>Cena:</b></label>
     <div class="col-sm-10">
-      <input name="cena" type="number" min="0" step = ".01" lang="en" placeholder="Vpišite ceno avta" class="form-control" style="padding:12px 20px; margin:8px 0px;" required/>
+      <input name="cena" type="number" min="0" step = ".01" lang="en" placeholder="Vpišite ceno avta" class="form-control" style="padding:12px 20px; margin:8px 0px; width:50%;" required/>
     </div> 
 
     <label for="leto_izdelave" class="col-sm-2 col-form-label"><b>Leto izdelave:</b></label>
     <div class="col-sm-10">
-      <input name="leto_izdelave" type="number" min="1970" max="2020" placeholder="Vpišite leto izdelave"cclass="form-control" style="padding:12px 20px; margin:8px 0px;width:50%;" required/>
+      <input name="leto_izdelave" type="number" min="1970" max="2020" lang="en" placeholder="Vpišite leto izdelave" class="form-control" style="padding:12px 20px; margin:8px 0px;width:50%;" required/>
     </div>
 
     <label for="novi" class="col-sm-2 col-form-label"><b>Stanje:</b></label>
@@ -89,28 +101,28 @@
         <option id="Nov" value="true">Nov</option>
         <option id="Rabljen" value="false">Rabljen</option>
       </select>
-    <div id="hidden_div" class="modal" style="display: none">
-      <div class="modal-content">
+    <div id="hidden_div" class="modal" style="display: none; ">
+      <div class="modal_content_dodaj_rabljen">
           <span class="close" onclick="zapri_okno()">&times;</span>
-            <h3>Vpišite podatke o rabljenem avtomobilu</h3>
-          <span class="input">Št kilometrov:</span> <input id="st_kilometrov" name="st_kilometrov" type="text" /><br>
-          <span class="input">Ima servis:</span>
-          <table>
-            <tr>
-              <td><input type="radio" name="servis" value="true" />Ima </td>
-              <td><input type="radio" name="servis" value="false" />Nima<br> </td>
-            </tr>
-          </table>
-          <button class="btn btn-secondary" style="background-color: #f2f2f2; color:black" type="button" onclick="zapri_okno()">Shrani</button>
+            <h3 style="font-size : 22px; margin-bottom: 12px">Vpišite podatke o rabljenem avtomobilu</h3>
+          <span class="input"><b>Število kilometrov:</b></span>
+            <input id="st_kilometrov" name="st_kilometrov" type="text" placeholder="Vpišite število prevoženih kilometrov"/><br>
+          <div class="input"><b>Ima servis:</b>
+              <input class="gumbi_radio" type="radio" name="servis" value="true" />Ima 
+              <input class="gumbi_radio" type="radio" name="servis" value="false" />Nima<br>
+          </div>
+          <div class="desna_poravnava">
+            <button class="btn btn-secondary potrdi" style="background-color: #f2f2f2; color:black;" type="button" onclick="zapri_okno()">Shrani</button>
+          </div>
       </div>
   </div>
 </div>
-  <input class="btn btn-secondary" style="background-color: #f2f2f2; color:black" value="Dodaj" type="submit" />
+  <input class="btn btn-secondary potrdi" style="background-color: #f2f2f2; color:black" value="Dodaj" type="submit" />
 </form>
 <br>
 <div id="napaka_za_rabljen" class="alert alert-danger" style="display: none">
     <span style="color: red"> Za dodanje rabljenega avtomobila morate izpolniti vsa polja.
 </div>
 
-<!-- </za_tabele>
-</html> -->
+</za_tabele>
+</html>

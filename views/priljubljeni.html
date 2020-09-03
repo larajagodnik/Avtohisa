@@ -1,4 +1,5 @@
 %rebase('zacetna.html', naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+<script src="/static/avtohisa.js"></script>
 
 <!-- PRILJUBLJENI-->
 <table class="table table-striped zgornja_meja_tabele" cellpadding="0" cellspacing="2" border="1">
@@ -21,7 +22,16 @@
             <td>{{cena}}</td>
             <td>
                 <form action="/avto/priljubljeni/{{id}}">
-                    <input class="btn btn-secondary" style="background-color: #f2f2f2; color:black" type="submit" value="Odstrani"></input>
+                    <button class="btn btn-secondary" style="background-color: #f2f2f2; color:black" type="button" onclick="odpri_okno_brisi(this)" data-id="{{id}}">Odstrani</button>
+                    <div id="hidden_div1{{id}}" class="modal" style="display: none">
+                        <div class="modal_content_odstrani">
+                            <span class="close" onclick="zapri_okno_brisi(this)" data-id="{{id}}">&times;</span>
+                              <p class="pojavna_okna_besedilo">Ali ste prepričani da želite iz priljubljenih avtomobilov odstraniti avto s serijsko številko: <b>{{id}}</b></p>                              
+                            <div class="center_poravnava">
+                                <input class="btn btn-secondary potrdi" style="background-color: #f2f2f2; color:black" type="submit" value="Potrdi"></input>
+                            </div>
+                        </div>
+                      </div>
                 </form>
             </td>
         </tr>

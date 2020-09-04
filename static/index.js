@@ -1,7 +1,7 @@
 'use strict'    
 
 function filtertabela(el){
-
+    let count_top = 1;
     let stolpec  = [el.dataset.stolpec];
     var vrednost = el.options[el.selectedIndex].value;
     let tabela = document.getElementById('tabela_avtov');
@@ -19,7 +19,7 @@ function filtertabela(el){
       [...tabela.rows].forEach(vrstica => {         
         let vrednost_v_tabeli = vrstica.cells[count].innerText
         
-        if(vrednost != 'null'){
+        if(vrednost != 'null' && count_top != 1){
         
           if(vrednost_v_tabeli.toLocaleLowerCase().indexOf(vrednost.toLocaleLowerCase()) >= 0) {
           
@@ -30,7 +30,9 @@ function filtertabela(el){
             vrstica.style.display = 'none'
           }
         }
+        count_top++;
       })
+      count_top = 1;
       count--
     })
     

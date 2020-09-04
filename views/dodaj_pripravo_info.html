@@ -1,6 +1,6 @@
 %rebase('zacetna.html', naslov='Podatki o prpravi', uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
-<form action="/avto_prijavljen/dodaj_pripravo" method="post" style="width:60%;">
+<form action="/avto_prijavljen/dodaj_pripravo" style="width:60%;" method="post" >
 <input type="text" name="id_avta" hidden value={{id}}>
 
 <h4>Vnesite podatke o pripravi za avto {{id}}</h4>
@@ -8,7 +8,7 @@
 <div class="form-group row">
     <label for="datum" class="col-sm-2 col-form-label"><b>Datum:</b></label>
     <div class="col-sm-10">
-      <input name="datum" type="date" class="form-control" style="margin:8px 15px; width:170px" required />
+      <input id="datum" name="datum" type="date" class="form-control" style="margin:8px 15px; width:170px"  required />
     </div>
         
     <label for="serviser" class="col-sm-2 col-form-label"><b>Serviser:</b></label>
@@ -41,3 +41,5 @@
         </tr>
     %end
 </table>
+
+<script src="/static/avtohisa.js"></script>

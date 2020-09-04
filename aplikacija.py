@@ -201,9 +201,12 @@ def brisi_avto():
 #
 @post('/avto_prijavljen/dodaj_servis_info/<id>')
 def dodaj_servis_info(id):
+    cur.execute("SELECT datum FROM servis WHERE id_avto =  %s ORDER BY datum desc LIMIT 1", (id, ))
+    datum_zadnjega_servisa = cur.fetchall()
+    print(datum_zadnjega_servisa)
+     # spodnaj izberes vse (*), ko bomo dali ven tip zaposlenega
     cur.execute("SELECT id_zaposlenega, ime FROM zaposleni WHERE tip_zaposlenega LIKE 'Serviser'")
     zaposleni = cur.fetchall()
-     # spodnaj izberes vse (*), ko bomo dali ven tip zaposlenega
     cur.execute("SELECT id, id_avto, datum, tip_servisa, id_zaposlenega FROM servis")
 
     uporabnik = request.get_cookie('account', secret=skrivnost)
@@ -211,7 +214,7 @@ def dodaj_servis_info(id):
     registracija = request.get_cookie('registracija', secret=skrivnost)
     status = request.get_cookie('dovoljenje', secret=skrivnost) 
 
-    return rtemplate('dodaj_servis_info.html', id=id, servis=cur, zaposleni=zaposleni,
+    return rtemplate('dodaj_servis_info.html', id=id, servis=cur, zaposleni=zaposleni,datum_zadnjega_servisa=datum_zadnjega_servisa,
     uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
 @post('/avto_prijavljen/dodaj_servis')

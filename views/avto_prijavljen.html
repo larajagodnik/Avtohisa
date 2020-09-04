@@ -41,7 +41,7 @@
       <th>Cena</th>
       <th>Leto izdelave</th>
       <th>Ali je nov</th>
-      <th>Datum priprave/servisa</th>
+      <th>Datum zadnje priprave/servisa</th>
       <th>Prodaj</th>
       <th></th>
       
@@ -59,22 +59,21 @@
           <td>{{pripravljen}}{{servisiran}}</td>
           <td>
 
-            %if pripravljen == False:
-              Ni še pripravljen
+            %if novi == True and pripravljen == None:
+                Ni še pripravljen
             %else:
-
               %if je_prodan == None:
-              <form action="/avto_prijavljen/prodaja/{{id}}" method="post">
-                <button class="btn btn-secondary" style="background-color: #f2f2f2; color:black" type="button" onclick="odpri_okno_brisi(this)" data-id="{{id}}">Prodaj</button>
-                <div id="hidden_div1{{id}}" class="modal" style="display: none">
-                  <div class="modal_content_odstrani">
-                      <span class="close" onclick="zapri_okno_brisi(this)" data-id="{{id}}">&times;</span>
-                      <p class="pojavna_okna_besedilo">Ali ste prepričani da želite prodati avto s serijsko številko <b>{{id}}</b></p>
-                      <div class="center_poravnava">
-                        <input  class="btn btn-secondary" style="background-color: #f2f2f2; color:black" type="submit" value="Prodaj"></input>
-                      </div>
-                </div>
-              </form>
+                <form action="/avto_prijavljen/prodaja/{{id}}" method="post">
+                  <button class="btn btn-secondary" style="background-color: #f2f2f2; color:black" type="button" onclick="odpri_okno_brisi(this)" data-id="{{id}}">Prodaj</button>
+                  <div id="hidden_div1{{id}}" class="modal" style="display: none">
+                    <div class="modal_content_odstrani">
+                        <span class="close" onclick="zapri_okno_brisi(this)" data-id="{{id}}">&times;</span>
+                        <p class="pojavna_okna_besedilo">Ali ste prepričani da želite prodati avto s serijsko številko <b>{{id}}</b></p>
+                        <div class="center_poravnava">
+                          <input  class="btn btn-secondary" style="background-color: #f2f2f2; color:black" type="submit" value="Prodaj"></input>
+                        </div>
+                  </div>
+                </form>
               %else:
               <b> Prodan </b>
               %end
@@ -88,7 +87,9 @@
                   <input class="btn btn-secondary" style="background-color: #f2f2f2; color:black" value="Dodaj pripravo" type="submit" />
                 </form>
               %else:
-              <b> Že pripravljen </b>
+              <form action="/avto_prijavljen/dodaj_servis_info/{{id}}" method="post">
+                <input class="btn btn-secondary" style="background-color: #f2f2f2; color:black" value="Dodaj servis" type="submit" />
+              </form>
               %end
             %else:
               <form action="/avto_prijavljen/dodaj_servis_info/{{id}}" method="post">

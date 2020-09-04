@@ -23,7 +23,9 @@ table caption {
   font-size: 14px;
 }
 
-p {color: blue;}
+p {
+  color: blue;
+}
 
 p.pojavna_okna_besedilo {
   color: black;

@@ -1,28 +1,39 @@
 %rebase('zacetna.html', naslov='Podatki servisa', uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
-<form action="/avto_prijavljen/dodaj_servis" method="post">
-    <input type="text" name="id_avta" hidden value={{id}}>
-    <p>Datum:</span> <input name="datum" type="date" required /></p>
-    <p>Tip servisa:
-        <select id="izberi_tip_servisa" name="tip_servisa">
-            <option id="mali" value="mali">Mali servis</option>
-            <option id="večji" value="vecji">Večji servis</option>
-            <option id="velik" value="velik">Velik servis</option>
-        </select>
-    </p>
-    <p>Prodajalec:
-        <select name="Serviser" required>
-            <option value="null" selected>Izberite serviserja</option>
-            %for z in zaposleni:
-                <option value="{{z[0]}}">{{z[1]}}</option>   
-            %end
-        </select>
-    </p>
+<form action="/avto_prijavljen/dodaj_servis" method="post" style="width:60%;">
+<input type="text" name="id_avta" hidden value={{id}}>
 
-    <input type="submit" value="Shrani"></input>
+<h4>Vnesite podatke o servisu za avto {{id}}</h4>
+
+<div class="form-group row">
+    <label for="datum" class="col-sm-2 col-form-label"><b>Datum:</b></label>
+    <div class="col-sm-10">
+      <input name="datum" type="date" class="form-control" style="margin:8px 15px; width:170px" required />
+    </div>
+
+    <label for="tip_servisa" class="col-sm-2 col-form-label"><b>Tip servisa:</b></label>
+    <div class="col-sm-10">
+    <select style="width:auto; display:inline-block; margin:8px 15px;" class="form-control"id="tip_servisa">
+        <option id="mali" value="mali">Mali servis</option>
+        <option id="večji" value="vecji">Večji servis</option>
+        <option id="velik" value="velik">Velik servis</option>
+    </select>
+    </div>
+
+    <label for="serviser" class="col-sm-2 col-form-label"><b>Serviser:</b></label>
+    <div class="col-sm-10">
+    <select name="Serviser" style="width:auto; display:inline-block; margin:8px 15px;" class="form-control" id="izberi_serviserja" required>
+        <option value="" selected>Izberite serviserja</option>
+        %for z in zaposleni:
+            <option value="{{z[0]}}">{{z[1]}}</option>   
+        %end
+    </select>
+    </div>
+</div>
+<input class="btn btn-secondary potrdi" style="background-color: #f2f2f2; color:black" value="Shrani" type="submit"></input>
 </form>
 
-<table cellpadding="0" cellspacing="2" border="1">
+<table class="table table-striped zgornja_meja_tabele" cellpadding="0" cellspacing="2" border="1">
     <tr>
         <th>Id</th>
         <th>Id avta</th>

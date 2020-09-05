@@ -6,7 +6,6 @@
         <option value="null" selected>Vsa leta</option>
         %for leto_izdelave in leta:
             <option value="{{leto_izdelave[0]}}">{{leto_izdelave[0]}}</option>
-            
         %end
     </select>  
 
@@ -29,6 +28,12 @@
         %for z in znamke:
             <option value="{{z[0]}}">{{z[0]}}</option>   
         %end
+    </select>
+
+    <select style="width:auto; display:inline-block;" class="selecti_za_tabelo form-control" id="starost" onchange="filtertabela(this)" data-stolpec="5">
+        <option value="null" selected>Vse starosti</option>
+            <option value="DA">Nov</option>   
+            <option value="NE">Rabljen</option>  
     </select>
 </div>
 

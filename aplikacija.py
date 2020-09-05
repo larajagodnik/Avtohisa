@@ -199,6 +199,26 @@ def brisi_avto():
 #
 # Naceloma dela, preveri s SERIAL ce dela samodejno id-je
 #
+@get('/zaposleni')
+def zaposleni():
+    cur.execute("""
+        SELECT * FROM zaposleni
+        ORDER BY zaposleni.ime""")
+    uporabnik = request.get_cookie('account', secret=skrivnost)
+    registracija = request.get_cookie('registracija', secret=skrivnost)
+    napaka = request.get_cookie('napaka', secret=skrivnost)
+    status = request.get_cookie('dovoljenje', secret=skrivnost)
+    return rtemplate('zaposleni.html', zaposleni=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+
+@get('/servis')
+def servis():
+    cur.execute("SELECT * FROM servis")
+    uporabnik = request.get_cookie('account', secret=skrivnost)
+    registracija = request.get_cookie('registracija', secret=skrivnost)
+    napaka = request.get_cookie('napaka', secret=skrivnost)
+    status = request.get_cookie('dovoljenje', secret=skrivnost)
+    return rtemplate('servis.html', servis=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+
 @post('/avto_prijavljen/dodaj_servis_info/<id>')
 def dodaj_servis_info(id):
     cur.execute("SELECT datum FROM servis WHERE id_avto =  %s ORDER BY datum desc LIMIT 1", (id, ))
@@ -239,6 +259,15 @@ def dodaj_servis():
      
     redirect('/avto_prijavljen')
    
+@get('/priprava')
+def priprava():
+    cur.execute("SELECT * FROM priprava")
+    uporabnik = request.get_cookie('account', secret=skrivnost)
+    registracija = request.get_cookie('registracija', secret=skrivnost)
+    napaka = request.get_cookie('napaka', secret=skrivnost)
+    status = request.get_cookie('dovoljenje', secret=skrivnost)
+    return rtemplate('priprava.html', priprava=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+
 @post('/avto_prijavljen/dodaj_pripravo_info/<id>')
 def dodaj_pripravo_info(id):
     cur.execute("SELECT id_zaposlenega, ime FROM zaposleni WHERE tip_zaposlenega LIKE 'Serviser'")

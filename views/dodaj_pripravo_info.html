@@ -24,22 +24,4 @@
 <input class="btn btn-secondary potrdi" style="background-color: #f2f2f2; color:black" value="Shrani" type="submit"></input>
 </form>
 
-<table class="table table-striped zgornja_meja_tabele" cellpadding="0" cellspacing="2" border="1">
-    <tr>
-        <th>Id</th>
-        <th>Id avta</th>
-        <th>Datum</th>
-        <th>Id zaposlenega</th>
-    </tr>
-    %for (id, id_avta, datum, id_zaposlenega) in priprava:
-        <tr>
-            <td>{{id}}</td>
-            <td>{{id_avta}}</td>
-            <td>{{datum}}</td>
-            <td>{{id_zaposlenega}}</td>
-
-        </tr>
-    %end
-</table>
-
 <script src="/static/avtohisa.js"></script>

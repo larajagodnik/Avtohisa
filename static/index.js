@@ -12,8 +12,9 @@ function filtertabela(el){
     var barva_el = document.getElementById('barve');
     var tip_el = document.getElementById('tipi');
     var znamka_el = document.getElementById('znamka');
-    var izbrane_vrednosti = [ leto_el.options[leto_el.selectedIndex].value, znamka_el.options[znamka_el.selectedIndex].value,  tip_el.options[tip_el.selectedIndex].value, barva_el.options[barva_el.selectedIndex].value];
-    var count = 4;
+    var starost_el = document.getElementById('starost');
+    var izbrane_vrednosti = [starost_el.options[starost_el.selectedIndex].value, leto_el.options[leto_el.selectedIndex].value, znamka_el.options[znamka_el.selectedIndex].value,  tip_el.options[tip_el.selectedIndex].value, barva_el.options[barva_el.selectedIndex].value];
+    var count = 5;
    
     izbrane_vrednosti.forEach(vrednost => {
       [...tabela.rows].forEach(vrstica => {         

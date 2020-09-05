@@ -1,10 +1,10 @@
 <html>
 <head>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  
   <!-- Knljižnica za ikono home button -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  
 
-  
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
@@ -21,43 +21,29 @@
 <script src="/static/index.js"></script>
 
 <body>
+
+<!-- opozorilo o neuspešni registraciji -->
 %if napaka != None:
   %if napaka == 'Registracija upešna!':
-
   <div id="uspesna_prijava" class="alert alert-success" role="alert" >
     {{napaka}}
   </div>
-
-    <!-- <div style="background-color: green; padding: 10px;"><p style="color: white; text-align: center; font-size: 20px;">{{napaka}}</p></div> -->
   %else:
   <div id="neuspesna_prijava" class="alert alert-danger" role="alert">
     {{napaka}}
   </div>
-    <!-- <div style="background-color: red; padding: 10px;"><p style="color: white; text-align: center; font-size: 20px;">{{napaka}}</p></div> -->
   %end
 %end
 
 <section>
-    <!--
-    <navigacija>
-      <ul>
-        <li><div><b><a href="{{ROOT}}avto/vsi">Seznam vseh avtov</a></b></div></li>
-        <li><div><b><a href="{{ROOT}}avto/novi">Seznam novih avtov</a></b></div></li>
-        <li><div><b><a href="{{ROOT}}avto/rabljeni">Seznam rabljenih avtov</a></b></div></li>
-        %if uporabnik:
-        <li><div><b><a href="{{ROOT}}avto/priljubljeni">Seznam priljubljenih avtov</a></b></div></li>
-        %end
-      </ul>
-    </navigacija>
-     -->
-     
+
     <za_tabele>
       <h2>{{naslov}}</h2>
-      <!--<p>Nekak spravmo tabelo sem za avte :) Kao nekaj na tako sceno.</p>
-      <iframe id="povezava" src="{{ROOT}}avto/vsi" width="100%" height="100%"></iframe> -->
       {{!base}}
     </za_tabele>
     <navigacija1>
+
+      <!-- če še nisi prijavljen in nisi registriran je v navigaciji moznost prijave in gumb za registracijo -->
       %if uporabnik == None:
         %if registracija == None:
           <form action="/prijava" method="post"  id="prijava">
@@ -71,6 +57,8 @@
               <a class="btn btn-info" style="background-color: #24437b;" href="{{ROOT}}registracija">Registriraj se</a>
             </div>
           </form>
+
+        <!-- ce je izbrana moznost registracije, se pojavi forma za registracijo in gumb za prijavo -->
         %else:
           <form action="/registracija" method="post"  id="registracija">
             <div>
@@ -94,7 +82,10 @@
             </div>
           </form>
         %end
+
+      <!-- vprimeru ko smo prijavljeni -->
       %else:
+        <!-- lastnik vidi vse -->
         %if status == 1:
           <ul>
             <li><div><b><a href="{{ROOT}}">
@@ -102,16 +93,17 @@
             </a></b></div></li>
             
             <li><div><b><a href="{{ROOT}}avto_prijavljen">Upravljaj avte</a></b></div></li>
-            <!-- <ul style="margin-left: 20px; padding:0px 0px;">     za zamikanje-->
-              <li><div><b><a href="{{ROOT}}avto_prijavljen/dodaj">Dodaj avto</a></b></div></li>
-            <!-- </ul> -->
+            <li><div><b><a href="{{ROOT}}avto_prijavljen/dodaj">Dodaj avto</a></b></div></li>
             <li><div><b><a href="{{ROOT}}zaposleni">Poglej zaposlene</a></b></div></li>
             <li><div><b><a href="{{ROOT}}zaposleni/dodaj">Dodaj zaposlenega</a></b></div></li>
             <li><div><b><a href="{{ROOT}}servis">Podatki o servisu</a></b></div></li>
             <li><div><b><a href="{{ROOT}}priprava">Podatki o pripravi</a></b></div></li>
-            <li>Status stopnje: {{status}}</li> <!-- ta zadeva se bo zbrisala pol!-->
+            <li><div><b><a href="{{ROOT}}prodaja_tabela">Podani avtomobili</a></b></div></li>
           </ul>
         %end
+
+        <!-- zaposleni nima možnosti dodajati avta in pogledati ali dodati zaposlenih;
+          lahko upravlja avte in gleda podatke o servisu/pripravi -->
         %if status == 2:
           <ul>
             <li><div><b><a href="{{ROOT}}">
@@ -121,8 +113,11 @@
             <li><div><b><a href="{{ROOT}}avto_prijavljen">Upravljaj avte</a></b></div></li>
             <li><div><b><a href="{{ROOT}}servis">Podatki o servisu</a></b></div></li>
             <li><div><b><a href="{{ROOT}}priprava">Podatki o pripravi</a></b></div></li>
+            <li><div><b><a href="{{ROOT}}prodaja_tabela">Podani avtomobili</a></b></div></li>
           </ul>
         %end
+
+        <!-- registrirani uporabnik ina možnost dodajati med priljubljene in pogledati svoje priljubljene avtomobile -->
         %if status == 3:
         <ul>
           <li><div><b><a href="{{ROOT}}">
@@ -137,7 +132,7 @@
 
 </section>
 
-
+<!-- če si prijavljen te podzdravi in ponudi moznost odjave; sicer pozove da se prijaviš -->
 <footer class="noga">
   %if uporabnik:
     <p>Pozdravljeni {{uporabnik}}!</p>
@@ -146,29 +141,6 @@
     <p>Dobrodošli na naši strani, prosimo prijavite se!</p>
   %end
 </footer>
-
-<!--<script>
-  function Nastavi_povezavo() {
-    document.getElementById("naslov").innerHTML = "Vsi avtomobili"
-    document.getElementById("povezava").src = "{{ROOT}}avto/vsi";
-  }
-  function Nastavi_povezavo_novi() {
-    document.getElementById("naslov").innerHTML = "Novi avtomobili"
-    document.getElementById("povezava").src = "{{ROOT}}avto/novi";
-  }
-  function Nastavi_povezavo_rabljeni() {
-    document.getElementById("naslov").innerHTML = "Rabljeni avtomobili"
-    document.getElementById("povezava").src = "{{ROOT}}avto/rabljeni";
-  }
-
-</script> -->
-
-<!-- <script>
-  function myFunction() {
-  var myWindow = window.open("{{ROOT}}avto_prijavljen/dodaj", "", 
-  "top=200,left=500,width=370px,height=500,height=450");
-}
-</script> -->
 
 </body>
 </html>

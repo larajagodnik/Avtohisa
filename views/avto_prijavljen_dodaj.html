@@ -1,64 +1,7 @@
 
-<!-- <head>
-        <link rel="stylesheet" type="text/css" href="{{ROOT}}static/stili.css" />
-</head> -->
-<!-- <style>
-  .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-  }
-
-  /* Modal Content/Box */
-  .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 30%; /* Could be more or less, depending on screen size */
-    height: 47%;
-    font-size: 16px;
-  }
-
-  /* The Close Button */
-  .close {
-    color: #aaa;
-    text-align: right;
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
-  .input{
-      margin-bottom: 10px;
-  }
-  .desna_poravnava{
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
-  }
-
-  .gumbi_radio{
-    margin-right: 5px;
-    margin-left: 5px;
-  }
-</style> -->
-
 %rebase('zacetna.html', naslov='Dodaj nov avto', uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
+<!-- forma za dodajanje novega avta -->
 
 <script src="/static/avtohisa.js"></script>
 
@@ -94,11 +37,14 @@
       <input name="leto_izdelave" type="number" min="1970" max="2020" lang="en" placeholder="Vpišite leto izdelave" class="form-control" style="padding:12px 20px; margin:8px 0px;width:50%;" required/>
     </div>
 
-    <label for="novi" class="col-sm-2 col-form-label"><b>Stanje:</b></label>
+    <label for="novi" class="col-sm-2 col-form-label"><b>Starost:</b></label>
+    <!-- ko spremenis iz novega na rabljenega, se odpre okno za vpis podatkov o rabljenem avtu, če okno zapres gre vrednost nazaj na nov -->
       <select style="width:auto; display:inline-block; margin:8px 15px;" class="form-control"id="izberi_starost" name="novi" onchange="odpri_okno()">
         <option id="Nov" value="true">Nov</option>
         <option id="Rabljen" value="false">Rabljen</option>
       </select>
+
+    <!-- okno za podatke o rabljenem avtomobilu -->
     <div id="hidden_div" class="modal" style="display: none; ">
       <div class="modal_content_dodaj_rabljen">
           <span class="close" onclick="zapri_okno()">&times;</span>
@@ -114,11 +60,13 @@
           </div>
       </div>
   </div>
+
 </div>
   <input class="btn btn-secondary potrdi" style="background-color: #f2f2f2; color:black" value="Dodaj" type="submit" />
 </form>
 <br>
 
+<!-- sporocilo, ko ne vpises vseh podakov o rabljenem avtomobilu -->
 <div id="napaka_za_rabljen" class="alert alert-danger" style="display: none"  role="alert">
   Za dodanje rabljenega avtomobila morate izpolniti vsa polja.
 </div>

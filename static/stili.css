@@ -1,9 +1,11 @@
+/* za ime avtohise */
 h2 {
   font-size: 40px;
   font-weight: bold;
   text-align: left;
 }
 
+/* naslovi tabel, form */
 h1 {
   font-size: 60px;
   padding: 10px;
@@ -36,20 +38,24 @@ p {
   font-weight: bold;
 }
 
+/* stil besedila v pojavnih oknih ali ste prepricani... */
 p.pojavna_okna_besedilo {
   color: black;
   font-size: 22px;
   margin-top: 8%;
 }
 
+/* tekst v navigaciji */
 li a{
   text-decoration: none; 
   color:blue;
 }
 
+/* padding v navigaciji */
 li div{
   padding-top: 20px;
 }
+
 input[type=text], input[type=password] {
   width: 100%;
   padding: 12px 20px;
@@ -58,6 +64,8 @@ input[type=text], input[type=password] {
   border: 1px solid #ccc;
   box-sizing: border-box;
 }
+
+/* stil za sliko */
 img {
   position:inherit;
   margin-left: auto;
@@ -65,33 +73,10 @@ img {
   width: 75%;
   z-index: -1;
 }
-/* .header_r {
-  padding-top: 10px;
-  padding-bottom: 0px;
-  text-align:center;
-}
-.header_r h1{
-  background-color: lightblue;
-  color: red;
-  padding: 1em;
-} */
-
-navigacija {
-  float: left;
-  width: 20%;
-  /*height: 3000px; /* only for demonstration, should be removed */
-  background: #ccc;
-  padding: 20px;
-}
-navigacija ul {
-  list-style-type: none;
-  padding: 20%;
-}
 
 navigacija1 {
   float: right;
   width: 20%;
-  /*height: 3000px; /* only for demonstration, should be removed */
   background: #ccc;
   padding: 20px;
   margin-top: 56px;
@@ -106,10 +91,6 @@ za_tabele {
   float: left;
   width: 76%;
   padding-left: 20px;
-  /*
-  /* background-color: #f1f1f1; */
-  /* height: 300px; /* only for demonstration, should be removed */
-  /*color: red; */
   overflow-x: auto;
 } 
 
@@ -117,6 +98,7 @@ za_tabele {
   width: 98%;
   margin-top: 10px;
 }
+
 .selecti_za_tabelo{
   width: 130px;
   height: 24px;
@@ -174,14 +156,6 @@ section:after {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
-/* 
-.header {
-  overflow: hidden;
-  background-color: #f1f1f1;
-  padding: 20px 10px;
-  margin-bottom: 5px;
-  height: 40px;
-} */
 
 .header a {
   float: left;
@@ -225,19 +199,17 @@ section:after {
   }
 }
 
-.oblivanje{
-  background-color: #73b4da;
-  height: 40px;
-}
-
+/* vsi selecti imajo margin na dnu */
 .selecti_div{
   margin-bottom: 5px;
 }
 
+/* v original tabeli ni bilo zgornje obrobe zato smo jo dodali na vsak th*/
 table.zgornja_meja_tabele th {
   border-top:1px solid #000;
 }
 
+/* pojavno okno stil */
 .modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
@@ -251,6 +223,7 @@ table.zgornja_meja_tabele th {
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
+/* znotraj pojavnega okna  */
 /* Modal Content/Box */
 .modal_content_odstrani {
   background-color: #fefefe;
@@ -261,7 +234,7 @@ table.zgornja_meja_tabele th {
   height: 30%;
   font-size: 16px;
 }
-
+/* znotraj pojavnega okna za rabljen avtomobil */
 /* Modal Content/Box */
 .modal_content_dodaj_rabljen {
   background-color: #fefefe;
@@ -288,10 +261,13 @@ table.zgornja_meja_tabele th {
   text-decoration: none;
   cursor: pointer;
 }
+
+
 input.potrdi{
     margin-bottom: 10px;
     width: 70px;
 }
+
 .center_poravnava{
   display: flex;
   align-items: center;

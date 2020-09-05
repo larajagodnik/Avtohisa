@@ -1,37 +1,7 @@
 %rebase('zacetna.html', naslov='Tabela avtov', uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
-
-
 <script src="/static/avtohisa.js"></script>
 
-<!-- <form action="/avto_prijavljen/dodaj" method="post">
-  <span>Id:</span> <input name="Id_avta" type="text" required />
-  <span>Barva:</span> <input name="barva" type="text" required />
-  <span>Tip:</span> <input name="tip" type="text" required />
-  <span>Znamka:</span> <input name="znamka" type="text" required />
-  <span>Cena:</span> <input name="cena" type="number" min="0" step = ".01" lang="en" required/>
-  <span>Leto izdelave:</span> <input name="leto_izdelave" type="number" min="1970" max="2020" />
-  <span>Stanje:<select id="izberi_starost" name="novi" onchange="odpri_okno()">
-    <option id="Nov" value="true">Nov</option>
-    <option id="Rabljen" value="false">Rabljen</option>
-  </select>
-  <div id="hidden_div" class="modal" style="display: none">
-    <div class="modal-content">
-        <span class="close" onclick="zapri_okno()">&times;</span>
-          <h3>Vpišite podatke o rabljenem avtomobilu</h3>
-        <span class="input">Št kilometrov:</span> <input id="st_kilometrov" name="st_kilometrov" type="text" /><br>
-        <span class="input">Ima servis:</span>
-          <input type="radio" name="servis" value="true" />Ima
-          <input type="radio" name="servis" value="false" />Nima<br>
-        <button type="button" onclick="zapri_okno()">Shrani</button>
-    </div>
-</div>
-  <input value="Dodaj" type="submit" />
-</form>
-<br>
-<div id="napaka_za_rabljen" class="alert alert-danger" style="display: none">
-    <span style="color: red"> Za dodanje rabljenega avtomobila morate izpolniti vsa polja.
-</div> -->
 <table class="table table-striped zgornja_meja_tabele" cellpadding="0" cellspacing="2" border="1">
   <tr>
       <th>Id</th>
@@ -59,10 +29,12 @@
           <td>{{pripravljen}}{{servisiran}}</td>
           <td>
 
+            <!-- če je avto nov in še ni pripravljen ga ne morejo prodati -->
             %if novi == True and pripravljen == None:
                 Ni še pripravljen
             %else:
               %if je_prodan == None:
+                <!-- če avto še ni prodan se pojavi okno ali res zelijo prodati -->
                 <form action="/avto_prijavljen/prodaja/{{id}}" method="post">
                   <button class="btn btn-secondary" style="background-color: #f2f2f2; color:black" type="button" onclick="odpri_okno_brisi(this)" data-id="{{id}}">Prodaj</button>
                   <div id="hidden_div1{{id}}" class="modal" style="display: none">
@@ -74,6 +46,7 @@
                         </div>
                   </div>
                 </form>
+              <!-- če je prodan ga ne morejo prodati še enkrat -->
               %else:
               <b> Prodan </b>
               %end
@@ -81,6 +54,7 @@
           </td>   
           
           <td>
+            <!-- če je avto nov mu lahko dodamo pripravo, kasneje mu lahko dodamo servis; rabljenemu avtu lahko dodamo servis -->
             %if novi == True:
               %if pripravljen == None:
                 <form action="/avto_prijavljen/dodaj_pripravo_info/{{id}}" method="post">
@@ -103,39 +77,4 @@
       </tr>
   %end
 </table>
-<!-- <za_tabele style="width: 300px;">
-  <form action="/avto_prijavljen/dodaj" method="post">
-    
-    <label for="Id_avta">Id:</label> <input name="Id_avta" type="text" required />
-    <label for="barva">Barva:</label> <input name="barva" type="text" required />
-    <label for="tip">Tip:</label> <input name="tip" type="text" required />
-    <label for="znamka">Znamka:</label> <input name="znamka" type="text" required />
-    <table style="color: red;">
-      <tr><td><label for="cena">Cena:</label> <input name="cena" type="number" min="0" step = ".01" lang="en" required/></td></tr>
-      <tr><td><label for="leto_izdelave">Leto izdelave:</label> <input name="leto_izdelave" type="number" min="1970" max="2020" /></td></tr>
-      <tr><td><label for="novi">Stanje: </label><select id="izberi_starost" name="novi" onchange="odpri_okno()">
-      <option id="Nov" value="true">Nov</option>
-      <option id="Rabljen" value="false">Rabljen</option>
-    </select></td></tr></table>
-    <div id="hidden_div" class="modal" style="display: none">
-      <div class="modal-content">
-          <span class="close" onclick="zapri_okno()">&times;</span>
-            <h3>Vpišite podatke o rabljenem avtomobilu</h3>
-          <span class="input">Št kilometrov:</span> <input id="st_kilometrov" name="st_kilometrov" type="text" /><br>
-          <span class="input">Ima servis:</span>
-          <table>
-            <tr>
-              <td><input type="radio" name="servis" value="true" />Ima </td>
-              <td><input type="radio" name="servis" value="false" />Nima<br> </td>
-            </tr>
-          </table>
-          <button type="button" onclick="zapri_okno()">Shrani</button>
-      </div>
-  </div>
-    <input value="Dodaj" type="submit" />
-  </form>
-  <br>
-  <div id="napaka_za_rabljen" class="alert alert-danger" style="display: none">
-      <span style="color: red"> Za dodanje rabljenega avtomobila morate izpolniti vsa polja.
-  </div>
-  </za_tabele> -->
+

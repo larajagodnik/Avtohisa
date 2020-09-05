@@ -1,5 +1,7 @@
 %rebase('zacetna.html', naslov='Podatki servisa', uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
+<!-- forma za dodajanje podatkov o servisu -->
+
 <form action="/avto_prijavljen/dodaj_servis" style="width:60%;" method="post">
 <input type="text" name="id_avta" hidden value={{id}}>
 
@@ -9,6 +11,7 @@
     <label for="datum" class="col-sm-2 col-form-label"><b>Datum:</b></label>
   
     <div class="col-sm-10">
+        <!-- če avto že ima servis ali pripravo, datum naslednjega servisa omejimo z min= datum prejsnjega servisa -->
         %if datum_zadnjega_servisa:
             %for datum in datum_zadnjega_servisa:
                 <input id="datum" name="datum" type="date" class="form-control" style="margin:8px 15px; width:170px" min="{{datum[0]}}" required />

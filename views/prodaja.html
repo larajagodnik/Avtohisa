@@ -1,5 +1,7 @@
 %rebase('zacetna.html', naslov='Tabela prodanih avtov', uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
+<!-- forma za prodajo avta -->
+
 <form action="/avto_prijavljen/brisi"  style="width:60%;" method="post">
 <input type="text" name="id_avta" hidden value={{id}}>
 
@@ -32,23 +34,4 @@
 <input class="btn btn-secondary potrdi" style="background-color: #f2f2f2; color:black" value="Shrani" type="submit"></input>
 </form>
 
-<h3>Prodani avti</h3>
-<table class="table table-striped zgornja_meja_tabele" cellpadding="0" cellspacing="2" border="1">
-    <tr>
-        <th>Id</th>
-        <th>Id avta</th>
-        <th>Datum</th>
-        <th>Nacin placila</th>
-        <th>Id zaposlenega</th>
-    </tr>
-    %for (id,id_avta, datum, nacin_placila, id_zaposlenega) in prodaja:
-        <tr>
-            <td>{{id}}</td>
-            <td>{{id_avta}}</td>
-            <td>{{datum}}</td>
-            <td>{{nacin_placila}}</td>
-            <td>{{id_zaposlenega}}</td>
-
-        </tr>
-    %end
-</table>
+<script src="/static/avtohisa.js"></script>

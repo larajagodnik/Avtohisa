@@ -1,6 +1,8 @@
 %rebase('zacetna.html', naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
 <script src="/static/index.js"></script>
+
+<!-- selecti za tabelo vseh avtov za uporabnika -->
 <div class="selecti_div">
     <select style="width:auto; display:inline-block;" class="selecti_za_tabelo form-control" id="leto_izdelave" onchange="filtertabela(this)" data-stolpec="4">
         <option value="null" selected>Vsa leta</option>
@@ -63,6 +65,8 @@
                 <td>NE</td>
             %end
             <td>{{cena}}</td>
+
+            <!-- le ce ima oseba status 3 (registriran uporabnik) ima moznost dodaje avta med priljubljene -->
             %if status == 3:
                 %if je_priljubljen == None:
                     <td>

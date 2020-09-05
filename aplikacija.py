@@ -203,8 +203,7 @@ def brisi_avto():
 def dodaj_servis_info(id):
     cur.execute("SELECT datum FROM servis WHERE id_avto =  %s ORDER BY datum desc LIMIT 1", (id, ))
     datum_zadnjega_servisa = cur.fetchall()
-    print(datum_zadnjega_servisa)
-     # spodnaj izberes vse (*), ko bomo dali ven tip zaposlenega
+    # spodnaj izberes vse (*), ko bomo dali ven tip zaposlenega
     cur.execute("SELECT id_zaposlenega, ime FROM zaposleni WHERE tip_zaposlenega LIKE 'Serviser'")
     zaposleni = cur.fetchall()
     cur.execute("SELECT id, id_avto, datum, tip_servisa, id_zaposlenega FROM servis")

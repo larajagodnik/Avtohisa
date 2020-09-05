@@ -424,7 +424,7 @@ def registriraj():
     if geslo1 == geslo2:
         preveri = preveri_za_uporabnika(username)
         if preveri:
-            dodaj_uporabnika(username, geslo1, 1)
+            dodaj_uporabnika(username, geslo1, 3)
             response.delete_cookie('registracija')
             napaka = 'Registracija upešna!'
             response.set_cookie('napaka', napaka, secret=skrivnost)
@@ -444,12 +444,12 @@ def prijava_post():
     password = request.forms.password
     print(username, password)
     preverjam = preveri_uporabnika(username, password)
-    #if preverjam:
-    response.set_cookie('account', username, secret=skrivnost)
-    response.delete_cookie('napaka')
-    #else:
-    #    napaka = 'Uporabniško ime in geslo se ne ujemata - Namig: jan asd, ali pa se registriraj'
-    #    response.set_cookie('napaka', napaka, secret=skrivnost)
+    if preverjam:
+        response.set_cookie('account', username, secret=skrivnost)
+        response.delete_cookie('napaka')
+    else:
+        napaka = 'Uporabniško ime in geslo se ne ujemata - Namig: jan asd, ali pa se registriraj'
+        response.set_cookie('napaka', napaka, secret=skrivnost)
     response.set_cookie('dovoljenje', preverjam, secret=skrivnost)
     redirect('/avto/vsi')
 

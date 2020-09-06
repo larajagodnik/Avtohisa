@@ -82,7 +82,7 @@ def ustvari_tabelo_rabljeni():
                 ON DELETE CASCADE
                 ON UPDATE CASCADE,
               st_kilometrov INTEGER NOT NULL,
-              servis BOOL DEFAULT false
+              servis DATE      
             );
         """)
     print("Tabela rabljenih avtov ustvarjena!")

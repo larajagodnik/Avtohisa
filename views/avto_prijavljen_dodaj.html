@@ -51,10 +51,20 @@
             <h3 style="font-size : 22px; margin-bottom: 12px">Vpišite podatke o rabljenem avtomobilu</h3>
           <span class="input"><b>Število kilometrov:</b></span>
             <input id="st_kilometrov" name="st_kilometrov"  type="number" min="0" step = ".01" lang="en" type="number" placeholder="Vpišite število prevoženih kilometrov" class="form-control" style="padding:12px 20px; margin-top: 8px; width:78%;" required/><br>
-          <div class="input"><b>Ima servis:</b>
+          
+
+          <!-- NAMESTO IMA SERVIS VPISES DATUM ZADNJEGA SERVISA -->
+          <label for="datum" class="col-sm-2 col-form-label"><b>Datum zadnjega servisa:</b></label>
+          <div class="col-sm-10">
+              <input id="datum" name="datum" type="date" class="form-control" style="margin:8px 15px; width:auto" required />
+          </div>
+          
+          
+          <!-- <div class="input"><b>Ima servis:</b>
               <input class="gumbi_radio" type="radio" name="servis" value="true" />Ima 
               <input class="gumbi_radio" type="radio" name="servis" value="false" />Nima<br>
-          </div>
+          </div> -->
+
           <div class="desna_poravnava">
             <button class="btn btn-secondary potrdi" style="background-color: #f2f2f2; color:black;" type="button" onclick="zapri_okno()">Shrani</button>
           </div>

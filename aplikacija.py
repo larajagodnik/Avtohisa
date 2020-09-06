@@ -248,6 +248,8 @@ def dodaj_servis():
     val = (id_avta, datum, tip_servisa, id_zaposlenega)
     cur.execute(sql,val)
 
+    ######## cur.execute("UPDATE rabljeni SET servis = datum WHERE id_avto =  %s", (id_avta, )) 
+
     cur.execute("UPDATE rabljeni SET servis = True WHERE id_avto =  %s", (id_avta, )) 
      
     redirect('/avto_prijavljen')

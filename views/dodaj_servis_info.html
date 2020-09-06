@@ -14,10 +14,10 @@
         <!-- če avto že ima servis ali pripravo, datum naslednjega servisa omejimo z min= datum prejsnjega servisa -->
         %if datum_zadnjega_servisa:
             %for datum in datum_zadnjega_servisa:
-                <input id="datum" name="datum" type="date" class="form-control" style="margin:8px 15px; width:170px" min="{{datum[0]}}" required />
+                <input id="datum" name="datum" type="date" class="form-control" style="margin:8px 15px; width:auto" min="{{datum[0]}}" required />
             %end
         %else:
-            <input id="datum" name="datum" type="date" class="form-control" style="margin:8px 15px; width:170px"  required />
+            <input id="datum" name="datum" type="date" class="form-control" style="margin:8px 15px; width:auto"  required />
         %end
     </div>
 
@@ -33,10 +33,10 @@
 
     <label for="tip_servisa" class="col-sm-2 col-form-label"><b>Tip servisa:</b></label>
     <div class="col-sm-10">
-    <select style="width:auto; display:inline-block; margin:8px 15px;" class="form-control"id="tip_servisa">
-        <option id="mali" value="mali">Mali servis</option>
-        <option id="večji" value="vecji">Večji servis</option>
-        <option id="velik" value="velik">Velik servis</option>
+    <select selecz name="tip_servisa" style="width:auto; display:inline-block; margin:8px 15px;" class="form-control" id="tip_servisa">
+        <option  value="Mali">Mali servis</option>
+        <option  value="Večji">Večji servis</option>
+        <option  value="Velik">Velik servis</option>
     </select>
     </div>
 

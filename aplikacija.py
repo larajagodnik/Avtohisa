@@ -350,14 +350,14 @@ def zaposleni_dodaj():
 @post('/zaposleni/dodaj')
 def dodaj_zaposlenega():
     Id_zaposlenega = request.forms.Id_zaposlenega
-    tip = request.forms.tip
+    tip_zaposlenega = request.forms.tip_zaposlenega
     ime = request.forms.ime
     telefon = request.forms.telefon
     placa = request.forms.placa
     naslov = request.forms.naslov
 
     sql = "INSERT INTO zaposleni (id_zaposlenega, tip_zaposlenega, ime, telefon, placa, naslov) VALUES (%s, %s, %s, %s, %s, %s)"
-    val = (Id_zaposlenega, tip, ime, telefon, placa, naslov)
+    val = (Id_zaposlenega, tip_zaposlenega, ime, telefon, placa, naslov)
     cur.execute(sql,val)
 
     redirect('/zaposleni')

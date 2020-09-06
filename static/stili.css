@@ -225,6 +225,7 @@ table.zgornja_meja_tabele th {
 
 /* znotraj pojavnega okna  */
 /* Modal Content/Box */
+/* za odstrani iz zaposlenih, odstrani avto */
 .modal_content_odstrani {
   background-color: #fefefe;
   margin: 15% auto; /* 15% from the top and centered */
@@ -234,6 +235,18 @@ table.zgornja_meja_tabele th {
   height: 30%;
   font-size: 16px;
 }
+
+/* za odstrani avto iz priljubljenih */
+.modal_content_odstrani_vecji {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 30%; /* Could be more or less, depending on screen size */
+  height: 35%;
+  font-size: 16px;
+}
+
 /* znotraj pojavnega okna za rabljen avtomobil */
 /* Modal Content/Box */
 .modal_content_dodaj_rabljen {
@@ -242,7 +255,7 @@ table.zgornja_meja_tabele th {
   padding: 20px;
   border: 1px solid #888;
   width: 30%; /* Could be more or less, depending on screen size */
-  height: 40%;
+  height: 38%;
   font-size: 16px;
 }
 

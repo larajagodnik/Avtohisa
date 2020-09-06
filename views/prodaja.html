@@ -10,15 +10,7 @@
 <div class="form-group row">
     <label for="datum" class="col-sm-2 col-form-label"><b>Datum:</b></label>
     <div class="col-sm-10">
-        <input id="datum" name="datum" type="date" class="form-control" style="margin:8px 15px; width:170px" required />
-    </div>
-
-    <label for="nacin_placila" class="col-sm-2 col-form-label"><b>Način plačila:</b></label>
-    <div class="col-sm-10">
-    <select style="width:auto; display:inline-block; margin:8px 15px;" class="form-control" id="nacin_placila">
-        <option id="gotovina" value="gotovina">Gotovina</option>
-        <option id="kartica" value="kartica">Kartica</option>
-    </select>
+        <input id="datum" name="datum" type="date" class="form-control" style="margin:8px 15px; width:auto" required />
     </div>
 
     <label for="prodajalec" class="col-sm-2 col-form-label"><b>Prodajalec:</b></label>
@@ -30,6 +22,15 @@
         %end
     </select>
     </div>
+
+    <label for="nacin_placila" class="col-sm-2 col-form-label"><b>Način plačila:</b></label>
+    <div class="col-sm-10">
+    <select name="nacin_placila" style="width:auto; display:inline-block; margin:8px 15px;" class="form-control" id="nacin_placila">
+        <option id="gotovina" value="gotovina">Gotovina</option>
+        <option id="kartica" value="kartica">Kartica</option>
+    </select>
+    </div>
+
 </div>
 <input class="btn btn-secondary potrdi" style="background-color: #f2f2f2; color:black" value="Shrani" type="submit"></input>
 </form>

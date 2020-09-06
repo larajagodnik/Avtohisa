@@ -3,8 +3,6 @@
 
 <!-- forma za dodajanje novega avta -->
 
-<script src="/static/avtohisa.js"></script>
-
 <form action="/avto_prijavljen/dodaj" method="post" style="width:60%;">
   <div class="form-group row">
     <label for="Id_avta" class="col-sm-2 col-form-label"><b>Id:</b></label>
@@ -39,7 +37,7 @@
 
     <label for="novi" class="col-sm-2 col-form-label"><b>Starost:</b></label>
     <!-- ko spremenis iz novega na rabljenega, se odpre okno za vpis podatkov o rabljenem avtu, če okno zapres gre vrednost nazaj na nov -->
-      <select style="width:auto; display:inline-block; margin:8px 15px;" class="form-control"id="izberi_starost" name="novi" onchange="odpri_okno()">
+      <select style="width:auto; display:inline-block; margin:8px 15px;" class="form-control"id="izberi_starost" name="novi" onchange="odpri_okno1()">
         <option id="Nov" value="true">Nov</option>
         <option id="Rabljen" value="false">Rabljen</option>
       </select>
@@ -47,28 +45,26 @@
     <!-- okno za podatke o rabljenem avtomobilu -->
     <div id="hidden_div" class="modal" style="display: none; ">
       <div class="modal_content_dodaj_rabljen">
-          <span class="close" onclick="zapri_okno()">&times;</span>
-            <h3 style="font-size : 22px; margin-bottom: 12px">Vpišite podatke o rabljenem avtomobilu</h3>
-          <span class="input"><b>Število kilometrov:</b></span>
-            <input id="st_kilometrov" name="st_kilometrov"  type="number" min="0" step = ".01" lang="en" type="number" placeholder="Vpišite število prevoženih kilometrov" class="form-control" style="padding:12px 20px; margin-top: 8px; width:78%;" required/><br>
-          
+        <span class="close" onclick="zapri_okno1()">&times;</span>
+          <h3 style="font-size : 22px; margin: 5px 0px 12px 0px">Vpišite podatke o rabljenem avtomobilu</h3>
+        <span class="input"><b>Število kilometrov:</b></span>
+          <input id="st_kilometrov" name="st_kilometrov"  type="number" min="0" step = ".01" lang="en" type="number" placeholder="Vpišite število prevoženih kilometrov" class="form-control" style="padding:12px 20px; margin-top: 8px; width:78%;"/><br>
+        
 
-          <!-- NAMESTO IMA SERVIS VPISES DATUM ZADNJEGA SERVISA -->
-          <label for="datum" class="col-sm-2 col-form-label"><b>Datum zadnjega servisa:</b></label>
-          <div class="col-sm-10">
-              <input id="datum" name="datum" type="date" class="form-control" style="margin:8px 15px; width:auto" required />
-          </div>
-          
-          
-          <!-- <div class="input"><b>Ima servis:</b>
-              <input class="gumbi_radio" type="radio" name="servis" value="true" />Ima 
-              <input class="gumbi_radio" type="radio" name="servis" value="false" />Nima<br>
-          </div> -->
+        <!-- NAMESTO IMA SERVIS VPISES DATUM ZADNJEGA SERVISA -->
+        <span class="input"><b>Datum zadnjega servisa:</b></span>
+          <input id="datum_zadnjega_servisa" name="datum_zadnjega_servisa" type="date" class="form-control" style="margin-top:8px; width:auto" />
+        
+        <!-- <div class="input"><b>Ima servis:</b>
+            <input class="gumbi_radio" type="radio" name="servis" value="true" />Ima 
+            <input class="gumbi_radio" type="radio" name="servis" value="false" />Nima<br>
+        </div> -->
 
-          <div class="desna_poravnava">
-            <button class="btn btn-secondary potrdi" style="background-color: #f2f2f2; color:black;" type="button" onclick="zapri_okno()">Shrani</button>
-          </div>
-      </div>
+        <div class="desna_poravnava">
+          <button class="btn btn-secondary potrdi" style="background-color: #f2f2f2; color:black;" type="button" onclick="zapri_okno1()">Shrani</button>
+        </div>
+
+    </div>
   </div>
 
 </div>
@@ -81,3 +77,4 @@
   Za dodanje rabljenega avtomobila morate izpolniti vsa polja.
 </div>
 
+<script src="/static/avtohisa.js"></script>

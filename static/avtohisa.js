@@ -25,8 +25,32 @@ function odpri_okno() {
 
 }
 
+function odpri_okno1() {
+    var e = document.getElementById("izberi_starost");
+    var select_value = e.options[e.selectedIndex].value;
+    
+    // ce je izbran nov avto, je okno skrito
+    if(select_value == "false"){
+        document.getElementById("hidden_div").style.display = "inherit";
 
-function zapri_okno(){
+    }else{
+        document.getElementById("st_kilometrov").value = '';
+        // preverimo ali so vneseni vsi podatki 
+        // var ima_servis = document.getElementsByName("servis");
+        // for (var i = 0, length = ima_servis.length; i < length; i++) {
+        //     if (ima_servis[i].checked) {
+        //         ima_servis[i].checked = false
+        //         break;
+
+        //     }
+        // }
+        document.getElementsByName("servis").value = '';
+    }
+
+}
+
+
+function zapri_okno1(){
         document.getElementById("hidden_div").style.display = "none";
         // dobimo vem kaj pise v okncku stevilo kilometrov in ali ima servis
         var st_kilometrov = document.getElementById("st_kilometrov");
@@ -36,16 +60,20 @@ function zapri_okno(){
         var status_servisa = null;
 
         // ima servis ima vrednost 0 ali 1
-        for (var i = 0, length = ima_servis.length; i < length; i++) {
-            if (ima_servis[i].checked) {
-                status_servisa = ima_servis[i].value;
-                break;
+        // for (var i = 0, length = ima_servis.length; i < length; i++) {
+        //     if (ima_servis[i].checked) {
+        //         status_servisa = ima_servis[i].value;
+        //         break;
 
-            }
-        }
+        //     }
+        // }
 
         // ce ni podatka o stevilu kilometrov ali o servisu (se vedno null), se izbira spremeni nazaj na nov, in izpise se napaka
-        if(!st_kilometrov.value || !status_servisa){
+        // if(!st_kilometrov.value || !status_servisa){
+        //     document.getElementById("Nov").selected = true;
+        //     document.getElementById("napaka_za_rabljen").style.display = "inherit";
+
+        if(!st_kilometrov.value){
             document.getElementById("Nov").selected = true;
             document.getElementById("napaka_za_rabljen").style.display = "inherit";
 
@@ -79,6 +107,11 @@ var yyyy = today.getFullYear();
         mm='0'+mm
     } 
 today = ""+ yyyy+'-'+mm+'-'+dd + "";
-console.log(document.getElementById("datum"))
-document.getElementById("datum").max =  today;
+if(document.getElementById("datum")){
+    document.getElementById("datum").max = today;
+}
+if(document.getElementById("datum_zadnjega_servisa")){
+    document.getElementById("datum_zadnjega_servisa").max = today;
+}
+
 

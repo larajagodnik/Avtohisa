@@ -1,4 +1,4 @@
-%rebase('zacetna.html', naslov='Tabela prodanih avtov', uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+%rebase('zacetna.html', naslov='Podatki o prodaji', uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
 <!-- forma za prodajo avta -->
 
@@ -10,7 +10,9 @@
 <div class="form-group row">
     <label for="datum" class="col-sm-2 col-form-label"><b>Datum:</b></label>
     <div class="col-sm-10">
-        <input id="datum" name="datum" type="date" class="form-control" style="margin:8px 15px; width:auto" required />
+        %for datum in datum_priprave:
+            <input id="datum" name="datum" type="date" min="{{datum[0]}}" class="form-control" style="margin:8px 15px; width:auto" required />
+        %end
     </div>
 
     <label for="prodajalec" class="col-sm-2 col-form-label"><b>Prodajalec:</b></label>

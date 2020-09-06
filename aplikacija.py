@@ -106,7 +106,7 @@ def avto(x):
 @get('/avto_prijavljen')
 def avto_prijavljen():
     
-    cur.execute("""SELECT avto.*, TO_CHAR(priprava.datum, 'DD. MM. YYYY'), TO_CHAR(servis.datum, 'DD. MM. YYYY'),
+    cur.execute("""SELECT avto.*, TO_CHAR(priprava.datum, 'DD. MM. YYYY'), TO_CHAR(rabljeni.servis, 'DD. MM. YYYY') as servisiran,
                 (SELECT id FROM prodaja WHERE prodaja.id_avto = avto.id) AS je_prodan 
                 FROM avto 
                 LEFT JOIN novi ON avto.id = novi.id_avto 
@@ -147,7 +147,7 @@ def dodaj_avto():
  
     if novi == 'false':    
         st_kilometrov = request.forms.st_kilometrov
-        servis = request.forms.servis
+        servis = request.forms.datum_zadnjega_servisa
         sql = "INSERT INTO rabljeni (id_avto, st_kilometrov, servis) VALUES (%s, %s, %s)"
         val = (Id_avta, st_kilometrov, servis)
         cur.execute(sql,val)
@@ -162,15 +162,21 @@ def dodaj_avto():
 # za gumb prodaja
 @post('/avto_prijavljen/prodaja/<id>')
 def prodaja(id):
+
+    cur.execute("SELECT datum FROM priprava WHERE id_avto = %s", (id, ))
+    datum_priprave = cur.fetchall()
+
     cur.execute("SELECT id_zaposlenega, ime FROM zaposleni WHERE tip_zaposlenega LIKE 'Prodajalec'")
     zaposleni = cur.fetchall()
+
     cur.execute("SELECT id, id_avto, datum, nacin_placila, id_zaposlenega FROM prodaja")
+
     uporabnik = request.get_cookie('account', secret=skrivnost)
     napaka = request.get_cookie('napaka', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
     status = request.get_cookie('dovoljenje', secret=skrivnost)
-    return rtemplate('prodaja.html', id=id, prodaja=cur,zaposleni=zaposleni, uporabnik=uporabnik,
-     registracija=registracija, napaka=napaka, status=status)
+    return rtemplate('prodaja.html', id=id, prodaja=cur,zaposleni=zaposleni, datum_priprave=datum_priprave,
+        uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
 # avto ki je prodan se zapise v tabelo prodaja
 @post('/avto_prijavljen/brisi')
@@ -221,8 +227,15 @@ def servis():
 # gumb dodaj servis, ki te preusmeri na formo za vstavljanje podatkov o servisu
 @post('/avto_prijavljen/dodaj_servis_info/<id>')
 def dodaj_servis_info(id):
-    cur.execute("SELECT datum FROM servis WHERE id_avto =  %s ORDER BY datum desc LIMIT 1", (id, ))
-    datum_zadnjega_servisa = cur.fetchall()
+
+    cur.execute("SELECT datum FROM servis WHERE id_avto = %s ORDER BY datum desc LIMIT 1", (id, ))
+    datum_zadnjega_servisa1 = cur.fetchall()
+    cur.execute("SELECT servis FROM rabljeni WHERE id_avto = %s", (id, ))
+    datum_zadnjega_servisa2 = cur.fetchall()
+    cur.execute("SELECT datum FROM priprava WHERE id_avto = %s", (id, ))
+    datum_zadnjega_servisa3 = cur.fetchall()
+    datum_zadnjega_servisa = max(datum_zadnjega_servisa1, datum_zadnjega_servisa2, datum_zadnjega_servisa3)
+
     cur.execute("SELECT id_zaposlenega, ime FROM zaposleni WHERE tip_zaposlenega LIKE 'Serviser'")
     zaposleni = cur.fetchall()
     cur.execute("SELECT id, id_avto, datum, tip_servisa, id_zaposlenega FROM servis")
@@ -232,7 +245,7 @@ def dodaj_servis_info(id):
     registracija = request.get_cookie('registracija', secret=skrivnost)
     status = request.get_cookie('dovoljenje', secret=skrivnost) 
 
-    return rtemplate('dodaj_servis_info.html', id=id, servis=cur, zaposleni=zaposleni,datum_zadnjega_servisa=datum_zadnjega_servisa,
+    return rtemplate('dodaj_servis_info.html', id=id, servis=cur, zaposleni=zaposleni, datum_zadnjega_servisa=datum_zadnjega_servisa,
     uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
 # dobi podatke o servisu in jih vpise v bazo
@@ -248,9 +261,8 @@ def dodaj_servis():
     val = (id_avta, datum, tip_servisa, id_zaposlenega)
     cur.execute(sql,val)
 
-    ######## cur.execute("UPDATE rabljeni SET servis = datum WHERE id_avto =  %s", (id_avta, )) 
-
-    cur.execute("UPDATE rabljeni SET servis = True WHERE id_avto =  %s", (id_avta, )) 
+    ###     cur.execute("UPDATE rabljeni SET servis = True WHERE id_avto =  %s", (id_avta, )) 
+    cur.execute("UPDATE rabljeni SET servis = %s WHERE id_avto =  %s", (datum, id_avta, )) 
      
     redirect('/avto_prijavljen')
    

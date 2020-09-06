@@ -255,7 +255,7 @@ table.zgornja_meja_tabele th {
   padding: 20px;
   border: 1px solid #888;
   width: 30%; /* Could be more or less, depending on screen size */
-  height: 45%;
+  height: 47%;
   font-size: 16px;
 }
 
@@ -275,12 +275,12 @@ table.zgornja_meja_tabele th {
   cursor: pointer;
 }
 
-
 input.potrdi{
     margin-bottom: 10px;
     width: 70px;
 }
 
+/* za potrdi pri oknu ali ste prepricani */
 .center_poravnava{
   display: flex;
   align-items: center;
@@ -288,13 +288,9 @@ input.potrdi{
   margin-top: 25px;
 }
 
+/* za shrani podatke o rabljenem avtu */
 .desna_poravnava{
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
-}
-
-.gumbi_radio{
-  margin-right: 5px;
-  margin-left: 5px;
 }

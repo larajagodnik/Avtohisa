@@ -148,9 +148,15 @@ def dodaj_avto():
     if novi == 'false':    
         st_kilometrov = request.forms.st_kilometrov
         servis = request.forms.datum_zadnjega_servisa
-        sql = "INSERT INTO rabljeni (id_avto, st_kilometrov, servis) VALUES (%s, %s, %s)"
-        val = (Id_avta, st_kilometrov, servis)
-        cur.execute(sql,val)
+        if servis != "":
+            sql = "INSERT INTO rabljeni (id_avto, st_kilometrov, servis) VALUES (%s, %s, %s)"
+            val = (Id_avta, st_kilometrov, servis)
+            cur.execute(sql,val)
+        else:
+            sql = "INSERT INTO rabljeni (id_avto, st_kilometrov, servis) VALUES (%s, %s, %s)"
+            val = (Id_avta, st_kilometrov, None)
+            cur.execute(sql,val)
+
     
     elif novi == 'true':   
         sql = "INSERT INTO novi VALUES (%s, %s)"

@@ -11,72 +11,19 @@ function odpri_okno() {
 
     }else{
         document.getElementById("st_kilometrov").value = '';
-        // preverimo ali so vneseni vsi podatki 
-        var ima_servis = document.getElementsByName("servis");
-        for (var i = 0, length = ima_servis.length; i < length; i++) {
-            if (ima_servis[i].checked) {
-                ima_servis[i].checked = false
-                break;
-
-            }
-        }
-        document.getElementsByName("servis").value = '';
     }
 
 }
 
-function odpri_okno1() {
-    var e = document.getElementById("izberi_starost");
-    var select_value = e.options[e.selectedIndex].value;
-    
-    // ce je izbran nov avto, je okno skrito
-    if(select_value == "false"){
-        document.getElementById("hidden_div").style.display = "inherit";
-
-    }else{
-        document.getElementById("st_kilometrov").value = '';
-        // preverimo ali so vneseni vsi podatki 
-        // var ima_servis = document.getElementsByName("servis");
-        // for (var i = 0, length = ima_servis.length; i < length; i++) {
-        //     if (ima_servis[i].checked) {
-        //         ima_servis[i].checked = false
-        //         break;
-
-        //     }
-        // }
-        document.getElementsByName("servis").value = '';
-    }
-
-}
-
-
-function zapri_okno1(){
+function zapri_okno(){
         document.getElementById("hidden_div").style.display = "none";
-        // dobimo vem kaj pise v okncku stevilo kilometrov in ali ima servis
+        // dobimo vem kaj pise v okncku stevilo kilometrov
         var st_kilometrov = document.getElementById("st_kilometrov");
-        var ima_servis = document.getElementsByName("servis");
 
-        // status servisa je na zacetku null
-        var status_servisa = null;
-
-        // ima servis ima vrednost 0 ali 1
-        // for (var i = 0, length = ima_servis.length; i < length; i++) {
-        //     if (ima_servis[i].checked) {
-        //         status_servisa = ima_servis[i].value;
-        //         break;
-
-        //     }
-        // }
-
-        // ce ni podatka o stevilu kilometrov ali o servisu (se vedno null), se izbira spremeni nazaj na nov, in izpise se napaka
-        // if(!st_kilometrov.value || !status_servisa){
-        //     document.getElementById("Nov").selected = true;
-        //     document.getElementById("napaka_za_rabljen").style.display = "inherit";
-
+        // ce ni podatka o st kilometrov, gre vrednost nazaj na nov
         if(!st_kilometrov.value){
             document.getElementById("Nov").selected = true;
             document.getElementById("napaka_za_rabljen").style.display = "inherit";
-
 
         }else{
             document.getElementById("napaka_za_rabljen").style.display = "none";

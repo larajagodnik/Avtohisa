@@ -462,7 +462,7 @@ def registriraj():
     else:
         napaka = 'Gesli se ne ujemata'
         response.set_cookie('napaka', napaka, secret=skrivnost)
-    redirect('/avto/vsi')
+    redirect('{}avto/vsi'.format(ROOT))
 
     
 
@@ -479,13 +479,13 @@ def prijava_post():
         napaka = 'Uporabniško ime in geslo se ne ujemata - Namig: jan asd, ali pa se registriraj'
         response.set_cookie('napaka', napaka, secret=skrivnost)
     response.set_cookie('dovoljenje', preverjam, secret=skrivnost)
-    redirect('/avto/vsi')
+    redirect('{}avto/vsi'.format(ROOT))
 
 @get('/odjava')
 def odjava():
     response.delete_cookie('account')
     response.delete_cookie('dovoljenje')
-    redirect('/avto/vsi')
+    redirect('{}avto/vsi'.format(ROOT))
 
     
 

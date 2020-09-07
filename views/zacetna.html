@@ -46,7 +46,7 @@
       <!-- če še nisi prijavljen in nisi registriran je v navigaciji moznost prijave in gumb za registracijo -->
       %if uporabnik == None:
         %if registracija == None:
-          <form action="{{ROOT}}prijava" method="post"  id="prijava">
+          <form action="/prijava" method="post"  id="prijava">
             <div>
               <label for="username"><b>Uporabniško ime</b></label>
               <input type="text" placeholder="Vpišite uporabniško ime" name="username" required>
@@ -60,7 +60,7 @@
 
         <!-- ce je izbrana moznost registracije, se pojavi forma za registracijo in gumb za prijavo -->
         %else:
-          <form action="{{ROOT}}registracija" method="post"  id="registracija">
+          <form action="/registracija" method="post"  id="registracija">
             <div>
               <label for="username"><b>Ime</b></label>
               <input type="text" placeholder="Vpišite vaše ime" name="username1" required>

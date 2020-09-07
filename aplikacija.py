@@ -3,7 +3,7 @@ from bottle import *
 
 
 #Uvoz podatkov za povezavo
-import conf_baza as auth
+import auth_public as auth
 
 
 #Uvoz psycopg2

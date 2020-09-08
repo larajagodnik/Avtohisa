@@ -49,6 +49,12 @@ Projekt pri OPB
     * id,
     * uporabnik,
     * id_avto.
+* V tabeli *prijava* imamo podatke:
+    * uporabnik,
+    * geslo,
+    * status,
+    * ime,
+    * priimek.
 
 ## Opis aplikacije
 V aplikaciji bodo vsi uporabniki imeli možnost, da si ogledajo katere avte lahko kupijo ter njihove lastnosti. Iskali bodo lahko po različnih parametrih, tipu vozila, barvi, starosti in podobno. Če se uporabnik registrira, dobi še možnost, da avte dodaja med svoje prljubljene.

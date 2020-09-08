@@ -21,6 +21,7 @@ table caption {
 	padding: .5em 0;
 }
 
+
 @media screen and (max-width: 767px) {
   table caption {
     display: none;
@@ -81,6 +82,7 @@ navigacija1 {
   padding: 20px;
   margin-top: 56px;
   background-color: #73b4da;
+  border-radius: 4px;
 }
 navigacija1 ul {
   list-style-type: none;
@@ -234,6 +236,7 @@ table.zgornja_meja_tabele th {
   width: 30%; /* Could be more or less, depending on screen size */
   height: 30%;
   font-size: 16px;
+  border-radius: 4px;
 }
 
 /* za odstrani avto iz priljubljenih */
@@ -245,6 +248,7 @@ table.zgornja_meja_tabele th {
   width: 30%; /* Could be more or less, depending on screen size */
   height: 35%;
   font-size: 16px;
+  border-radius: 4px;
 }
 
 /* znotraj pojavnega okna za rabljen avtomobil */
@@ -257,6 +261,7 @@ table.zgornja_meja_tabele th {
   width: 30%; /* Could be more or less, depending on screen size */
   height: 47%;
   font-size: 16px;
+  border-radius: 4px;
 }
 
 /* The Close Button */
@@ -293,4 +298,10 @@ input.potrdi{
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
+}
+
+.col-form-label{
+  display: flex;
+  align-items: center;
+
 }

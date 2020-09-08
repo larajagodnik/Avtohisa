@@ -396,11 +396,10 @@ def preveri_za_uporabnika(uporabnik):
     try:
         cur.execute("SELECT * FROM prijava WHERE uporabnik = %s", (uporabnik, ))
         uporabnik = cur.fetchone([0])
-        print (uporabnik)
         if len(uporabnik)==0:
             return True
     except:
-        return True
+        return False
 
 def dodaj_uporabnika(uporabnik, geslo, dovoljenje):
     salt = hashlib.sha256(os.urandom(60)).hexdigest().encode('ascii')

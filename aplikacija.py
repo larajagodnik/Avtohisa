@@ -78,31 +78,33 @@ def avto(x):
 
     if str(x) == 'vsi':
         redirect('{}'.format(ROOT))
-        return rtemplate('avto_vsi.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
     if str(x) == 'priljubljeni':
         cur.execute("SELECT avto.* FROM avto JOIN priljubljeni ON avto.id = priljubljeni.id_avto WHERE uporabnik LIKE %s", (uporabnik,))
         naslov = 'Priljubljeni avti'
         return rtemplate('priljubljeni.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
-
 # get zahtevek za tabelo avtov ko imas status 1 ali 2 (lastnik, zaposleni) in kliknes upravljaj avte
 @get('/avto_prijavljen')
 def avto_prijavljen():
-    
-    cur.execute("""SELECT avto.*, TO_CHAR(priprava.datum, 'DD. MM. YYYY'), TO_CHAR(rabljeni.servis, 'DD. MM. YYYY') as servisiran,
-                (SELECT id FROM prodaja WHERE prodaja.id_avto = avto.id) AS je_prodan 
-                FROM avto 
-                LEFT JOIN novi ON avto.id = novi.id_avto 
-                LEFT JOIN priprava ON avto.id = priprava.id_avto
-                LEFT JOIN servis ON avto.id = servis.id_avto
-                LEFT JOIN rabljeni ON avto.id = rabljeni.id_avto
-                ORDER BY avto.id""")
     uporabnik = request.get_cookie('account', secret=skrivnost)
     napaka = request.get_cookie('napaka', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
     status = request.get_cookie('dovoljenje', secret=skrivnost)
     
-    return rtemplate('avto_prijavljen.html', avto=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+    if uporabnik:
+        cur.execute("""SELECT avto.*, TO_CHAR(priprava.datum, 'DD. MM. YYYY'), TO_CHAR(rabljeni.servis, 'DD. MM. YYYY') as servisiran,
+                    (SELECT id FROM prodaja WHERE prodaja.id_avto = avto.id) AS je_prodan 
+                    FROM avto 
+                    LEFT JOIN novi ON avto.id = novi.id_avto 
+                    LEFT JOIN priprava ON avto.id = priprava.id_avto
+                    LEFT JOIN servis ON avto.id = servis.id_avto
+                    LEFT JOIN rabljeni ON avto.id = rabljeni.id_avto
+                    ORDER BY avto.id""")
+        return rtemplate('avto_prijavljen.html', avto=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+    else:
+        napaka = 'Prosimo prijavite se!'
+        response.set_cookie('napaka', napaka, secret=skrivnost)
+        redirect('{}'.format(ROOT))
 
 ## get in post zahtevka ko v navigaciji kliknes dodaj avto
 # preusmeri te na formo kjer dodajas avto
@@ -112,7 +114,11 @@ def avto_prijavljen_dodaj():
     napaka = request.get_cookie('napaka', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
     status = request.get_cookie('dovoljenje', secret=skrivnost)
-    return rtemplate('avto_prijavljen_dodaj.html', uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+    if status == 1:
+        return rtemplate('avto_prijavljen_dodaj.html', uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+    else:
+        redirect('{}'.format(ROOT))
+
     
 # iz forme dobis podatke in jih vstavis v bazo
 @post('/avto_prijavljen/dodaj')
@@ -195,19 +201,26 @@ def prodaja_tabela():
     registracija = request.get_cookie('registracija', secret=skrivnost)
     napaka = request.get_cookie('napaka', secret=skrivnost)
     status = request.get_cookie('dovoljenje', secret=skrivnost)
-    return rtemplate('prodaja_tabela.html', prodaja_tabela=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+    if status == 1 or status == 2:
+        return rtemplate('prodaja_tabela.html', prodaja_tabela=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+    else:
+        response.set_cookie('napaka', 'Prosimo prijavite se z ustreznim statusom!', secret=skrivnost)
+        redirect('{}'.format(ROOT))
 
 # tabela zaposlenih
 @get('/zaposleni')
 def zaposleni():
-    cur.execute("""
-        SELECT * FROM zaposleni
-        ORDER BY zaposleni.ime""")
     uporabnik = request.get_cookie('account', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
     napaka = request.get_cookie('napaka', secret=skrivnost)
     status = request.get_cookie('dovoljenje', secret=skrivnost)
-    return rtemplate('zaposleni.html', zaposleni=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+    if status == 1:
+        cur.execute("""
+            SELECT * FROM zaposleni
+            ORDER BY zaposleni.ime""")
+        return rtemplate('zaposleni.html', zaposleni=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+    else:
+        redirect('{}'.format(ROOT))
 
 # tabela servis podatkov
 @get('/servis')
@@ -217,7 +230,10 @@ def servis():
     registracija = request.get_cookie('registracija', secret=skrivnost)
     napaka = request.get_cookie('napaka', secret=skrivnost)
     status = request.get_cookie('dovoljenje', secret=skrivnost)
-    return rtemplate('servis.html', servis=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+    if status == 1 or status == 3:
+        return rtemplate('servis.html', servis=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+    else:
+        redirect('{}'.format(ROOT))
 
 # gumb dodaj servis, ki te preusmeri na formo za vstavljanje podatkov o servisu
 @post('/avto_prijavljen/dodaj_servis_info/<id>')
@@ -268,7 +284,10 @@ def priprava():
     registracija = request.get_cookie('registracija', secret=skrivnost)
     napaka = request.get_cookie('napaka', secret=skrivnost)
     status = request.get_cookie('dovoljenje', secret=skrivnost)
-    return rtemplate('priprava.html', priprava=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+    if status == 1 or status == 2:
+        return rtemplate('priprava.html', priprava=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+    else:
+        redirect('{}'.format(ROOT))
 
 # za gumb, ki zepreusmeri na formo za dodajanje podatkov o pripravi
 @post('/avto_prijavljen/dodaj_pripravo_info/<id>')
@@ -305,33 +324,22 @@ def dodaj_pripravo():
 @get('/avto_vsi/dodaj_pod_priljubljene/<id>')
 def priljubljeni_avto(id):
     uporabnik = request.get_cookie('account', secret=skrivnost)
-    registracija = request.get_cookie('registracija', secret=skrivnost)
-    napaka = request.get_cookie('napaka', secret=skrivnost)
-    status = request.get_cookie('dovoljenje', secret=skrivnost)
-    cur.execute("INSERT INTO priljubljeni (uporabnik, id_avto) VALUES (%s, %s)", (uporabnik, id))
+    if uporabnik:
+        cur.execute("INSERT INTO priljubljeni (uporabnik, id_avto) VALUES (%s, %s)", (uporabnik, id))
+    else:
+        response.set_cookie('napaka', 'Prosimo prijavite se!', secret=skrivnost)
     redirect('{}'.format(ROOT))
 
 # za gumb odstrani (iz priljubljenih) - izbrise iz baze
 @get('/avto/priljubljeni/<id>')
 def odstrani_priljubljeni_avto(id):
     uporabnik = request.get_cookie('account', secret=skrivnost)
-    registracija = request.get_cookie('registracija', secret=skrivnost)
-    napaka = request.get_cookie('napaka', secret=skrivnost)
-    status = request.get_cookie('dovoljenje', secret=skrivnost)
-    cur.execute("DELETE FROM priljubljeni WHERE uporabnik = %s AND id_avto = %s", (uporabnik, id, ))
+    if uporabnik:
+        cur.execute("DELETE FROM priljubljeni WHERE uporabnik = %s AND id_avto = %s", (uporabnik, id, ))
+    else:
+        response.set_cookie('napaka', 'Prosimo prijavite se!', secret=skrivnost)
     redirect('{}avto/priljubljeni'.format(ROOT)) 
 
-# tabela zaposleni   
-@get('/zaposleni')
-def zaposleni():
-    cur.execute("""
-        SELECT * FROM zaposleni
-        ORDER BY zaposleni.ime""")
-    uporabnik = request.get_cookie('account', secret=skrivnost)
-    registracija = request.get_cookie('registracija', secret=skrivnost)
-    napaka = request.get_cookie('napaka', secret=skrivnost)
-    status = request.get_cookie('dovoljenje', secret=skrivnost)
-    return rtemplate('zaposleni.html', zaposleni=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
 # klik na dodaj zaposlenega te preusmer na formo
 @get('/zaposleni/dodaj')
@@ -340,7 +348,10 @@ def zaposleni_dodaj():
     napaka = request.get_cookie('napaka', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
     status = request.get_cookie('dovoljenje', secret=skrivnost)
-    return rtemplate('zaposleni_dodaj.html', uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+    if status == 1:
+        return rtemplate('zaposleni_dodaj.html', uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+    else:
+        redirect('{}'.format(ROOT))
 
 #dobi podatke o novem zaposlenem in jih vstavi v bazo   
 @post('/zaposleni/dodaj')
@@ -361,11 +372,9 @@ def dodaj_zaposlenega():
 # za gumb odstrani zaposlenega
 @get('/zaposleni/<id>')
 def odstrani_zaposlenega(id):
-    uporabnik = request.get_cookie('account', secret=skrivnost)
-    registracija = request.get_cookie('registracija', secret=skrivnost)
-    napaka = request.get_cookie('napaka', secret=skrivnost)
     status = request.get_cookie('dovoljenje', secret=skrivnost)
-    cur.execute("DELETE FROM zaposleni WHERE id_zaposlenega = %s", (id, ))  
+    if status == 1:
+        cur.execute("DELETE FROM zaposleni WHERE id_zaposlenega = %s", (id, ))  
     redirect('{}zaposleni'.format(ROOT))
 
 

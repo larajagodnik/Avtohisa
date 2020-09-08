@@ -69,8 +69,6 @@ def index():
     naslov = 'Vsi avti'
     return rtemplate('avto_vsi.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, leta=leta, barve=barve, tipi=tipi, znamke=znamke, status=status)
 
-
-################# rabljeni in novi ne rabimo vec??? ########################3
 @get('/avto/<x:re:[a-z]+>')
 def avto(x):
     uporabnik = request.get_cookie('account', secret=skrivnost)

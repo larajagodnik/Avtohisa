@@ -17,7 +17,6 @@ import binascii
 # poganjat pythona -- oboje izklopis ko oodajas aplikacijo profesorju
 debug(True)
 
-#skrivnost ='1'
 skrivnost = "SWiY1234"
 
 #Privzete nastavitve
@@ -42,6 +41,9 @@ def static(filename):
 @get('/')
 def index():
     uporabnik = request.get_cookie('account', secret=skrivnost)
+    registracija = request.get_cookie('registracija', secret=skrivnost)
+    napaka = request.get_cookie('napaka', secret=skrivnost)
+    status = request.get_cookie('dovoljenje', secret=skrivnost)
 
     # kaj se pojavi v selectih, kjer lahko izbiras katere avte zelis videti
     cur.execute("SELECT DISTINCT leto_izdelave FROM avto ORDER BY leto_izdelave")
@@ -65,17 +67,8 @@ def index():
     
     #naslov domace strani
     naslov = 'Vsi avti'
-
-
-    
-    #response.set_cookie("kaj", 'blalba', secret='skrivnost')
-    #uporabnik = request.get_cookie('account', secret=skrivnost)
-    registracija = request.get_cookie('registracija', secret=skrivnost)
-    napaka = request.get_cookie('napaka', secret=skrivnost)
-    status = request.get_cookie('dovoljenje', secret=skrivnost)
     return rtemplate('avto_vsi.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, leta=leta, barve=barve, tipi=tipi, znamke=znamke, status=status)
-    #redirect('/avto/vsi') #To ni to kar sem hotu, ampak sedaj ussaj prižge stran
-    #return rtemplate('zacetna.html')
+
 
 ################# rabljeni in novi ne rabimo vec??? ########################3
 @get('/avto/<x:re:[a-z]+>')
@@ -84,17 +77,17 @@ def avto(x):
     registracija = request.get_cookie('registracija', secret=skrivnost)
     napaka = request.get_cookie('napaka', secret=skrivnost)
     status = request.get_cookie('dovoljenje', secret=skrivnost)
-    if str(x) == 'novi':
-        cur.execute("SELECT * FROM novi INNER JOIN avto ON novi.id_avto = avto.id")
-        naslov = 'Novi avti'
-        return rtemplate('avto_novi.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
-    if str(x) == 'rabljeni':
-        cur.execute("""SELECT id_avto,st_kilometrov,servis,barva,tip,znamka,cena,leto_izdelave
-                         FROM rabljeni LEFT JOIN avto ON avto.id=rabljeni.id_avto""")
-        naslov = 'Rabljeni avti'
-        return rtemplate('avto_rabljeni.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+#    if str(x) == 'novi':
+#        cur.execute("SELECT * FROM novi INNER JOIN avto ON novi.id_avto = avto.id")
+#        naslov = 'Novi avti'
+#        return rtemplate('avto_novi.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+#    if str(x) == 'rabljeni':
+#        cur.execute("""SELECT id_avto,st_kilometrov,servis,barva,tip,znamka,cena,leto_izdelave
+#                         FROM rabljeni LEFT JOIN avto ON avto.id=rabljeni.id_avto""")
+#        naslov = 'Rabljeni avti'
+#        return rtemplate('avto_rabljeni.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
     if str(x) == 'vsi':
-        redirect('/')
+        redirect('{}'.format(ROOT))
         return rtemplate('avto_vsi.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
     if str(x) == 'priljubljeni':
         cur.execute("SELECT avto.* FROM avto JOIN priljubljeni ON avto.id = priljubljeni.id_avto WHERE uporabnik LIKE %s", (uporabnik,))
@@ -163,7 +156,7 @@ def dodaj_avto():
         val = (Id_avta, 'false')
         cur.execute(sql,val)      
 
-    redirect('/avto_prijavljen')
+    redirect('{}avto_prijavljen'.format(ROOT))
 
 # za gumb prodaja
 @post('/avto_prijavljen/prodaja/<id>')
@@ -196,7 +189,7 @@ def brisi_avto():
     val = (id_avta, datum, nacin_placila, id_zaposlenega)
     cur.execute(sql,val)
 
-    redirect('/avto_prijavljen')
+    redirect('{}avto_prijavljen'.format(ROOT))
 
 # tabela prodanih avtomobilov
 @get('/prodaja_tabela')
@@ -267,10 +260,9 @@ def dodaj_servis():
     val = (id_avta, datum, tip_servisa, id_zaposlenega)
     cur.execute(sql,val)
 
-    ###     cur.execute("UPDATE rabljeni SET servis = True WHERE id_avto =  %s", (id_avta, )) 
     cur.execute("UPDATE rabljeni SET servis = %s WHERE id_avto =  %s", (datum, id_avta, )) 
      
-    redirect('/avto_prijavljen')
+    redirect('{}avto_prijavljen'.format(ROOT))
    
 # tabela priprava
 @get('/priprava')
@@ -311,7 +303,7 @@ def dodaj_pripravo():
 
     cur.execute("UPDATE novi SET pripravljen = True WHERE id_avto =  %s", (id_avta, ))
         
-    redirect('/avto_prijavljen')
+    redirect('{}avto_prijavljen'.format(ROOT))
    
 # za gumb dodaj med priljubljene - vstavi v bazo
 @get('/avto_vsi/dodaj_pod_priljubljene/<id>')
@@ -321,7 +313,7 @@ def priljubljeni_avto(id):
     napaka = request.get_cookie('napaka', secret=skrivnost)
     status = request.get_cookie('dovoljenje', secret=skrivnost)
     cur.execute("INSERT INTO priljubljeni (uporabnik, id_avto) VALUES (%s, %s)", (uporabnik, id))
-    redirect('/')
+    redirect('{}'.format(ROOT))
 
 # za gumb odstrani (iz priljubljenih) - izbrise iz baze
 @get('/avto/priljubljeni/<id>')
@@ -331,19 +323,7 @@ def odstrani_priljubljeni_avto(id):
     napaka = request.get_cookie('napaka', secret=skrivnost)
     status = request.get_cookie('dovoljenje', secret=skrivnost)
     cur.execute("DELETE FROM priljubljeni WHERE uporabnik = %s AND id_avto = %s", (uporabnik, id, ))
-    redirect('/avto/priljubljeni') 
-
-############### ne rabimo? #################
-@get('/novi_zacasna')
-def novi_zacasna():
-    cur.execute("SELECT * FROM novi")
-    return rtemplate('novi_zacasna.html', novi=cur)
-
-############### kaj je to #################
-@get('/manjse/<x:int>')
-def razvrsti(x):    
-    cur.execute("SELECT * FROM avto WHERE cena < %s", x)
-    return rtemplate('avto_vsi.html', avto=cur)
+    redirect('{}avto/priljubljeni'.format(ROOT)) 
 
 # tabela zaposleni   
 @get('/zaposleni')
@@ -380,7 +360,7 @@ def dodaj_zaposlenega():
     val = (Id_zaposlenega, tip_zaposlenega, ime, telefon, placa, naslov)
     cur.execute(sql,val)
 
-    redirect('/zaposleni')
+    redirect('{}zaposleni'.format(ROOT))
 
 # za gumb odstrani zaposlenega
 @get('/zaposleni/<id>')
@@ -390,7 +370,7 @@ def odstrani_zaposlenega(id):
     napaka = request.get_cookie('napaka', secret=skrivnost)
     status = request.get_cookie('dovoljenje', secret=skrivnost)
     cur.execute("DELETE FROM zaposleni WHERE id_zaposlenega = %s", (id, ))  
-    redirect('/zaposleni')
+    redirect('{}zaposleni'.format(ROOT))
 
 
 #########################################################
@@ -434,13 +414,13 @@ def dodaj_uporabnika(uporabnik, geslo, dovoljenje):
 def registracija():
     response.set_cookie('registracija', 'DA', secret=skrivnost)
     response.delete_cookie('napaka')
-    redirect('/avto/vsi')
+    redirect('{}avto/vsi'.format(ROOT))
 
 @get('/za_prijavo')
 def za_prijavo():
     response.delete_cookie('registracija')
     response.delete_cookie('napaka')
-    redirect('/avto/vsi')
+    redirect('{}avto/vsi'.format(ROOT))
 
 @post('/registracija')
 def registriraj():
@@ -462,7 +442,7 @@ def registriraj():
     else:
         napaka = 'Gesli se ne ujemata'
         response.set_cookie('napaka', napaka, secret=skrivnost)
-    redirect('/avto/vsi')
+    redirect('{}avto/vsi'.format(ROOT))
 
     
 
@@ -479,13 +459,13 @@ def prijava_post():
         napaka = 'Uporabniško ime in geslo se ne ujemata - Namig: jan asd, ali pa se registriraj'
         response.set_cookie('napaka', napaka, secret=skrivnost)
     response.set_cookie('dovoljenje', preverjam, secret=skrivnost)
-    redirect('/avto/vsi')
+    redirect('{}avto/vsi'.format(ROOT))
 
 @get('/odjava')
 def odjava():
     response.delete_cookie('account')
     response.delete_cookie('dovoljenje')
-    redirect('/avto/vsi')
+    redirect('{}avto/vsi'.format(ROOT))
 
     
 

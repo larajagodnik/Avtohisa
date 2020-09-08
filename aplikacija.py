@@ -379,7 +379,7 @@ def odstrani_zaposlenega(id):
 def preveri_uporabnika(uporabnik, password):
     try:
         cur.execute("SELECT * FROM prijava WHERE uporabnik = %s", (uporabnik, ))
-        uporabnik,geslo,dovoljenje = cur.fetchone()
+        uporabnik,geslo,dovoljenje,ime,priimek = cur.fetchone()
         salt = geslo[:64]
         geslo = geslo[64:]
         pwdhash = hashlib.pbkdf2_hmac('sha512', 
@@ -388,25 +388,29 @@ def preveri_uporabnika(uporabnik, password):
                                   100000)
         pwdhash = binascii.hexlify(pwdhash).decode('ascii')
         if pwdhash == geslo:
-            return dovoljenje
+            return [ime, dovoljenje]
     except:
         return False
 
 def preveri_za_uporabnika(uporabnik):
     try:
-        cur.execute("SELECT * FROM prijava WHERE uporabnik = %s", (uporabnik, ))
-        uporabnik = cur.fetchone([0])
-        if len(uporabnik)==0:
+        cur.execute("SELECT uporabnik FROM prijava WHERE uporabnik = %s", (uporabnik, ))
+        #uporabnik = cur.fetchone([0])
+        uporabnik = cur.fetchone()
+        print(uporabnik, 1234)
+        if uporabnik==None:
             return True
+        else:
+            return False
     except:
         return False
 
-def dodaj_uporabnika(uporabnik, geslo, dovoljenje):
+def dodaj_uporabnika(ime, priimek, uporabnik, geslo, dovoljenje):
     salt = hashlib.sha256(os.urandom(60)).hexdigest().encode('ascii')
     pwdhash = hashlib.pbkdf2_hmac('sha512', geslo.encode('utf-8'), salt, 100000)
     pwdhash = binascii.hexlify(pwdhash)
     geslo = (salt + pwdhash).decode('ascii')
-    cur.execute("INSERT INTO prijava (uporabnik, geslo, status) VALUES (%s, %s, %s)", (uporabnik, geslo, dovoljenje, ))
+    cur.execute("INSERT INTO prijava (uporabnik, geslo, status, ime, priimek) VALUES (%s, %s, %s, %s, %s)", (uporabnik, geslo, dovoljenje,ime, priimek, ))
 
 
 @get('/registracija')
@@ -430,8 +434,9 @@ def registriraj():
     geslo2 = request.forms.password2
     if geslo1 == geslo2:
         preveri = preveri_za_uporabnika(username)
+        print(preveri)
         if preveri:
-            dodaj_uporabnika(username, geslo1, 3)
+            dodaj_uporabnika(ime, priimek, username, geslo1, 3)
             response.delete_cookie('registracija')
             napaka = 'Registracija upešna!'
             response.set_cookie('napaka', napaka, secret=skrivnost)
@@ -449,15 +454,14 @@ def registriraj():
 def prijava_post():
     username = request.forms.username
     password = request.forms.password
-    print(username, password)
-    preverjam = preveri_uporabnika(username, password)
-    if preverjam:
-        response.set_cookie('account', username, secret=skrivnost)
+    ime, status = preveri_uporabnika(username, password)
+    if status:
+        response.set_cookie('account', ime, secret=skrivnost)
         response.delete_cookie('napaka')
+        response.set_cookie('dovoljenje', status, secret=skrivnost)
     else:
         napaka = 'Uporabniško ime in geslo se ne ujemata - Namig: jan asd, ali pa se registriraj'
         response.set_cookie('napaka', napaka, secret=skrivnost)
-    response.set_cookie('dovoljenje', preverjam, secret=skrivnost)
     redirect('{}avto/vsi'.format(ROOT))
 
 @get('/odjava')

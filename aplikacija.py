@@ -4,7 +4,7 @@ from bottle import *
 
 #Uvoz podatkov za povezavo
 ### import auth_public as auth
-import conf_baza as auth
+import auth_public as auth
 
 #Uvoz psycopg2
 import psycopg2, psycopg2.extensions, psycopg2.extras

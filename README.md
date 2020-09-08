@@ -6,12 +6,53 @@ Projekt pri OPB
 ![ER DIAGRAM](Baza/ER_diagram.jpeg)
 
 ## Opis ER diagrama
- * Imamo tabelo Avto, v kateri beležimo ID, ki je številka šasije, barvo, tip avta, znamko, ter njegovo ceno.
- * Imamo dve vrsti avtov, nove in rabljene, za katere imamo še podatke o številu kilometrov ter starosti. 
- * Vsak novi avto mora biti pripravljen za prodajo, zato beležimo nek ID oz. številko priprave, katero izvede serviser, ki pa sestavlja ekipo zaposlenih, za katere beležimo EMŠO, njihov telefon, naslov ter plačo.
- * Vsak rabljeni avto, pa mora pred začetkom prodaje opraviti servis, katerega prav tako izvede serviser. Za tak servis beležimo številko servisa, datum, ter za kakšen tip servisa je šlo (pregled, popravilo manjših napak, večji popravki).
- * Ker pa avte tudi prodajamo, v tabeli Prodaja, beležimo številko računa, način plačila, ter datum kdaj je bil avto prodan. Vsako prodajo izvede en prodajalec, kateri tudi sestavlja ekipo zaposlenih.
+* Glavna tabela je tabela *avto*, v kateri beležimo:
+    * id (ki je številka šasije),
+    * barva,
+    * tip_avta,
+    * znamka,
+    * cena,
+    * leto_izdelave in
+    * nov (ali je avto nov ali ne).
+ * V tabeli *novi* imamo podatka:
+    * id_avto,
+    * pripravljen (default vrednost = false).
+* V tabeli *rabljeni* imamo dodatne podatke za rabljene avtomobile:
+    * id_avto,
+    * st_kilometrov,
+    * servis (datum zadnjega servisa).
+ * V tabeli *priprava* hranimo podatke o pripravi novega avtomobila.
+    *  id,
+    *  id_avto,
+    *  datum,
+    *  id_zaposlenega.
+ * V tabeli *servis* pa hranimo podatke o servisu avtov, ki so bili narejeni v naši avtohiši.
+    * id,
+    * id_avto,
+    * datum,
+    * tip_servisa (mali, večji ali velik),
+    * id_zaposlenega.
+* V tabeli *prodaja*, hranimo vse avte, ki smo jih do sedaj prodali.
+    * id,
+    * id_avto,
+    * datum,
+    * nacin_placila,
+    * id_zaposlenega.
+ * V tabeli *zaposleni* imamo podatke:
+    * id_zaposlenega (emšo),
+    * tip_zaposlenega (prodajalec ali serviser, lastnik je samo eden),
+    * ime,
+    * telefon,
+    * placa,
+    * naslov.
+* V tabeli *priljubljeni* imamo podatke:
+    * id,
+    * uporabnik,
+    * id_avto.
 
 ## Opis aplikacije
-V aplikaciji bodo vsi uporabniki imeli možnost, da si ogledajo katere avte lahko kupijo ter njihove lastnosti. Iskali bodo lahko po različnih parametrih, na primer po ceni, tipu vozila, barvi, starosti in podobno.
-Zaposleni v podjetju, pa bodo imeli možnost nakupa oziroma dodajanja novega avta v bazo, vnašali bodo lahko podatke o opravljenem servisu in pregledu. Avto bodo "prodali" torej odstranili iz baze.
+V aplikaciji bodo vsi uporabniki imeli možnost, da si ogledajo katere avte lahko kupijo ter njihove lastnosti. Iskali bodo lahko po različnih parametrih, tipu vozila, barvi, starosti in podobno. Če se uporabnik registrira, dobi še možnost, da avte dodaja med svoje prljubljene.
+
+Zaposleni v podjetju, bodo lahko avtom dodali servis ali pripravo, avto pa bodo lahko tudi prodali. Imajo tudi vpogled v vse narejene servise in priprave ter v bazo prodanih avtomobilov.
+
+Lastnik podjetja bo imel največ pravic. Poleg vseh možnosti, ki jih imajo navadni zaposleni bo lahko še kupil avto, imel pregled nad zaposlenimi in zaposlil novega delovca.

@@ -21,21 +21,26 @@
             <td>{{placa}}</td>
             <td>{{telefon}}</td>
             <td>{{naslov}}</td>
-            <td>
-                <!-- ko zelimo odstraniti zaposlenega se najprej pojavi okno ali smo prepricani -->
-                <form action="{{ROOT}}zaposleni/{{id_zaposlenega}}">
-                    <button class="btn btn-secondary" style="background-color: #f2f2f2; color:black" type="button" onclick="odpri_okno_brisi(this)" data-id="{{id_zaposlenega}}">Odstrani</button>
-                    <div id="hidden_div1{{id_zaposlenega}}" class="modal" style="display: none">
-                        <div class="modal_content_odstrani">
-                            <span class="close" onclick="zapri_okno_brisi(this)" data-id="{{id_zaposlenega}}">&times;</span>
-                              <p class="pojavna_okna_besedilo">Ali ste prepričani da želite iz baze zaposlenih odstraniti osebo: <b>{{ime}}</b></p>                              
-                            <div class="center_poravnava">
-                                <input class="btn btn-secondary potrdi" style="background-color: #f2f2f2; color:black" type="submit" value="Potrdi"></input>
+
+            %if tip_zaposlenega == "Lastnik":
+                <td></td>
+            %else:
+                <td>
+                    <!-- ko zelimo odstraniti zaposlenega se najprej pojavi okno ali smo prepricani -->
+                    <form action="{{ROOT}}zaposleni/{{id_zaposlenega}}">
+                        <button class="btn btn-secondary" style="background-color: #f2f2f2; color:black" type="button" onclick="odpri_okno_brisi(this)" data-id="{{id_zaposlenega}}">Odstrani</button>
+                        <div id="hidden_div1{{id_zaposlenega}}" class="modal" style="display: none">
+                            <div class="modal_content_odstrani">
+                                <span class="close" onclick="zapri_okno_brisi(this)" data-id="{{id_zaposlenega}}">&times;</span>
+                                <p class="pojavna_okna_besedilo">Ali ste prepričani da želite iz baze zaposlenih odstraniti osebo: <b>{{ime}}</b></p>                              
+                                <div class="center_poravnava">
+                                    <input class="btn btn-secondary potrdi" style="background-color: #f2f2f2; color:black" type="submit" value="Potrdi"></input>
+                                </div>
                             </div>
                         </div>
-                      </div>
-                </form>
-            </td>
+                    </form>
+                </td>
+            %end
         </tr>
     %end
 </table>

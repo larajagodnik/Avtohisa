@@ -5,7 +5,6 @@ from bottle import *
 #Uvoz podatkov za povezavo
 import auth_public as auth
 
-
 #Uvoz psycopg2
 import psycopg2, psycopg2.extensions, psycopg2.extras
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo problemov s šumniki
@@ -59,11 +58,12 @@ def index():
     znamke = cur.fetchall()
    
     # avto ki je ze prodan se ne pokaze uporabnikom strani
-    cur.execute("SELECT avto.*, 1 as je_priljubljen FROM avto WHERE id NOT IN (SELECT DISTINCT id_avto FROM prodaja)")
+    cur.execute("SELECT avto.*, 1 as je_priljubljen FROM avto WHERE id NOT IN (SELECT DISTINCT id_avto FROM prodaja) ORDER BY avto.id")
     if(request.get_cookie('account', secret=skrivnost)):
         cur.execute("""SELECT avto.*, priljubljeni.id FROM avto LEFT JOIN priljubljeni ON
                         (avto.id = priljubljeni.id_avto AND priljubljeni.uporabnik LIKE %s )
-                        WHERE avto.id NOT IN (SELECT DISTINCT id_avto FROM prodaja)""", (uporabnik, ))
+                        WHERE avto.id NOT IN (SELECT DISTINCT id_avto FROM prodaja)
+                        ORDER BY avto.id""", (uporabnik, ))
     
     #naslov domace strani
     naslov = 'Vsi avti'
@@ -77,15 +77,7 @@ def avto(x):
     registracija = request.get_cookie('registracija', secret=skrivnost)
     napaka = request.get_cookie('napaka', secret=skrivnost)
     status = request.get_cookie('dovoljenje', secret=skrivnost)
-#    if str(x) == 'novi':
-#        cur.execute("SELECT * FROM novi INNER JOIN avto ON novi.id_avto = avto.id")
-#        naslov = 'Novi avti'
-#        return rtemplate('avto_novi.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
-#    if str(x) == 'rabljeni':
-#        cur.execute("""SELECT id_avto,st_kilometrov,servis,barva,tip,znamka,cena,leto_izdelave
-#                         FROM rabljeni LEFT JOIN avto ON avto.id=rabljeni.id_avto""")
-#        naslov = 'Rabljeni avti'
-#        return rtemplate('avto_rabljeni.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+
     if str(x) == 'vsi':
         redirect('{}'.format(ROOT))
         return rtemplate('avto_vsi.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
@@ -105,7 +97,8 @@ def avto_prijavljen():
                 LEFT JOIN novi ON avto.id = novi.id_avto 
                 LEFT JOIN priprava ON avto.id = priprava.id_avto
                 LEFT JOIN servis ON avto.id = servis.id_avto
-                LEFT JOIN rabljeni ON avto.id = rabljeni.id_avto""")
+                LEFT JOIN rabljeni ON avto.id = rabljeni.id_avto
+                ORDER BY avto.id""")
     uporabnik = request.get_cookie('account', secret=skrivnost)
     napaka = request.get_cookie('napaka', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
@@ -162,10 +155,15 @@ def dodaj_avto():
 @post('/avto_prijavljen/prodaja/<id>')
 def prodaja(id):
 
+    cur.execute("SELECT datum FROM servis WHERE id_avto = %s ORDER BY datum desc LIMIT 1", (id, ))
+    datum_zadnjega_servisa1 = cur.fetchall()
+    cur.execute("SELECT servis FROM rabljeni WHERE id_avto = %s", (id, ))
+    datum_zadnjega_servisa2 = cur.fetchall()
     cur.execute("SELECT datum FROM priprava WHERE id_avto = %s", (id, ))
     datum_priprave = cur.fetchall()
+    datum_omejim_min = max(datum_zadnjega_servisa1, datum_zadnjega_servisa2, datum_priprave)
 
-    cur.execute("SELECT id_zaposlenega, ime FROM zaposleni WHERE tip_zaposlenega LIKE 'Prodajalec'")
+    cur.execute("SELECT id_zaposlenega, ime FROM zaposleni WHERE tip_zaposlenega LIKE 'Prodajalec' OR tip_zaposlenega LIKE 'Lastnik'")
     zaposleni = cur.fetchall()
 
     cur.execute("SELECT id, id_avto, datum, nacin_placila, id_zaposlenega FROM prodaja")
@@ -174,8 +172,8 @@ def prodaja(id):
     napaka = request.get_cookie('napaka', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
     status = request.get_cookie('dovoljenje', secret=skrivnost)
-    return rtemplate('prodaja.html', id=id, prodaja=cur,zaposleni=zaposleni, datum_priprave=datum_priprave,
-        uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+    return rtemplate('prodaja.html', id=id, prodaja=cur,zaposleni=zaposleni, datum_omejim_min=datum_omejim_min,
+     uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
 # avto ki je prodan se zapise v tabelo prodaja
 @post('/avto_prijavljen/brisi')
@@ -194,7 +192,7 @@ def brisi_avto():
 # tabela prodanih avtomobilov
 @get('/prodaja_tabela')
 def prodaja_tabela():
-    cur.execute("SELECT * FROM prodaja")
+    cur.execute("SELECT * FROM prodaja ORDER BY datum")
     uporabnik = request.get_cookie('account', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
     napaka = request.get_cookie('napaka', secret=skrivnost)
@@ -232,10 +230,10 @@ def dodaj_servis_info(id):
     cur.execute("SELECT servis FROM rabljeni WHERE id_avto = %s", (id, ))
     datum_zadnjega_servisa2 = cur.fetchall()
     cur.execute("SELECT datum FROM priprava WHERE id_avto = %s", (id, ))
-    datum_zadnjega_servisa3 = cur.fetchall()
-    datum_zadnjega_servisa = max(datum_zadnjega_servisa1, datum_zadnjega_servisa2, datum_zadnjega_servisa3)
+    datum_priprave = cur.fetchall()
+    datum_zadnjega_servisa = max(datum_zadnjega_servisa1, datum_zadnjega_servisa2, datum_priprave)
 
-    cur.execute("SELECT id_zaposlenega, ime FROM zaposleni WHERE tip_zaposlenega LIKE 'Serviser'")
+    cur.execute("SELECT id_zaposlenega, ime FROM zaposleni WHERE tip_zaposlenega LIKE 'Serviser' ")
     zaposleni = cur.fetchall()
     cur.execute("SELECT id, id_avto, datum, tip_servisa, id_zaposlenega FROM servis")
 

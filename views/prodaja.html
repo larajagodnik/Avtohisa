@@ -10,9 +10,14 @@
 <div class="form-group row">
     <label for="datum" class="col-sm-2 col-form-label"><b>Datum:</b></label>
     <div class="col-sm-10">
-        %for datum in datum_priprave:
+        %if datum_omejim_min:
+            %for datum in datum_omejim_min:
+                <input id="datum" name="datum" type="date" min="{{datum[0]}}" class="form-control" style="margin:8px 15px; width:auto" required />
+            %end
+        %else:
             <input id="datum" name="datum" type="date" min="{{datum[0]}}" class="form-control" style="margin:8px 15px; width:auto" required />
         %end
+
     </div>
 
     <label for="prodajalec" class="col-sm-2 col-form-label"><b>Prodajalec:</b></label>

@@ -368,7 +368,7 @@ def dodaj_zaposlenega():
     placa = request.forms.placa
     naslov = request.forms.naslov
 
-    sql = """INSERT INTO zaposleni (id_zaposlenega, tip_zaposlenega, ime, telefon, placa, naslov, trenutno_zaposleni)
+    sql = """INSERT INTO zaposleni (id_zaposlenega, tip_zaposlenega, ime, telefon, placa, naslov, trenutno_zaposlen)
             VALUES (%s, %s, %s, %s, %s, %s, %s)"""
     val = (Id_zaposlenega, tip_zaposlenega, ime, telefon, placa, naslov, "false")
     cur.execute(sql,val)

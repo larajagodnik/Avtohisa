@@ -34,6 +34,7 @@ def ustvari_tabelo_zaposleni():
               telefon TEXT,
               placa FLOAT(2) NOT NULL,
               naslov TEXT NOT NULL,
+              trenutno_zaposlen BOOL DEFAULT True,
               UNIQUE (id_zaposlenega, tip_zaposlenega),
               CHECK (tip_zaposlenega LIKE 'Prodajalec' OR tip_zaposlenega LIKE 'Serviser' OR tip_zaposlenega LIKE 'Lastnik')
             );
@@ -111,7 +112,6 @@ def ustvari_tabelo_servis():
               datum DATE,
               tip_servisa TEXT,
               id_zaposlenega TEXT NOT NULL,
-              trenutno_zaposlen BOOL DEFAULT True,
               FOREIGN KEY (id_zaposlenega)
                 REFERENCES zaposleni(id_zaposlenega)
                 ON DELETE NO ACTION
@@ -237,6 +237,7 @@ ustvari_tabelo_novi()
 ustvari_tabelo_servis()
 ustvari_tabelo_priprava()
 ustvari_tabelo_priljubljeni()
+ustvari_tabelo_prijava()
 
 pravice()
 

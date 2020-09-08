@@ -13,9 +13,10 @@
         <th>Placa</th>
         <th>Telefon</th>
         <th>Naslov</th>
+        <th>Trenutno zaposlen</th>
         <th>Odstrani zaposlenega</th>
     </tr>
-    %for (id_zaposlenega,tip_zaposlenega,ime,telefon,placa,naslov) in zaposleni:
+    %for (id_zaposlenega,tip_zaposlenega,ime,telefon,placa,naslov,trenutno_zaposlen) in zaposleni:
         <tr>
             <td>{{id_zaposlenega}}</td>
             <td>{{ime}}</td>
@@ -23,6 +24,7 @@
             <td>{{placa}}</td>
             <td>{{telefon}}</td>
             <td>{{naslov}}</td>
+            <td>{{trenutno_zaposlen}}</td>
 
             %if tip_zaposlenega == "Lastnik":
                 <td></td>

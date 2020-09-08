@@ -454,8 +454,9 @@ def registriraj():
 def prijava_post():
     username = request.forms.username
     password = request.forms.password
-    ime, status = preveri_uporabnika(username, password)
-    if status:
+    preveri = preveri_uporabnika(username, password)
+    if preveri:
+        ime, status = preveri
         response.set_cookie('account', ime, secret=skrivnost)
         response.delete_cookie('napaka')
         response.set_cookie('dovoljenje', status, secret=skrivnost)

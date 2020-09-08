@@ -1,20 +1,26 @@
 %rebase('zacetna.html', naslov="Podatki o pripravi avtomobilov", uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
 <!-- PRIPRAVA -->
-<table class="table table-striped zgornja_meja_tabele" cellpadding="0" cellspacing="2" border="1">
-    <tr>
-        <th>Id</th>
-        <th>Id avta</th>
-        <th>Datum</th>
-        <th>Id zaposlenega</th>
-    </tr>
-    %for (id, id_avta, datum, id_zaposlenega) in priprava:
+%if status == 1 or status == 2:
+    <table class="table table-striped zgornja_meja_tabele" cellpadding="0" cellspacing="2" border="1">
         <tr>
-            <td>{{id}}</td>
-            <td>{{id_avta}}</td>
-            <td>{{datum}}</td>
-            <td>{{id_zaposlenega}}</td>
-
+            <th>Id</th>
+            <th>Id avta</th>
+            <th>Datum</th>
+            <th>Id zaposlenega</th>
         </tr>
-    %end
-</table>
+        %for (id, id_avta, datum, id_zaposlenega) in priprava:
+            <tr>
+                <td>{{id}}</td>
+                <td>{{id_avta}}</td>
+                <td>{{datum}}</td>
+                <td>{{id_zaposlenega}}</td>
+
+            </tr>
+        %end
+    </table>
+%else:
+    <div id="napaka_prijavljeni10" class="alert alert-danger" style="display: -ms-grid;" role="alert">
+    Prosimo prijavite se z ustreznim statusom!
+    </div>
+%end

@@ -1,84 +1,90 @@
-
 %rebase('zacetna.html', naslov='Dodaj nov avto', uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
-<!-- forma za dodajanje novega avta -->
-
-<form action="{{ROOT}}avto_prijavljen/dodaj" method="post" style="width:60%;">
-  <div class="form-group row">
-    <label for="Id_avta" class="col-sm-2 col-form-label"><b>Id:</b></label>
-    <div class="col-sm-10">
-      <input name="Id_avta" type="text" placeholder="Vpišite serijsko številko avta" class="form-control" required 
-        oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')"/>
-    </div>
-    
-    <label for="barva" class="col-sm-2 col-form-label"><b>Barva:</b></label> 
-    <div class="col-sm-10">
-      <input name="barva" type="text" placeholder="Vpišite barvo avta" class="form-control" required
-        oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')" />
-    </div>
-
-    <label for="tip" class="col-sm-2 col-form-label"><b>Tip:</b></label>
-    <div class="col-sm-10">
-      <input name="tip" type="text" placeholder="Vpišite tip avta" class="form-control" required
-      oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')" />
-    </div>
-    
-    <label for="znamka" class="col-sm-2 col-form-label"><b>Znamka:</b></label> 
-    <div class="col-sm-10">
-      <input name="znamka" type="text" placeholder="Vpišite znamko avta" class="form-control" required
-      oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')" />
-    </div>
-
-    <label for="cena" class="col-sm-2 col-form-label"><b>Cena:</b></label>
-    <div class="col-sm-10">
-      <input name="cena" type="number" min="0" step = ".01" lang="en" placeholder="Vpišite ceno avta" class="form-control"
-        style="padding:12px 20px; margin:8px 0px; width:50%;" required
-        oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')" />
-    </div> 
-
-    <label for="leto_izdelave" class="col-sm-2 col-form-label"><b>Leto izdelave:</b></label>
-    <div class="col-sm-10">
-      <input name="leto_izdelave" type="number" min="1970" max="2020" lang="en" placeholder="Vpišite leto izdelave"
-        class="form-control" style="padding:12px 20px; margin:8px 0px;width:50%;" required
-        oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')"/>
-    </div>
-
-    <label for="novi" class="col-sm-2 col-form-label"><b>Starost:</b></label>
-    <!-- ko spremenis iz novega na rabljenega, se odpre okno za vpis podatkov o rabljenem avtu, če okno zapres gre vrednost nazaj na nov -->
-      <select style="width:auto; display:inline-block; margin:8px 15px;" class="form-control"id="izberi_starost" name="novi" onchange="odpri_okno()">
-        <option id="Nov" value="true">Nov</option>
-        <option id="Rabljen" value="false">Rabljen</option>
-      </select>
-
-    <!-- okno za podatke o rabljenem avtomobilu -->
-    <div id="hidden_div" class="modal" style="display: none; ">
-      <div class="modal_content_dodaj_rabljen">
-        <span class="close" onclick="zapri_okno()">&times;</span>
-          <h3 style="font-size : 22px; margin: 5px 0px 12px 0px">Vpišite podatke o rabljenem avtomobilu</h3>
-        <span class="input"><b>Število kilometrov:</b></span>
-          <input id="st_kilometrov" name="st_kilometrov"  type="number" min="0" step = ".01" lang="en" type="number" placeholder="Vpišite število prevoženih kilometrov" class="form-control" style="padding:12px 20px; margin-top: 8px; width:78%;"/><br>
-        
-
-        <!-- datum zadnjega servisa -->
-        <span class="input"><b>Datum zadnjega servisa:</b></span>
-        <small id="datumHelp" class="form-text text-muted">Če avto še nima servisa, ne izberite nič.</small>
-          <input id="datum_zadnjega_servisa" name="datum_zadnjega_servisa" type="date" class="form-control" style="margin-top:8px; width:auto" />
-
-        <div class="desna_poravnava">
-          <button class="btn btn-secondary potrdi" style="background-color: #f2f2f2; color:black;" type="button" onclick="zapri_okno()">Shrani</button>
-        </div>
-
-    </div>
+%if status != 1:
+  <div id="napaka_prijavljeni2" class="alert alert-danger" style="display: -ms-grid;" role="alert">
+  Prosimo prijavite se z ustreznim statusom!
   </div>
 
-</div>
-  <input class="btn btn-secondary potrdi" style="background-color: #f2f2f2; color:black" value="Dodaj" type="submit" />
-</form>
-<br>
+%else:
+  <!-- forma za dodajanje novega avta -->
 
-<!-- sporocilo, ko ne vpises vseh podakov o rabljenem avtomobilu -->
-<div id="napaka_za_rabljen" class="alert alert-danger" style="display: none"  role="alert">
-  Za dodanje rabljenega avtomobila morate izpolniti vsa polja.
-</div>
+  <form action="{{ROOT}}avto_prijavljen/dodaj" method="post" style="width:60%;">
+    <div class="form-group row">
+      <label for="Id_avta" class="col-sm-2 col-form-label"><b>Id:</b></label>
+      <div class="col-sm-10">
+        <input name="Id_avta" type="text" placeholder="Vpišite serijsko številko avta" class="form-control" required 
+          oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')"/>
+      </div>
 
-<script src="{{ROOT}}static/avtohisa.js"></script>
+      <label for="barva" class="col-sm-2 col-form-label"><b>Barva:</b></label> 
+      <div class="col-sm-10">
+        <input name="barva" type="text" placeholder="Vpišite barvo avta" class="form-control" required
+          oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')" />
+      </div>
+
+      <label for="tip" class="col-sm-2 col-form-label"><b>Tip:</b></label>
+      <div class="col-sm-10">
+        <input name="tip" type="text" placeholder="Vpišite tip avta" class="form-control" required
+        oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')" />
+      </div>
+
+      <label for="znamka" class="col-sm-2 col-form-label"><b>Znamka:</b></label> 
+      <div class="col-sm-10">
+        <input name="znamka" type="text" placeholder="Vpišite znamko avta" class="form-control" required
+        oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')" />
+      </div>
+
+      <label for="cena" class="col-sm-2 col-form-label"><b>Cena:</b></label>
+      <div class="col-sm-10">
+        <input name="cena" type="number" min="0" step = ".01" lang="en" placeholder="Vpišite ceno avta" class="form-control"
+          style="padding:12px 20px; margin:8px 0px; width:50%;" required
+          oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')" />
+      </div> 
+
+      <label for="leto_izdelave" class="col-sm-2 col-form-label"><b>Leto izdelave:</b></label>
+      <div class="col-sm-10">
+        <input name="leto_izdelave" type="number" min="1970" max="2020" lang="en" placeholder="Vpišite leto izdelave"
+          class="form-control" style="padding:12px 20px; margin:8px 0px;width:50%;" required
+          oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')"/>
+      </div>
+
+      <label for="novi" class="col-sm-2 col-form-label"><b>Starost:</b></label>
+      <!-- ko spremenis iz novega na rabljenega, se odpre okno za vpis podatkov o rabljenem avtu, če okno zapres gre vrednost nazaj na nov -->
+        <select style="width:auto; display:inline-block; margin:8px 15px;" class="form-control"id="izberi_starost" name="novi" onchange="odpri_okno()">
+          <option id="Nov" value="true">Nov</option>
+          <option id="Rabljen" value="false">Rabljen</option>
+        </select>
+
+      <!-- okno za podatke o rabljenem avtomobilu -->
+      <div id="hidden_div" class="modal" style="display: none; ">
+        <div class="modal_content_dodaj_rabljen">
+          <span class="close" onclick="zapri_okno()">&times;</span>
+            <h3 style="font-size : 22px; margin: 5px 0px 12px 0px">Vpišite podatke o rabljenem avtomobilu</h3>
+          <span class="input"><b>Število kilometrov:</b></span>
+            <input id="st_kilometrov" name="st_kilometrov"  type="number" min="0" step = ".01" lang="en" type="number" placeholder="Vpišite število prevoženih kilometrov" class="form-control" style="padding:12px 20px; margin-top: 8px; width:78%;"/><br>
+
+
+          <!-- datum zadnjega servisa -->
+          <span class="input"><b>Datum zadnjega servisa:</b></span>
+          <small id="datumHelp" class="form-text text-muted">Če avto še nima servisa, ne izberite nič.</small>
+            <input id="datum_zadnjega_servisa" name="datum_zadnjega_servisa" type="date" class="form-control" style="margin-top:8px; width:auto" />
+
+          <div class="desna_poravnava">
+            <button class="btn btn-secondary potrdi" style="background-color: #f2f2f2; color:black;" type="button" onclick="zapri_okno()">Shrani</button>
+          </div>
+
+      </div>
+    </div>
+
+  </div>
+    <input class="btn btn-secondary potrdi" style="background-color: #f2f2f2; color:black" value="Dodaj" type="submit" />
+  </form>
+  <br>
+
+  <!-- sporocilo, ko ne vpises vseh podakov o rabljenem avtomobilu -->
+  <div id="napaka_za_rabljen" class="alert alert-danger" style="display: none"  role="alert">
+    Za dodanje rabljenega avtomobila morate izpolniti vsa polja.
+  </div>
+
+  <script src="{{ROOT}}static/avtohisa.js"></script>
+%end

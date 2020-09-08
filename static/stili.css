@@ -306,5 +306,9 @@ input.potrdi{
 .col-form-label{
   display: flex;
   align-items: center;
+}
 
+.siv{
+  color: grey;
+  text-decoration: line-through;
 }

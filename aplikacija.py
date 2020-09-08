@@ -3,7 +3,6 @@ from bottle import *
 
 
 #Uvoz podatkov za povezavo
-### import auth_public as auth
 import auth_public as auth
 
 #Uvoz psycopg2
@@ -87,6 +86,9 @@ def avto(x):
         naslov = 'Priljubljeni avti'
         return rtemplate('priljubljeni.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
+###############################
+###### avto prijavljen ########
+###############################
 # get zahtevek za tabelo avtov ko imas status 1 ali 2 (lastnik, zaposleni) in kliknes upravljaj avte
 @get('/avto_prijavljen')
 def avto_prijavljen():
@@ -109,6 +111,11 @@ def avto_prijavljen():
                 LEFT JOIN rabljeni ON avto.id = rabljeni.id_avto
                 ORDER BY avto.id""")
     return rtemplate('avto_prijavljen.html', avto=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+
+
+###############################
+###### avto dodaj ########
+###############################
 
 ## get in post zahtevka ko v navigaciji kliknes dodaj avto
 # preusmeri te na formo kjer dodajas avto
@@ -159,6 +166,10 @@ def dodaj_avto():
         cur.execute(sql,val)      
 
     redirect('{}avto_prijavljen'.format(ROOT))
+
+###############################
+###### avto prodaja ########
+###############################
 
 # za gumb prodaja
 @post('/avto_prijavljen/prodaja/<id>')
@@ -212,20 +223,9 @@ def prodaja_tabela():
     status = request.get_cookie('dovoljenje', secret=skrivnost)
     return rtemplate('prodaja_tabela.html', prodaja_tabela=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
-# tabela zaposlenih
-@get('/zaposleni')
-def zaposleni():
-
-    pravice = ima_pravice()
-    if pravice != 1 or pravice is None:
-        return
-
-    uporabnik = request.get_cookie('account', secret=skrivnost)
-    registracija = request.get_cookie('registracija', secret=skrivnost)
-    napaka = request.get_cookie('napaka', secret=skrivnost)
-    status = request.get_cookie('dovoljenje', secret=skrivnost)
-    cur.execute("SELECT * FROM zaposleni WHERE trenutno_zaposlen = True ORDER BY zaposleni.ime")
-    return rtemplate('zaposleni.html', zaposleni=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
+###############################
+###### avto servis ########
+###############################
 
 # tabela servis podatkov
 @get('/servis')
@@ -283,6 +283,10 @@ def dodaj_servis():
      
     redirect('{}avto_prijavljen'.format(ROOT))
    
+###############################
+###### avto priprava ########
+###############################
+
 # tabela priprava
 @get('/priprava')
 def priprava():
@@ -329,6 +333,10 @@ def dodaj_pripravo():
     cur.execute("UPDATE novi SET pripravljen = True WHERE id_avto =  %s", (id_avta, ))
         
     redirect('{}avto_prijavljen'.format(ROOT))
+
+###############################
+###### priljubljeni ########
+###############################
    
 # za gumb dodaj med priljubljene - vstavi v bazo
 @get('/avto_vsi/dodaj_pod_priljubljene/<id>')
@@ -343,6 +351,25 @@ def odstrani_priljubljeni_avto(id):
     uporabnik = request.get_cookie('account', secret=skrivnost)
     cur.execute("DELETE FROM priljubljeni WHERE uporabnik = %s AND id_avto = %s", (uporabnik, id, ))
     redirect('{}avto/priljubljeni'.format(ROOT)) 
+
+###############################
+###### zaposleni ########
+###############################
+
+# tabela zaposlenih
+@get('/zaposleni')
+def zaposleni():
+
+    pravice = ima_pravice()
+    if pravice != 1 or pravice is None:
+        return
+
+    uporabnik = request.get_cookie('account', secret=skrivnost)
+    registracija = request.get_cookie('registracija', secret=skrivnost)
+    napaka = request.get_cookie('napaka', secret=skrivnost)
+    status = request.get_cookie('dovoljenje', secret=skrivnost)
+    cur.execute("SELECT * FROM zaposleni ORDER BY trenutno_zaposlen DESC, zaposleni.ime")
+    return rtemplate('zaposleni.html', zaposleni=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
 # klik na dodaj zaposlenega te preusmer na formo
 @get('/zaposleni/dodaj')
@@ -378,8 +405,12 @@ def dodaj_zaposlenega():
 # za gumb odstrani zaposlenega
 @get('/zaposleni/<id>')
 def odstrani_zaposlenega(id):
-    cur.execute("UPDATE zaposleni SET trenutno_zaposlen = False WHERE id_zaposlenega = %s", (id, ))  
+    cur.execute("UPDATE zaposleni SET trenutno_zaposlen = false WHERE id_zaposlenega = %s", (id, ))  
     redirect('{}zaposleni'.format(ROOT))
+
+################################################
+###### ko nimas pravic za doloceno stran #######
+################################################
 
 @get('/ni_pravic')
 def ni_pravic():

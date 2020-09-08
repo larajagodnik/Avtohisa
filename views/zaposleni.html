@@ -5,7 +5,7 @@
 <script src="{{ROOT}}static/avtohisa.js"></script>
 
 <!-- ZAPOSLENI-->
-<table class="table table-striped zgornja_meja_tabele"  cellpadding="0" cellspacing="2" border="1">
+<table id="zaposleni" class="table table-striped zgornja_meja_tabele"  cellpadding="0" cellspacing="2" border="1">
     <tr>
         <th>Id zaposlenega</th>
         <th>Ime</th>
@@ -13,20 +13,28 @@
         <th>Placa</th>
         <th>Telefon</th>
         <th>Naslov</th>
-        <th>Trenutno zaposlen</th>
         <th>Odstrani zaposlenega</th>
     </tr>
     %for (id_zaposlenega,tip_zaposlenega,ime,telefon,placa,naslov,trenutno_zaposlen) in zaposleni:
         <tr>
-            <td>{{id_zaposlenega}}</td>
-            <td>{{ime}}</td>
-            <td>{{tip_zaposlenega}}</td>
-            <td>{{placa}}</td>
-            <td>{{telefon}}</td>
-            <td>{{naslov}}</td>
-            <td>{{trenutno_zaposlen}}</td>
 
-            %if tip_zaposlenega == "Lastnik":
+            %if trenutno_zaposlen == True:
+                <td>{{id_zaposlenega}}</td>
+                <td>{{ime}}</td>
+                <td>{{tip_zaposlenega}}</td>
+                <td>{{placa}}</td>
+                <td>{{telefon}}</td>
+                <td>{{naslov}}</td>
+            %else:
+                <td class="siv">{{id_zaposlenega}}</td>
+                <td class="siv">{{ime}}</td>
+                <td class="siv">{{tip_zaposlenega}}</td>
+                <td class="siv">{{placa}}</td>
+                <td class="siv">{{telefon}}</td>
+                <td class="siv">{{naslov}}</td>
+            %end
+
+            %if tip_zaposlenega == "Lastnik" or trenutno_zaposlen == False:
                 <td></td>
             %else:
                 <td>

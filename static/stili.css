@@ -68,11 +68,14 @@ input[type=text], input[type=password] {
 
 /* stil za sliko */
 img {
-  position:inherit;
+  /* position: inherit; */
   margin-left: auto;
   margin-right: auto;
   width: 75%;
   z-index: -1;
+  display: flex;
+  justify-content: center;
+
 }
 
 navigacija1 {

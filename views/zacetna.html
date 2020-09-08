@@ -1,4 +1,5 @@
-<html>
+<!doctype html>
+<html lang="sl">
 <head>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   
@@ -13,7 +14,7 @@
 </head>
 <header>
   <div style="background-color: #73b4da;">
-    <img src="https://raw.githubusercontent.com/larajagodnik/Avtohisa/master/avtohisa.jpg" alt="Avtohisa" class="center">
+    <img src="https://raw.githubusercontent.com/larajagodnik/Avtohisa/master/avtohisa.jpg" alt="Avtohisa">
     <h1>Avtohiša LaJa</h1> 
   </div>
 </header>
@@ -50,11 +51,11 @@
             <div>
               <label for="username"><b>Uporabniško ime</b></label>
               <input type="text" placeholder="Vpišite uporabniško ime" name="username" required
-              oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')">
+              oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('to polje je obvezno!')">
             
               <label for="password"><b>Vpišite geslo</b></label>
               <input type="password" placeholder="Vpišite geslo" name="password" required
-              oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')">
+              oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('to polje je obvezno!')">
               <button class="btn" type="submit">Prijava</button>
               <a class="btn btn-info" style="background-color: #24437b;" href="{{ROOT}}registracija">Registriraj se</a>
             </div>
@@ -66,23 +67,23 @@
             <div>
               <label for="username"><b>Ime</b></label>
               <input type="text" placeholder="Vpišite vaše ime" name="username1" required
-              oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')">
+              oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('to polje je obvezno!')">
 
               <label for="username"><b>Priimek</b></label>
               <input type="text" placeholder="Vpišite vaš priimek" name="username2" required
-              oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')">
+              oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('to polje je obvezno!')">
 
               <label for="username"><b>Uporabniško ime</b></label>
               <input type="text" placeholder="Vpišite uporabniško ime" name="username" required
-              oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')">
+              oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('to polje je obvezno!')">
             
               <label for="password"><b>Vpišite geslo</b></label>
               <input type="password" placeholder="Vpišite geslo" name="password1" required
-              oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')">
+              oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('to polje je obvezno!')">
 
               <label for="password"><b>Ponovno vpišite geslo</b></label>
               <input type="password" placeholder="Vpišite geslo" name="password2" required
-              oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')">
+              oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('to polje je obvezno!')">
 
               <button class="btn btn-secondary" style="background-color: #f2f2f2; color:black" type="submit">Registracija</button>
               <a href="{{ROOT}}za_prijavo">Prijavi se</a>
@@ -120,7 +121,7 @@
             <li><div><b><a href="{{ROOT}}avto_prijavljen">Upravljaj avte</a></b></div></li>
             <li><div><b><a href="{{ROOT}}servis">Podatki o servisu</a></b></div></li>
             <li><div><b><a href="{{ROOT}}priprava">Podatki o pripravi</a></b></div></li>
-            <li><div><b><a href="{{ROOT}}prodaja_tabela">Prodani avtomobili</a></b></div></li>
+            <li><div><b><a href="{{ROOT}}prodaja_tabela">Podani avtomobili</a></b></div></li>
           </ul>
         %end
 

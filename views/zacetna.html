@@ -49,10 +49,12 @@
           <form action="{{ROOT}}prijava" method="post"  id="prijava">
             <div>
               <label for="username"><b>Uporabniško ime</b></label>
-              <input type="text" placeholder="Vpišite uporabniško ime" name="username" required>
+              <input type="text" placeholder="Vpišite uporabniško ime" name="username" required
+              oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')">
             
               <label for="password"><b>Vpišite geslo</b></label>
-              <input type="password" placeholder="Vpišite geslo" name="password" required>
+              <input type="password" placeholder="Vpišite geslo" name="password" required
+              oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')">
               <button class="btn" type="submit">Prijava</button>
               <a class="btn btn-info" style="background-color: #24437b;" href="{{ROOT}}registracija">Registriraj se</a>
             </div>
@@ -63,19 +65,24 @@
           <form action="{{ROOT}}registracija" method="post"  id="registracija">
             <div>
               <label for="username"><b>Ime</b></label>
-              <input type="text" placeholder="Vpišite vaše ime" name="username1" required>
+              <input type="text" placeholder="Vpišite vaše ime" name="username1" required
+              oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')">
 
               <label for="username"><b>Priimek</b></label>
-              <input type="text" placeholder="Vpišite vaš priimek" name="username2" required>
+              <input type="text" placeholder="Vpišite vaš priimek" name="username2" required
+              oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')">
 
               <label for="username"><b>Uporabniško ime</b></label>
-              <input type="text" placeholder="Vpišite uporabniško ime" name="username" required>
+              <input type="text" placeholder="Vpišite uporabniško ime" name="username" required
+              oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')">
             
               <label for="password"><b>Vpišite geslo</b></label>
-              <input type="password" placeholder="Vpišite geslo" name="password1" required>
+              <input type="password" placeholder="Vpišite geslo" name="password1" required
+              oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')">
 
               <label for="password"><b>Ponovno vpišite geslo</b></label>
-              <input type="password" placeholder="Vpišite geslo" name="password2" required>
+              <input type="password" placeholder="Vpišite geslo" name="password2" required
+              oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')">
 
               <button class="btn btn-secondary" style="background-color: #f2f2f2; color:black" type="submit">Registracija</button>
               <a href="{{ROOT}}za_prijavo">Prijavi se</a>

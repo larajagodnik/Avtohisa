@@ -10,12 +10,15 @@
 <div class="form-group row">
     <label for="datum" class="col-sm-2 col-form-label"><b>Datum:</b></label>
     <div class="col-sm-10">
-      <input id="datum" name="datum" type="date" class="form-control" style="margin:8px 15px; width:auto"  required />
+      <input id="datum" name="datum" type="date" class="form-control" style="margin:8px 15px; width:auto" required
+        oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')" />
     </div>
         
     <label for="serviser" class="col-sm-2 col-form-label"><b>Serviser:</b></label>
     <div class="col-sm-10">
-    <select name="Serviser" style="width:auto; display:inline-block; margin:8px 15px;" class="form-control" id="izberi_serviserja" required>
+    <select name="Serviser" style="width:auto; display:inline-block; margin:8px 15px;" class="form-control"
+        id="izberi_serviserja" required
+        oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')">
         <option value="" selected>Izberite serviserja</option>
         %for z in zaposleni:
             <option value="{{z[0]}}">{{z[1]}}</option>

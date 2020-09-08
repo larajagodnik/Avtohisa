@@ -7,32 +7,40 @@
   <div class="form-group row">
     <label for="Id_avta" class="col-sm-2 col-form-label"><b>Id:</b></label>
     <div class="col-sm-10">
-      <input name="Id_avta" type="text" placeholder="Vpišite serijsko številko avta" class="form-control" required />
+      <input name="Id_avta" type="text" placeholder="Vpišite serijsko številko avta" class="form-control" required 
+        oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')"/>
     </div>
     
     <label for="barva" class="col-sm-2 col-form-label"><b>Barva:</b></label> 
     <div class="col-sm-10">
-      <input name="barva" type="text" placeholder="Vpišite barvo avta" class="form-control" required />
+      <input name="barva" type="text" placeholder="Vpišite barvo avta" class="form-control" required
+        oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')" />
     </div>
 
     <label for="tip" class="col-sm-2 col-form-label"><b>Tip:</b></label>
     <div class="col-sm-10">
-      <input name="tip" type="text" placeholder="Vpišite tip avta" class="form-control" required />
+      <input name="tip" type="text" placeholder="Vpišite tip avta" class="form-control" required
+      oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')" />
     </div>
     
     <label for="znamka" class="col-sm-2 col-form-label"><b>Znamka:</b></label> 
     <div class="col-sm-10">
-      <input name="znamka" type="text" placeholder="Vpišite znamko avta" class="form-control" required />
+      <input name="znamka" type="text" placeholder="Vpišite znamko avta" class="form-control" required
+      oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')" />
     </div>
 
     <label for="cena" class="col-sm-2 col-form-label"><b>Cena:</b></label>
     <div class="col-sm-10">
-      <input name="cena" type="number" min="0" step = ".01" lang="en" placeholder="Vpišite ceno avta" class="form-control" style="padding:12px 20px; margin:8px 0px; width:50%;" required/>
+      <input name="cena" type="number" min="0" step = ".01" lang="en" placeholder="Vpišite ceno avta" class="form-control"
+        style="padding:12px 20px; margin:8px 0px; width:50%;" required
+        oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')" />
     </div> 
 
     <label for="leto_izdelave" class="col-sm-2 col-form-label"><b>Leto izdelave:</b></label>
     <div class="col-sm-10">
-      <input name="leto_izdelave" type="number" min="1970" max="2020" lang="en" placeholder="Vpišite leto izdelave" class="form-control" style="padding:12px 20px; margin:8px 0px;width:50%;" required/>
+      <input name="leto_izdelave" type="number" min="1970" max="2020" lang="en" placeholder="Vpišite leto izdelave"
+        class="form-control" style="padding:12px 20px; margin:8px 0px;width:50%;" required
+        oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')"/>
     </div>
 
     <label for="novi" class="col-sm-2 col-form-label"><b>Starost:</b></label>

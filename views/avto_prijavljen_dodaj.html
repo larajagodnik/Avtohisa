@@ -1,11 +1,5 @@
 %rebase('zacetna.html', naslov='Dodaj nov avto', uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
-%if status != 1:
-  <div id="napaka_prijavljeni2" class="alert alert-danger" style="display: -ms-grid;" role="alert">
-  Prosimo prijavite se z ustreznim statusom!
-  </div>
-
-%else:
   <!-- forma za dodajanje novega avta -->
 
   <form action="{{ROOT}}avto_prijavljen/dodaj" method="post" style="width:60%;">
@@ -87,4 +81,3 @@
   </div>
 
   <script src="{{ROOT}}static/avtohisa.js"></script>
-%end

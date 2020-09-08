@@ -1,54 +1,48 @@
 %rebase('zacetna.html', naslov='Podatki servisa', uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
 <!-- forma za dodajanje podatkov o servisu -->
-%if status == 1 or status == 2:
-    <form action="{{ROOT}}avto_prijavljen/dodaj_servis" style="width:60%;" method="post">
-    <input type="text" name="id_avta" hidden value={{id}}>
+<form action="{{ROOT}}avto_prijavljen/dodaj_servis" style="width:60%;" method="post">
+<input type="text" name="id_avta" hidden value={{id}}>
 
-    <h4>Vnesite podatke o servisu za avto {{id}}</h4>
+<h4>Vnesite podatke o servisu za avto {{id}}</h4>
 
-    <div class="form-group row">
-        <label for="datum" class="col-sm-2 col-form-label"><b>Datum:</b></label>
-        <div class="col-sm-10">
-            <!-- če avto že ima servis ali pripravo, datum naslednjega servisa omejimo z min= datum prejsnjega servisa -->
-            %if datum_zadnjega_servisa:
-                %for datum in datum_zadnjega_servisa:
-                    <input id="datum" name="datum" type="date" class="form-control" style="margin:8px 15px; width:auto" min="{{datum[0]}}" required
-                    oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')"/>
-                %end
-            %else:
-                <input id="datum" name="datum" type="date" class="form-control" style="margin:8px 15px; width:auto" required
-                oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')" />
+<div class="form-group row">
+    <label for="datum" class="col-sm-2 col-form-label"><b>Datum:</b></label>
+    <div class="col-sm-10">
+        <!-- če avto že ima servis ali pripravo, datum naslednjega servisa omejimo z min= datum prejsnjega servisa -->
+        %if datum_zadnjega_servisa:
+            %for datum in datum_zadnjega_servisa:
+                <input id="datum" name="datum" type="date" class="form-control" style="margin:8px 15px; width:auto" min="{{datum[0]}}" required
+                oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')"/>
             %end
-        </div>
-
-        <label for="serviser" class="col-sm-2 col-form-label"><b>Serviser:</b></label>
-        <div class="col-sm-10">
-        <select name="Serviser" style="width:auto; display:inline-block; margin:8px 15px;" class="form-control" id="izberi_serviserja" required
-            oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')">
-            <option value="" selected>Izberite serviserja</option>
-            %for z in zaposleni:
-                <option value="{{z[0]}}">{{z[1]}}</option>   
-            %end
-        </select>
-        </div>
-
-        <label for="tip_servisa" class="col-sm-2 col-form-label"><b>Tip servisa:</b></label>
-        <div class="col-sm-10">
-        <select selecz name="tip_servisa" style="width:auto; display:inline-block; margin:8px 15px;" class="form-control" id="tip_servisa">
-            <option  value="Mali">Mali servis</option>
-            <option  value="Večji">Večji servis</option>
-            <option  value="Velik">Velik servis</option>
-        </select>
-        </div>
-
+        %else:
+            <input id="datum" name="datum" type="date" class="form-control" style="margin:8px 15px; width:auto" required
+            oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')" />
+        %end
     </div>
-    <input class="btn btn-secondary potrdi" style="background-color: #f2f2f2; color:black" value="Shrani" type="submit"></input>
-    </form>
 
-    <script src="{{ROOT}}static/avtohisa.js"></script>
-%else:
-    <div id="napaka_prijavljeni8" class="alert alert-danger" style="display: -ms-grid;" role="alert">
-    Prosimo prijavite se z ustreznim statusom!
+    <label for="serviser" class="col-sm-2 col-form-label"><b>Serviser:</b></label>
+    <div class="col-sm-10">
+    <select name="Serviser" style="width:auto; display:inline-block; margin:8px 15px;" class="form-control" id="izberi_serviserja" required
+        oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')">
+        <option value="" selected>Izberite serviserja</option>
+        %for z in zaposleni:
+            <option value="{{z[0]}}">{{z[1]}}</option>   
+        %end
+    </select>
     </div>
-%end
+
+    <label for="tip_servisa" class="col-sm-2 col-form-label"><b>Tip servisa:</b></label>
+    <div class="col-sm-10">
+    <select selecz name="tip_servisa" style="width:auto; display:inline-block; margin:8px 15px;" class="form-control" id="tip_servisa">
+        <option  value="Mali">Mali servis</option>
+        <option  value="Večji">Večji servis</option>
+        <option  value="Velik">Velik servis</option>
+    </select>
+    </div>
+
+</div>
+<input class="btn btn-secondary potrdi" style="background-color: #f2f2f2; color:black" value="Shrani" type="submit"></input>
+</form>
+
+<script src="{{ROOT}}static/avtohisa.js"></script>

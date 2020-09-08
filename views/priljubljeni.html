@@ -1,49 +1,43 @@
 %rebase('zacetna.html', naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
-%if status == 3:
-    <script src="{{ROOT}}static/avtohisa.js"></script>
 
-    <!-- PRILJUBLJENI-->
-    <table class="table table-striped zgornja_meja_tabele" cellpadding="0" cellspacing="2" border="1">
+<script src="{{ROOT}}static/avtohisa.js"></script>
+
+<!-- PRILJUBLJENI-->
+<table class="table table-striped zgornja_meja_tabele" cellpadding="0" cellspacing="2" border="1">
+    <tr>
+        <th>Id</th>
+        <th>Barva</th>
+        <th>Tip</th>
+        <th>Znamka</th>
+        <th>Leto izdelave</th>
+        <th>Cena</th>
+        <th>Odstrani iz priljubljenih</th>
+    </tr>
+    %for (id,barva,tip,znamka,cena,leto_izdelave,novi) in avto:
         <tr>
-            <th>Id</th>
-            <th>Barva</th>
-            <th>Tip</th>
-            <th>Znamka</th>
-            <th>Leto izdelave</th>
-            <th>Cena</th>
-            <th>Odstrani iz priljubljenih</th>
-        </tr>
-        %for (id,barva,tip,znamka,cena,leto_izdelave,novi) in avto:
-            <tr>
-                <td>{{id}}</td>
-                <td>{{barva}}</td>
-                <td>{{tip}}</td>
-                <td>{{znamka}}</td>
-                <td>{{leto_izdelave}}</td>
-                <td>{{cena}}</td>
-                <td>
-                    <!-- ko zelimo odstraniti avto iz priljubljenih se najprej pojavi okno ali smo prepricani da to zelimo -->
-                    <form action="{{ROOT}}avto/priljubljeni/{{id}}">
-                        <button class="btn btn-secondary" style="background-color: #f2f2f2; color:black" type="button" onclick="odpri_okno_brisi(this)" data-id="{{id}}">Odstrani</button>
-                        <div id="hidden_div1{{id}}" class="modal" style="display: none">
-                            <div class="modal_content_odstrani_vecji">
-                                <span class="close" onclick="zapri_okno_brisi(this)" data-id="{{id}}">&times;</span>
-                                  <p class="pojavna_okna_besedilo">Ali ste prepričani, da želite iz priljubljenih avtomobilov odstraniti avto s serijsko številko: <b>{{id}}</b></p>                              
-                                <div class="center_poravnava">
-                                    <input class="btn btn-secondary potrdi" style="background-color: #f2f2f2; color:black" type="submit" value="Potrdi"></input>
-                                </div>
+            <td>{{id}}</td>
+            <td>{{barva}}</td>
+            <td>{{tip}}</td>
+            <td>{{znamka}}</td>
+            <td>{{leto_izdelave}}</td>
+            <td>{{cena}}</td>
+            <td>
+                <!-- ko zelimo odstraniti avto iz priljubljenih se najprej pojavi okno ali smo prepricani da to zelimo -->
+                <form action="{{ROOT}}avto/priljubljeni/{{id}}">
+                    <button class="btn btn-secondary" style="background-color: #f2f2f2; color:black" type="button" onclick="odpri_okno_brisi(this)" data-id="{{id}}">Odstrani</button>
+                    <div id="hidden_div1{{id}}" class="modal" style="display: none">
+                        <div class="modal_content_odstrani_vecji">
+                            <span class="close" onclick="zapri_okno_brisi(this)" data-id="{{id}}">&times;</span>
+                                <p class="pojavna_okna_besedilo">Ali ste prepričani, da želite iz priljubljenih avtomobilov odstraniti avto s serijsko številko: <b>{{id}}</b></p>                              
+                            <div class="center_poravnava">
+                                <input class="btn btn-secondary potrdi" style="background-color: #f2f2f2; color:black" type="submit" value="Potrdi"></input>
                             </div>
-                          </div>
-                    </form>
-                </td>
-            </tr>
-        %end
-    </table>
-
-%else:
-    <div id="napaka_prijavljeni9" class="alert alert-danger" style="display: -ms-grid;" role="alert">
-    Prosimo prijavite se z ustreznim statusom!
-    </div>
-%end
+                        </div>
+                        </div>
+                </form>
+            </td>
+        </tr>
+    %end
+</table>
 

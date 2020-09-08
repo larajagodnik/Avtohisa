@@ -3,7 +3,8 @@ from bottle import *
 
 
 #Uvoz podatkov za povezavo
-import auth_public as auth
+### import auth_public as auth
+import conf_baza as auth
 
 #Uvoz psycopg2
 import psycopg2, psycopg2.extensions, psycopg2.extras
@@ -79,6 +80,9 @@ def avto(x):
     if str(x) == 'vsi':
         redirect('{}'.format(ROOT))
     if str(x) == 'priljubljeni':
+        pravice = ima_pravice()
+        if (pravice != 3) or pravice is None:
+            return
         cur.execute("SELECT avto.* FROM avto JOIN priljubljeni ON avto.id = priljubljeni.id_avto WHERE uporabnik LIKE %s", (uporabnik,))
         naslov = 'Priljubljeni avti'
         return rtemplate('priljubljeni.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
@@ -86,6 +90,11 @@ def avto(x):
 # get zahtevek za tabelo avtov ko imas status 1 ali 2 (lastnik, zaposleni) in kliknes upravljaj avte
 @get('/avto_prijavljen')
 def avto_prijavljen():
+
+    pravice = ima_pravice()
+    if (pravice != 1 and pravice != 2) or pravice is None:
+        return
+
     uporabnik = request.get_cookie('account', secret=skrivnost)
     napaka = request.get_cookie('napaka', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
@@ -105,6 +114,11 @@ def avto_prijavljen():
 # preusmeri te na formo kjer dodajas avto
 @get('/avto_prijavljen/dodaj')
 def avto_prijavljen_dodaj():
+
+    pravice = ima_pravice()
+    if pravice != 1 or pravice is None:
+        return
+
     uporabnik = request.get_cookie('account', secret=skrivnost)
     napaka = request.get_cookie('napaka', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
@@ -114,7 +128,7 @@ def avto_prijavljen_dodaj():
 # iz forme dobis podatke in jih vstavis v bazo
 @post('/avto_prijavljen/dodaj')
 def dodaj_avto():
-    
+
     Id_avta = request.forms.Id_avta
     barva = request.forms.barva
     tip = request.forms.tip
@@ -186,6 +200,11 @@ def brisi_avto():
 # tabela prodanih avtomobilov
 @get('/prodaja_tabela')
 def prodaja_tabela():
+
+    pravice = ima_pravice()
+    if (pravice != 1 and pravice != 2) or pravice is None:
+        return
+
     cur.execute("SELECT * FROM prodaja ORDER BY datum")
     uporabnik = request.get_cookie('account', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
@@ -196,18 +215,26 @@ def prodaja_tabela():
 # tabela zaposlenih
 @get('/zaposleni')
 def zaposleni():
+
+    pravice = ima_pravice()
+    if pravice != 1 or pravice is None:
+        return
+
     uporabnik = request.get_cookie('account', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
     napaka = request.get_cookie('napaka', secret=skrivnost)
     status = request.get_cookie('dovoljenje', secret=skrivnost)
-    cur.execute("""
-        SELECT * FROM zaposleni
-        ORDER BY zaposleni.ime""")
+    cur.execute("SELECT * FROM zaposleni WHERE trenutno_zaposlen = True ORDER BY zaposleni.ime")
     return rtemplate('zaposleni.html', zaposleni=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
 # tabela servis podatkov
 @get('/servis')
 def servis():
+
+    pravice = ima_pravice()
+    if (pravice != 1 and pravice != 2) or pravice is None:
+        return
+
     cur.execute("SELECT * FROM servis")
     uporabnik = request.get_cookie('account', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
@@ -259,6 +286,11 @@ def dodaj_servis():
 # tabela priprava
 @get('/priprava')
 def priprava():
+
+    pravice = ima_pravice()
+    if (pravice != 1 and pravice != 2) or pravice is None:
+        return
+
     cur.execute("SELECT * FROM priprava")
     uporabnik = request.get_cookie('account', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
@@ -269,6 +301,7 @@ def priprava():
 # za gumb, ki zepreusmeri na formo za dodajanje podatkov o pripravi
 @post('/avto_prijavljen/dodaj_pripravo_info/<id>')
 def dodaj_pripravo_info(id):
+
     cur.execute("SELECT id_zaposlenega, ime FROM zaposleni WHERE tip_zaposlenega LIKE 'Serviser'")
     zaposleni = cur.fetchall()
     cur.execute("SELECT * FROM priprava")
@@ -314,6 +347,11 @@ def odstrani_priljubljeni_avto(id):
 # klik na dodaj zaposlenega te preusmer na formo
 @get('/zaposleni/dodaj')
 def zaposleni_dodaj():
+
+    pravice = ima_pravice()
+    if pravice != 1 or pravice is None:
+        return
+
     uporabnik = request.get_cookie('account', secret=skrivnost)
     napaka = request.get_cookie('napaka', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
@@ -330,8 +368,9 @@ def dodaj_zaposlenega():
     placa = request.forms.placa
     naslov = request.forms.naslov
 
-    sql = "INSERT INTO zaposleni (id_zaposlenega, tip_zaposlenega, ime, telefon, placa, naslov) VALUES (%s, %s, %s, %s, %s, %s)"
-    val = (Id_zaposlenega, tip_zaposlenega, ime, telefon, placa, naslov)
+    sql = """INSERT INTO zaposleni (id_zaposlenega, tip_zaposlenega, ime, telefon, placa, naslov, trenutno_zaposleni)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)"""
+    val = (Id_zaposlenega, tip_zaposlenega, ime, telefon, placa, naslov, "false")
     cur.execute(sql,val)
 
     redirect('{}zaposleni'.format(ROOT))
@@ -339,8 +378,16 @@ def dodaj_zaposlenega():
 # za gumb odstrani zaposlenega
 @get('/zaposleni/<id>')
 def odstrani_zaposlenega(id):
-    cur.execute("DELETE FROM zaposleni WHERE id_zaposlenega = %s", (id, ))  
+    cur.execute("UPDATE zaposleni SET trenutno_zaposlen = False WHERE id_zaposlenega = %s", (id, ))  
     redirect('{}zaposleni'.format(ROOT))
+
+@get('/ni_pravic')
+def ni_pravic():
+    uporabnik = request.get_cookie('account', secret=skrivnost)
+    registracija = request.get_cookie('registracija', secret=skrivnost)
+    napaka = request.get_cookie('napaka', secret=skrivnost)
+    status = request.get_cookie('dovoljenje', secret=skrivnost)
+    return rtemplate('ni_pravic.html', uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
 #########################################################
 #### Prijava
@@ -366,13 +413,26 @@ def preveri_za_uporabnika(uporabnik):
         cur.execute("SELECT uporabnik FROM prijava WHERE uporabnik = %s", (uporabnik, ))
         #uporabnik = cur.fetchone([0])
         uporabnik = cur.fetchone()
-        print(uporabnik, 1234)
         if uporabnik==None:
             return True
         else:
             return False
     except:
         return False
+
+def ima_pravice():
+    username = request.get_cookie("username", secret=skrivnost)
+    if username:
+        pravice = None
+        try:
+            cur.execute("SELECT status FROM prijava WHERE uporabnik LIKE %s", (str(username), ))
+            pravice = cur.fetchone()
+        except:
+            pravice = None
+        if pravice:
+            return pravice[0]
+    redirect('/ni_pravic')
+
 
 def dodaj_uporabnika(ime, priimek, uporabnik, geslo, dovoljenje):
     salt = hashlib.sha256(os.urandom(60)).hexdigest().encode('ascii')
@@ -403,7 +463,6 @@ def registriraj():
     geslo2 = request.forms.password2
     if geslo1 == geslo2:
         preveri = preveri_za_uporabnika(username)
-        print(preveri)
         if preveri:
             dodaj_uporabnika(ime, priimek, username, geslo1, 3)
             response.delete_cookie('registracija')
@@ -427,6 +486,7 @@ def prijava_post():
     if preveri:
         ime, status = preveri
         response.set_cookie('account', ime, secret=skrivnost)
+        response.set_cookie('username', username, secret=skrivnost)
         response.delete_cookie('napaka')
         response.set_cookie('dovoljenje', status, secret=skrivnost)
     else:
@@ -438,6 +498,7 @@ def prijava_post():
 def odjava():
     response.delete_cookie('account')
     response.delete_cookie('dovoljenje')
+    response.delete_cookie('username')
     redirect('{}avto/vsi'.format(ROOT))
 
     

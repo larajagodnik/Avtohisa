@@ -1,86 +1,80 @@
 %rebase('zacetna.html', naslov='Tabela avtov', uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
-%if status == 1 or status == 2:
-  <script src="{{ROOT}}static/avtohisa.js"></script>
+<script src="{{ROOT}}static/avtohisa.js"></script>
 
-  <table class="table table-striped zgornja_meja_tabele" cellpadding="0" cellspacing="2" border="1">
-    <tr>
-        <th>Id</th>
-        <th>Barva</th>
-        <th>Tip</th>
-        <th>Znamka</th>
-        <th>Cena</th>
-        <th>Leto izdelave</th>
-        <th>Ali je nov</th>
-        <th>Datum zadnje priprave/servisa</th>
-        <th>Prodaj</th>
-        <th></th>
+<table class="table table-striped zgornja_meja_tabele" cellpadding="0" cellspacing="2" border="1">
+  <tr>
+      <th>Id</th>
+      <th>Barva</th>
+      <th>Tip</th>
+      <th>Znamka</th>
+      <th>Cena</th>
+      <th>Leto izdelave</th>
+      <th>Ali je nov</th>
+      <th>Datum zadnje priprave/servisa</th>
+      <th>Prodaj</th>
+      <th></th>
 
 
-    </tr>
-    %for (id,barva,tip,znamka,cena,leto_izdelave,novi,pripravljen,servisiran,je_prodan) in avto:
-        <tr>
-            <td >{{id}}</td>
-            <td>{{barva}}</td>
-            <td>{{tip}}</td>
-            <td>{{znamka}}</td>
-            <td>{{cena}}</td>
-            <td>{{leto_izdelave}}</td>
-            <td>{{novi}}</td>
-            <td>{{pripravljen}}{{servisiran}}</td>
-            <td>
+  </tr>
+  %for (id,barva,tip,znamka,cena,leto_izdelave,novi,pripravljen,servisiran,je_prodan) in avto:
+      <tr>
+          <td >{{id}}</td>
+          <td>{{barva}}</td>
+          <td>{{tip}}</td>
+          <td>{{znamka}}</td>
+          <td>{{cena}}</td>
+          <td>{{leto_izdelave}}</td>
+          <td>{{novi}}</td>
+          <td>{{pripravljen}}{{servisiran}}</td>
+          <td>
 
-              <!-- če je avto nov in še ni pripravljen ga ne morejo prodati -->
-              %if novi == True and pripravljen == None:
-                  Ni še pripravljen
-              %else:
-                %if je_prodan == None:
-                  <!-- če avto še ni prodan se pojavi okno ali res zelijo prodati -->
-                  <form action="{{ROOT}}avto_prijavljen/prodaja/{{id}}" method="post">
-                    <button class="btn btn-secondary" style="background-color: #f2f2f2; color:black" type="button" onclick="odpri_okno_brisi(this)" data-id="{{id}}">Prodaj</button>
-                    <div id="hidden_div1{{id}}" class="modal" style="display: none">
-                      <div class="modal_content_odstrani">
-                          <span class="close" onclick="zapri_okno_brisi(this)" data-id="{{id}}">&times;</span>
-                          <p class="pojavna_okna_besedilo">Ali ste prepričani da želite prodati avto s serijsko številko <b>{{id}}</b></p>
-                          <div class="center_poravnava">
-                            <input  class="btn btn-secondary" style="background-color: #f2f2f2; color:black" type="submit" value="Prodaj"></input>
-                          </div>
-                    </div>
-                  </form>
-                <!-- če je prodan ga ne morejo prodati še enkrat -->
-                %else:
-                <b> Prodan </b>
-                %end
-              %end 
-            </td>   
-
-            <td>
-              <!-- če je avto nov mu lahko dodamo pripravo, kasneje mu lahko dodamo servis; rabljenemu avtu lahko dodamo servis -->
-              %if novi == True:
-                %if pripravljen == None:
-                  <form action="{{ROOT}}avto_prijavljen/dodaj_pripravo_info/{{id}}" method="post">
-                    <input class="btn btn-secondary" style="background-color: #f2f2f2; color:black" value="Dodaj pripravo" type="submit" />
-                  </form>
-                %else:
-                <form action="{{ROOT}}avto_prijavljen/dodaj_servis_info/{{id}}" method="post">
-                  <input class="btn btn-secondary" style="background-color: #f2f2f2; color:black" value="Dodaj servis" type="submit" />
+            <!-- če je avto nov in še ni pripravljen ga ne morejo prodati -->
+            %if novi == True and pripravljen == None:
+                Ni še pripravljen
+            %else:
+              %if je_prodan == None:
+                <!-- če avto še ni prodan se pojavi okno ali res zelijo prodati -->
+                <form action="{{ROOT}}avto_prijavljen/prodaja/{{id}}" method="post">
+                  <button class="btn btn-secondary" style="background-color: #f2f2f2; color:black" type="button" onclick="odpri_okno_brisi(this)" data-id="{{id}}">Prodaj</button>
+                  <div id="hidden_div1{{id}}" class="modal" style="display: none">
+                    <div class="modal_content_odstrani">
+                        <span class="close" onclick="zapri_okno_brisi(this)" data-id="{{id}}">&times;</span>
+                        <p class="pojavna_okna_besedilo">Ali ste prepričani da želite prodati avto s serijsko številko <b>{{id}}</b></p>
+                        <div class="center_poravnava">
+                          <input  class="btn btn-secondary" style="background-color: #f2f2f2; color:black" type="submit" value="Prodaj"></input>
+                        </div>
+                  </div>
                 </form>
-                %end
+              <!-- če je prodan ga ne morejo prodati še enkrat -->
               %else:
-                <form action="{{ROOT}}avto_prijavljen/dodaj_servis_info/{{id}}" method="post">
-                  <input class="btn btn-secondary" style="background-color: #f2f2f2; color:black" value="Dodaj servis" type="submit" />
+              <b> Prodan </b>
+              %end
+            %end 
+          </td>   
+
+          <td>
+            <!-- če je avto nov mu lahko dodamo pripravo, kasneje mu lahko dodamo servis; rabljenemu avtu lahko dodamo servis -->
+            %if novi == True:
+              %if pripravljen == None:
+                <form action="{{ROOT}}avto_prijavljen/dodaj_pripravo_info/{{id}}" method="post">
+                  <input class="btn btn-secondary" style="background-color: #f2f2f2; color:black" value="Dodaj pripravo" type="submit" />
                 </form>
-              %end   
-              
-            </td> 
-          
+              %else:
+              <form action="{{ROOT}}avto_prijavljen/dodaj_servis_info/{{id}}" method="post">
+                <input class="btn btn-secondary" style="background-color: #f2f2f2; color:black" value="Dodaj servis" type="submit" />
+              </form>
+              %end
+            %else:
+              <form action="{{ROOT}}avto_prijavljen/dodaj_servis_info/{{id}}" method="post">
+                <input class="btn btn-secondary" style="background-color: #f2f2f2; color:black" value="Dodaj servis" type="submit" />
+              </form>
+            %end   
+            
+          </td> 
+        
 
-        </tr>
-    %end
-  </table>
+      </tr>
+  %end
+</table>
 
-%else:
-  <div id="napaka_prijavljeni1" class="alert alert-danger" style="display: -ms-grid;" role="alert">
-  Prosimo prijavite se z ustreznim statusom!
-  </div>
-%end

@@ -1,6 +1,5 @@
 %rebase('zacetna.html', naslov="Prodani avtomobili", uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
-%if status == 1 or status == 2:
     <!-- PRODAJA -->
     <table class="table table-striped zgornja_meja_tabele" cellpadding="0" cellspacing="2" border="1">
         <tr>
@@ -21,8 +20,3 @@
             </tr>
         %end
     </table>
-%else:
-    <div id="napaka_prijavljeni3" class="alert alert-danger" style="display: -ms-grid;" role="alert">
-    Prosimo prijavite se z ustreznim statusom!
-    </div>
-%end

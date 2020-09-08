@@ -1,53 +1,48 @@
 
 %rebase('zacetna.html', naslov='Zaposleni', uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
-%if status == 1:
-    <script src="{{ROOT}}static/avtohisa.js"></script>
 
-    <!-- ZAPOSLENI-->
-    <table class="table table-striped zgornja_meja_tabele"  cellpadding="0" cellspacing="2" border="1">
+<script src="{{ROOT}}static/avtohisa.js"></script>
+
+<!-- ZAPOSLENI-->
+<table class="table table-striped zgornja_meja_tabele"  cellpadding="0" cellspacing="2" border="1">
+    <tr>
+        <th>Id zaposlenega</th>
+        <th>Ime</th>
+        <th>Tip zaposlenega</th>
+        <th>Placa</th>
+        <th>Telefon</th>
+        <th>Naslov</th>
+        <th>Odstrani zaposlenega</th>
+    </tr>
+    %for (id_zaposlenega,tip_zaposlenega,ime,telefon,placa,naslov) in zaposleni:
         <tr>
-            <th>Id zaposlenega</th>
-            <th>Ime</th>
-            <th>Tip zaposlenega</th>
-            <th>Placa</th>
-            <th>Telefon</th>
-            <th>Naslov</th>
-            <th>Odstrani zaposlenega</th>
-        </tr>
-        %for (id_zaposlenega,tip_zaposlenega,ime,telefon,placa,naslov) in zaposleni:
-            <tr>
-                <td>{{id_zaposlenega}}</td>
-                <td>{{ime}}</td>
-                <td>{{tip_zaposlenega}}</td>
-                <td>{{placa}}</td>
-                <td>{{telefon}}</td>
-                <td>{{naslov}}</td>
+            <td>{{id_zaposlenega}}</td>
+            <td>{{ime}}</td>
+            <td>{{tip_zaposlenega}}</td>
+            <td>{{placa}}</td>
+            <td>{{telefon}}</td>
+            <td>{{naslov}}</td>
 
-                %if tip_zaposlenega == "Lastnik":
-                    <td></td>
-                %else:
-                    <td>
-                        <!-- ko zelimo odstraniti zaposlenega se najprej pojavi okno ali smo prepricani -->
-                        <form action="{{ROOT}}zaposleni/{{id_zaposlenega}}">
-                            <button class="btn btn-secondary" style="background-color: #f2f2f2; color:black" type="button" onclick="odpri_okno_brisi(this)" data-id="{{id_zaposlenega}}">Odstrani</button>
-                            <div id="hidden_div1{{id_zaposlenega}}" class="modal" style="display: none">
-                                <div class="modal_content_odstrani">
-                                    <span class="close" onclick="zapri_okno_brisi(this)" data-id="{{id_zaposlenega}}">&times;</span>
-                                    <p class="pojavna_okna_besedilo">Ali ste prepričani da želite iz baze zaposlenih odstraniti osebo: <b>{{ime}}</b></p>                              
-                                    <div class="center_poravnava">
-                                        <input class="btn btn-secondary potrdi" style="background-color: #f2f2f2; color:black" type="submit" value="Potrdi"></input>
-                                    </div>
+            %if tip_zaposlenega == "Lastnik":
+                <td></td>
+            %else:
+                <td>
+                    <!-- ko zelimo odstraniti zaposlenega se najprej pojavi okno ali smo prepricani -->
+                    <form action="{{ROOT}}zaposleni/{{id_zaposlenega}}">
+                        <button class="btn btn-secondary" style="background-color: #f2f2f2; color:black" type="button" onclick="odpri_okno_brisi(this)" data-id="{{id_zaposlenega}}">Odstrani</button>
+                        <div id="hidden_div1{{id_zaposlenega}}" class="modal" style="display: none">
+                            <div class="modal_content_odstrani">
+                                <span class="close" onclick="zapri_okno_brisi(this)" data-id="{{id_zaposlenega}}">&times;</span>
+                                <p class="pojavna_okna_besedilo">Ali ste prepričani da želite iz baze zaposlenih odstraniti osebo: <b>{{ime}}</b></p>                              
+                                <div class="center_poravnava">
+                                    <input class="btn btn-secondary potrdi" style="background-color: #f2f2f2; color:black" type="submit" value="Potrdi"></input>
                                 </div>
                             </div>
-                        </form>
-                    </td>
-                %end
-            </tr>
-        %end
-    </table>
-%else:
-    <div id="napaka_prijavljeni4" class="alert alert-danger" style="display: -ms-grid;" role="alert">
-    Prosimo prijavite se z ustreznim statusom!
-    </div>
-%end
+                        </div>
+                    </form>
+                </td>
+            %end
+        </tr>
+    %end
+</table>

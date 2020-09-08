@@ -111,6 +111,7 @@ def ustvari_tabelo_servis():
               datum DATE,
               tip_servisa TEXT,
               id_zaposlenega TEXT NOT NULL,
+              trenutno_zaposlen BOOL DEFAULT True
               FOREIGN KEY (id_zaposlenega)
                 REFERENCES zaposleni(id_zaposlenega)
                 ON DELETE NO ACTION

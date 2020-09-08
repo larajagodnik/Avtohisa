@@ -2,7 +2,7 @@
 
 <!-- forma za dodajanje podatkov o servisu -->
 
-<form action="/avto_prijavljen/dodaj_servis" style="width:60%;" method="post">
+<form action="{{ROOT}}avto_prijavljen/dodaj_servis" style="width:60%;" method="post">
 <input type="text" name="id_avta" hidden value={{id}}>
 
 <h4>Vnesite podatke o servisu za avto {{id}}</h4>
@@ -43,4 +43,4 @@
 <input class="btn btn-secondary potrdi" style="background-color: #f2f2f2; color:black" value="Shrani" type="submit"></input>
 </form>
 
-<script src="/static/avtohisa.js"></script>
+<script src="{{ROOT}}static/avtohisa.js"></script>

@@ -1,6 +1,6 @@
 
 %rebase('zacetna.html', naslov='Zaposleni', uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
-<script src="/static/avtohisa.js"></script>
+<script src="{{ROOT}}static/avtohisa.js"></script>
 
 <!-- ZAPOSLENI-->
 <table class="table table-striped zgornja_meja_tabele"  cellpadding="0" cellspacing="2" border="1">
@@ -23,7 +23,7 @@
             <td>{{naslov}}</td>
             <td>
                 <!-- ko zelimo odstraniti zaposlenega se najprej pojavi okno ali smo prepricani -->
-                <form action="/zaposleni/{{id_zaposlenega}}">
+                <form action="{{ROOT}}zaposleni/{{id_zaposlenega}}">
                     <button class="btn btn-secondary" style="background-color: #f2f2f2; color:black" type="button" onclick="odpri_okno_brisi(this)" data-id="{{id_zaposlenega}}">Odstrani</button>
                     <div id="hidden_div1{{id_zaposlenega}}" class="modal" style="display: none">
                         <div class="modal_content_odstrani">

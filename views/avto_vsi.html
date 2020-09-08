@@ -1,6 +1,6 @@
 %rebase('zacetna.html', naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
-<script src="/static/index.js"></script>
+<script src="{}static/index.js".format(ROOT)></script>
 
 <!-- selecti za tabelo vseh avtov za uporabnika -->
 <div class="selecti_div">
@@ -70,7 +70,7 @@
             %if status == 3:
                 %if je_priljubljen == None:
                     <td>
-                        <form action="/avto_vsi/dodaj_pod_priljubljene/{{id}}">
+                        <form action="{{ROOT}}avto_vsi/dodaj_pod_priljubljene/{{id}}">
                         <input type="submit" value="Med priljubljene"></input>
                         </form>
                     </td>

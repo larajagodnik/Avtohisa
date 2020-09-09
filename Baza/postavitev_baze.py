@@ -18,7 +18,7 @@ def izbrisi():
         cur.execute("DROP TABLE IF EXISTS avto CASCADE")
         cur.execute("DROP TABLE IF EXISTS zaposleni CASCADE")
         cur.execute("DROP TABLE IF EXISTS priljubljeni CASCADE")
-        cur.execute("DROP TABLE IF EXISTS prijava CASCADE")
+        #cur.execute("DROP TABLE IF EXISTS prijava CASCADE")
     print("Baza je izbrisana!")
 
 #id_zaposlenega spremenimo v emso?
@@ -181,6 +181,7 @@ def pravice():
             GRANT SELECT ON ALL TABLES IN SCHEMA public TO javnost;
             GRANT INSERT ON ALL TABLES IN SCHEMA public TO javnost;
             GRANT DELETE ON ALL TABLES IN SCHEMA public TO javnost;
+            GRANT UPDATE ON ALL TABLES IN SCHEMA public TO javnost;
             GRANT USAGE ON ALL SEQUENCES IN SCHEMA public TO javnost;
         """)
     print("Pravice dodane osebi: laraj in javnosti!")
@@ -222,7 +223,14 @@ def uvozi():
             cur = con.cursor()
             uvoziCSV(cur, 'rabljeni')
     except:
-        print("Neka napaka, podatki verjetno že obstajajo!")   
+        print("Neka napaka, podatki verjetno že obstajajo!")
+
+    try:
+        with psycopg2.connect(conn_string) as con:
+            cur = con.cursor()
+            uvoziCSV(cur, 'prijava')
+    except:
+        print("Neka napaka, podatki verjetno že obstajajo!")
     
 
 #Klicanje funkcij

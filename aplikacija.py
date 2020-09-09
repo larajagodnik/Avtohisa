@@ -58,9 +58,12 @@ def index():
     znamke = cur.fetchall()
    
     # avto ki je ze prodan se ne pokaze uporabnikom strani
-    cur.execute("SELECT avto.*, 1 as je_priljubljen FROM avto WHERE id NOT IN (SELECT DISTINCT id_avto FROM prodaja) ORDER BY avto.id")
+    cur.execute("""SELECT avto.*, 1 as je_priljubljen FROM avto 
+                    WHERE id NOT IN (SELECT DISTINCT id_avto FROM prodaja) ORDER BY avto.id""")
     if(request.get_cookie('account', secret=skrivnost)):
-        cur.execute("""SELECT avto.*, priljubljeni.id FROM avto LEFT JOIN priljubljeni ON
+        cur.execute("""SELECT avto.*, rabljeni.st_kilometrov, priljubljeni.id FROM avto
+                        LEFT JOIN rabljeni on avto.id = rabljeni.id_avto 
+                        LEFT JOIN priljubljeni ON
                         (avto.id = priljubljeni.id_avto AND priljubljeni.uporabnik LIKE %s )
                         WHERE avto.id NOT IN (SELECT DISTINCT id_avto FROM prodaja)
                         ORDER BY avto.id""", (uporabnik, ))
@@ -326,12 +329,12 @@ def dodaj_pripravo():
     datum = request.forms.datum
     id_zaposlenega = request.forms.Serviser
 
+    cur.execute("UPDATE novi SET pripravljen = True WHERE id_avto =  %s", (id_avta, ))
+
     sql = "INSERT INTO priprava (id_avto, datum, id_zaposlenega) VALUES (%s, %s, %s)"
     val = (id_avta, datum, id_zaposlenega)
     cur.execute(sql,val)
 
-    cur.execute("UPDATE novi SET pripravljen = True WHERE id_avto =  %s", (id_avta, ))
-        
     redirect('{}avto_prijavljen'.format(ROOT))
 
 ###############################
@@ -397,7 +400,7 @@ def dodaj_zaposlenega():
 
     sql = """INSERT INTO zaposleni (id_zaposlenega, tip_zaposlenega, ime, telefon, placa, naslov, trenutno_zaposlen)
             VALUES (%s, %s, %s, %s, %s, %s, %s)"""
-    val = (Id_zaposlenega, tip_zaposlenega, ime, telefon, placa, naslov, "false")
+    val = (Id_zaposlenega, tip_zaposlenega, ime, telefon, placa, naslov, "true")
     cur.execute(sql,val)
 
     redirect('{}zaposleni'.format(ROOT))

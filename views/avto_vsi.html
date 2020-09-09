@@ -34,8 +34,8 @@
 
     <select style="width:auto; display:inline-block;" class="selecti_za_tabelo form-control" id="starost" onchange="filtertabela(this)" data-stolpec="5">
         <option value="null" selected>Vse starosti</option>
-            <option value="DA">Nov</option>   
-            <option value="NE">Rabljen</option>  
+            <option value="True">Nov</option>   
+            <option value="False">Rabljen</option>  
     </select>
 </div>
 
@@ -46,23 +46,25 @@
         <th>Tip</th>
         <th>Znamka</th>
         <th>Leto izdelave</th>
-        <th>Ali je nov</th>
+        <th style="display: none;">Starost</th>
+        <th>Št kilometorv</th>
         <th>Cena</th>
         %if status == 3:
             <th>Dodaj med priljubljene</th>
         %end
     </tr>
-    %for (id,barva,tip,znamka,cena,leto_izdelave,novi,je_priljubljen) in avto:
+    %for (id,barva,tip,znamka,cena,leto_izdelave,novi,st_kilometrov,je_priljubljen) in avto:
         <tr>
             <td>{{id}}</td>
             <td>{{barva}}</td>
             <td>{{tip}}</td>
             <td>{{znamka}}</td>
             <td>{{leto_izdelave}}</td>
-            %if novi == True:
-                <td>DA</td>
+            <td style="display: none;">{{novi}}</td>
+            %if st_kilometrov:
+                <td>{{st_kilometrov}}</td>
             %else:
-                <td>NE</td>
+                <td></td>
             %end
             <td>{{cena}}</td>
 

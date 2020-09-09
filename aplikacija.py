@@ -58,7 +58,8 @@ def index():
     znamke = cur.fetchall()
    
     # avto ki je ze prodan se ne pokaze uporabnikom strani
-    cur.execute("""SELECT avto.*, 1 as je_priljubljen FROM avto 
+    cur.execute("""SELECT avto.*, st_kilometrov, 1 as je_priljubljen FROM avto 
+                    LEFT JOIN rabljeni on avto.id = rabljeni.id_avto 
                     WHERE id NOT IN (SELECT DISTINCT id_avto FROM prodaja) ORDER BY avto.id""")
     if(request.get_cookie('account', secret=skrivnost)):
         cur.execute("""SELECT avto.*, rabljeni.st_kilometrov, priljubljeni.id FROM avto

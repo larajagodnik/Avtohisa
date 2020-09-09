@@ -113,7 +113,7 @@ def avto_prijavljen():
                 LEFT JOIN priprava ON avto.id = priprava.id_avto
                 LEFT JOIN servis ON avto.id = servis.id_avto
                 LEFT JOIN rabljeni ON avto.id = rabljeni.id_avto
-                ORDER BY avto.id""")
+                ORDER BY je_prodan DESC, avto.id""")
     return rtemplate('avto_prijavljen.html', avto=cur, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
 
@@ -179,7 +179,7 @@ def dodaj_avto():
 @post('/avto_prijavljen/prodaja/<id>')
 def prodaja(id):
 
-    cur.execute("SELECT datum FROM servis WHERE id_avto = %s ORDER BY datum desc LIMIT 1", (id, ))
+    cur.execute("SELECT datum FROM servis WHERE id_avto = %s ORDER BY datum DESC LIMIT 1", (id, ))
     datum_zadnjega_servisa1 = cur.fetchall()
     cur.execute("SELECT servis FROM rabljeni WHERE id_avto = %s", (id, ))
     datum_zadnjega_servisa2 = cur.fetchall()
@@ -251,7 +251,7 @@ def servis():
 @post('/avto_prijavljen/dodaj_servis_info/<id>')
 def dodaj_servis_info(id):
 
-    cur.execute("SELECT datum FROM servis WHERE id_avto = %s ORDER BY datum desc LIMIT 1", (id, ))
+    cur.execute("SELECT datum FROM servis WHERE id_avto = %s ORDER BY datum DESC LIMIT 1", (id, ))
     datum_zadnjega_servisa1 = cur.fetchall()
     cur.execute("SELECT servis FROM rabljeni WHERE id_avto = %s", (id, ))
     datum_zadnjega_servisa2 = cur.fetchall()

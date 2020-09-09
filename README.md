@@ -44,7 +44,8 @@ Projekt pri OPB
     * ime,
     * telefon,
     * placa,
-    * naslov.
+    * naslov
+    * trenutno_zaposlen.
 * V tabeli *priljubljeni* imamo podatke:
     * id,
     * uporabnik,

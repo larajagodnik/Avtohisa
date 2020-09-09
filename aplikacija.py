@@ -187,7 +187,8 @@ def prodaja(id):
     datum_priprave = cur.fetchall()
     datum_omejim_min = max(datum_zadnjega_servisa1, datum_zadnjega_servisa2, datum_priprave)
 
-    cur.execute("SELECT id_zaposlenega, ime FROM zaposleni WHERE tip_zaposlenega LIKE 'Prodajalec' OR tip_zaposlenega LIKE 'Lastnik'")
+    cur.execute("""SELECT id_zaposlenega, ime FROM zaposleni
+        	    WHERE tip_zaposlenega LIKE 'Prodajalec' OR tip_zaposlenega LIKE 'Lastnik'  AND trenutno_zaposlen = 'True'""")
     zaposleni = cur.fetchall()
 
     cur.execute("SELECT id, id_avto, datum, nacin_placila, id_zaposlenega FROM prodaja")
@@ -258,7 +259,7 @@ def dodaj_servis_info(id):
     datum_priprave = cur.fetchall()
     datum_zadnjega_servisa = max(datum_zadnjega_servisa1, datum_zadnjega_servisa2, datum_priprave)
 
-    cur.execute("SELECT id_zaposlenega, ime FROM zaposleni WHERE tip_zaposlenega LIKE 'Serviser' ")
+    cur.execute("SELECT id_zaposlenega, ime FROM zaposleni WHERE tip_zaposlenega LIKE 'Serviser' AND trenutno_zaposlen = 'True'")
     zaposleni = cur.fetchall()
     cur.execute("SELECT id, id_avto, datum, tip_servisa, id_zaposlenega FROM servis")
 
@@ -310,7 +311,7 @@ def priprava():
 @post('/avto_prijavljen/dodaj_pripravo_info/<id>')
 def dodaj_pripravo_info(id):
 
-    cur.execute("SELECT id_zaposlenega, ime FROM zaposleni WHERE tip_zaposlenega LIKE 'Serviser'")
+    cur.execute("SELECT id_zaposlenega, ime FROM zaposleni WHERE tip_zaposlenega LIKE 'Serviser' AND trenutno_zaposlen = 'True'")
     zaposleni = cur.fetchall()
     cur.execute("SELECT * FROM priprava")
 

@@ -188,7 +188,7 @@ def prodaja(id):
     datum_omejim_min = max(datum_zadnjega_servisa1, datum_zadnjega_servisa2, datum_priprave)
 
     cur.execute("""SELECT id_zaposlenega, ime FROM zaposleni
-        	    WHERE tip_zaposlenega LIKE 'Prodajalec' OR tip_zaposlenega LIKE 'Lastnik'  AND trenutno_zaposlen = 'True'""")
+        	    WHERE (tip_zaposlenega LIKE 'Prodajalec' OR tip_zaposlenega LIKE 'Lastnik') AND trenutno_zaposlen = 'True'""")
     zaposleni = cur.fetchall()
 
     cur.execute("SELECT id, id_avto, datum, nacin_placila, id_zaposlenega FROM prodaja")

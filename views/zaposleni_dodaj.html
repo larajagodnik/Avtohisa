@@ -5,7 +5,7 @@
 <div class="form-group row">
     <label for="Id_zaposlenega" class="col-sm-2 col-form-label"><b>Id:</b></label>
     <div class="col-sm-10">
-      <input name="Id_zaposlenega" type="text" placeholder="Vpišite emšo zaposlenega" class="form-control" required
+      <input name="Id_zaposlenega" type="text" placeholder="Vpišite emšo zaposlenega"  pattern="\b\d{13}\b"class="form-control" required
       oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')" />
     </div>
 

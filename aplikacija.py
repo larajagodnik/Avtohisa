@@ -44,6 +44,8 @@ def index():
     napaka = request.get_cookie('napaka', secret=skrivnost)
     status = request.get_cookie('dovoljenje', secret=skrivnost)
 
+    print(uporabnik)
+
     # kaj se pojavi v selectih, kjer lahko izbiras katere avte zelis videti
     cur.execute("SELECT DISTINCT leto_izdelave FROM avto ORDER BY leto_izdelave")
     leta = cur.fetchall()
@@ -62,10 +64,10 @@ def index():
                     LEFT JOIN rabljeni on avto.id = rabljeni.id_avto 
                     WHERE id NOT IN (SELECT DISTINCT id_avto FROM prodaja) ORDER BY avto.id""")
     if(request.get_cookie('account', secret=skrivnost)):
-        cur.execute("""SELECT avto.*, rabljeni.st_kilometrov, priljubljeni.id FROM avto
+        cur.execute("""SELECT avto.*, rabljeni.st_kilometrov, priljubljeni.uporabnik FROM avto
                         LEFT JOIN rabljeni on avto.id = rabljeni.id_avto 
                         LEFT JOIN priljubljeni ON
-                        (avto.id = priljubljeni.id_avto AND priljubljeni.uporabnik LIKE %s )
+                        (avto.id = priljubljeni.id_avto AND priljubljeni.uporabnik = %s )
                         WHERE avto.id NOT IN (SELECT DISTINCT id_avto FROM prodaja)
                         ORDER BY avto.id""", (uporabnik, ))
     
@@ -86,7 +88,7 @@ def avto(x):
         pravice = ima_pravice()
         if (pravice != 3) or pravice is None:
             return
-        cur.execute("SELECT avto.* FROM avto JOIN priljubljeni ON avto.id = priljubljeni.id_avto WHERE uporabnik LIKE %s", (uporabnik,))
+        cur.execute("SELECT avto.* FROM avto JOIN priljubljeni ON avto.id = priljubljeni.id_avto WHERE uporabnik = %s", (uporabnik,))
         naslov = 'Priljubljeni avti'
         return rtemplate('priljubljeni.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
@@ -447,7 +449,6 @@ def preveri_uporabnika(uporabnik, password):
 def preveri_za_uporabnika(uporabnik):
     try:
         cur.execute("SELECT uporabnik FROM prijava WHERE uporabnik = %s", (uporabnik, ))
-        #uporabnik = cur.fetchone([0])
         uporabnik = cur.fetchone()
         if uporabnik==None:
             return True
@@ -521,7 +522,10 @@ def prijava_post():
     preveri = preveri_uporabnika(username, password)
     if preveri:
         ime, status = preveri
-        response.set_cookie('account', ime, secret=skrivnost)
+        cur.execute("SELECT id FROM prijava WHERE ime LIKE %s", (ime,))
+        ID = cur.fetchall()
+        ID = ID[0][0]
+        response.set_cookie('account', ID, secret=skrivnost)
         response.set_cookie('username', username, secret=skrivnost)
         response.delete_cookie('napaka')
         response.set_cookie('dovoljenje', status, secret=skrivnost)

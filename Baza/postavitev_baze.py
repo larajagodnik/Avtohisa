@@ -158,13 +158,13 @@ def ustvari_tabelo_priljubljeni():
         cur = con.cursor()
         cur.execute("""
             CREATE TABLE IF NOT EXISTS priljubljeni(
-              uporabnik NOT NULL REFERENCES prijava(id)
+              uporabnik INTEGER NOT NULL REFERENCES prijava(id)
                   ON DELETE NO ACTION
                   ON UPDATE CASCADE,
               id_avto TEXT NOT NULL REFERENCES avto(id)
                   ON DELETE NO ACTION
                   ON UPDATE CASCADE,
-              PRIMARY KEY (id, uporabnik, id_avto)
+              PRIMARY KEY (uporabnik, id_avto)
             );
         """) 
     print("Tabela priljubljenih avtov ustvarjena!") 

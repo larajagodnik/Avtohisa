@@ -158,7 +158,6 @@ def ustvari_tabelo_priljubljeni():
         cur = con.cursor()
         cur.execute("""
             CREATE TABLE IF NOT EXISTS priljubljeni(
-              id SERIAL,
               uporabnik SERIAL NOT NULL REFERENCES prijava(id)
                   ON DELETE NO ACTION
                   ON UPDATE CASCADE,

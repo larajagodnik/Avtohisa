@@ -431,7 +431,7 @@ def ni_pravic():
 def preveri_uporabnika(uporabnik, password):
     try:
         cur.execute("SELECT * FROM prijava WHERE uporabnik = %s", (uporabnik, ))
-        uporabnik,geslo,dovoljenje,ime,priimek = cur.fetchone()
+        id,uporabnik,geslo,dovoljenje,ime,priimek = cur.fetchone()
         salt = geslo[:64]
         geslo = geslo[64:]
         pwdhash = hashlib.pbkdf2_hmac('sha512', 

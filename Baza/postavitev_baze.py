@@ -18,7 +18,7 @@ def izbrisi():
         cur.execute("DROP TABLE IF EXISTS avto CASCADE")
         cur.execute("DROP TABLE IF EXISTS zaposleni CASCADE")
         cur.execute("DROP TABLE IF EXISTS priljubljeni CASCADE")
-        #cur.execute("DROP TABLE IF EXISTS prijava CASCADE")
+        cur.execute("DROP TABLE IF EXISTS prijava CASCADE")
     print("Baza je izbrisana!")
 
 #id_zaposlenega spremenimo v emso?
@@ -35,7 +35,6 @@ def ustvari_tabelo_zaposleni():
               placa FLOAT(2) NOT NULL,
               naslov TEXT NOT NULL,
               trenutno_zaposlen BOOL DEFAULT True,
-              UNIQUE (id_zaposlenega, tip_zaposlenega),
               CHECK (tip_zaposlenega LIKE 'Prodajalec' OR tip_zaposlenega LIKE 'Serviser' OR tip_zaposlenega LIKE 'Lastnik')
             );
         """)
@@ -138,30 +137,35 @@ def ustvari_tabelo_priprava():
         """) 
     print("Tabela pripravljenih avtov ustvarjena!") 
 
-def ustvari_tabelo_priljubljeni():
-    with psycopg2.connect(conn_string) as con:
-        cur = con.cursor()
-        cur.execute("""
-            CREATE TABLE IF NOT EXISTS priljubljeni(
-              id SERIAL PRIMARY KEY,
-              uporabnik TEXT NOT NULL,
-              id_avto TEXT NOT NULL REFERENCES avto(id)
-                  ON DELETE NO ACTION
-                  ON UPDATE CASCADE
-            );
-        """) 
-    print("Tabela priljubljenih avtov ustvarjena!") 
-
 def ustvari_tabelo_prijava():
     with psycopg2.connect(conn_string) as con:
         cur = con.cursor()
         cur.execute("""
             CREATE TABLE IF NOT EXISTS prijava(
-              uporabnik TEXT PRIMARY KEY,
+              id SERIAL PRIMARY KEY,
+              uporabnik TEXT,
               geslo TEXT NOT NULL,
               status INTEGER DEFAULT 3,
               ime TEXT NOT NULL,
-              priimek TEXT NOT NULL
+              priimek TEXT NOT NULL,
+              UNIQUE (id, uporabnik)
+            );
+        """) 
+    print("Tabela priljav ustvarjena!") 
+
+def ustvari_tabelo_priljubljeni():
+    with psycopg2.connect(conn_string) as con:
+        cur = con.cursor()
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS priljubljeni(
+              id SERIAL,
+              uporabnik SERIAL NOT NULL REFERENCES prijava(id)
+                  ON DELETE NO ACTION
+                  ON UPDATE CASCADE,
+              id_avto TEXT NOT NULL REFERENCES avto(id)
+                  ON DELETE NO ACTION
+                  ON UPDATE CASCADE,
+              PRIMARY KEY (id, uporabnik, id_avto)
             );
         """) 
     print("Tabela priljubljenih avtov ustvarjena!") 
@@ -244,8 +248,8 @@ ustvari_tabelo_rabljeni()
 ustvari_tabelo_novi()
 ustvari_tabelo_servis()
 ustvari_tabelo_priprava()
-ustvari_tabelo_priljubljeni()
 ustvari_tabelo_prijava()
+ustvari_tabelo_priljubljeni()
 
 pravice()
 

@@ -40,6 +40,7 @@ def static(filename):
 @get('/')
 def index():
     uporabnik = request.get_cookie('account', secret=skrivnost)
+    id_uporabnika = request.get_cookie('id', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
     napaka = request.get_cookie('napaka', secret=skrivnost)
     status = request.get_cookie('dovoljenje', secret=skrivnost)
@@ -69,7 +70,7 @@ def index():
                         LEFT JOIN priljubljeni ON
                         (avto.id = priljubljeni.id_avto AND priljubljeni.uporabnik = %s )
                         WHERE avto.id NOT IN (SELECT DISTINCT id_avto FROM prodaja)
-                        ORDER BY avto.id""", (uporabnik, ))
+                        ORDER BY avto.id""", (id_uporabnika, ))
     
     #naslov domace strani
     naslov = 'Vsi avti'
@@ -78,6 +79,7 @@ def index():
 @get('/avto/<x:re:[a-z]+>')
 def avto(x):
     uporabnik = request.get_cookie('account', secret=skrivnost)
+    id_uporabnik = request.get_cookie('id', secret=skrivnost)
     registracija = request.get_cookie('registracija', secret=skrivnost)
     napaka = request.get_cookie('napaka', secret=skrivnost)
     status = request.get_cookie('dovoljenje', secret=skrivnost)
@@ -88,7 +90,7 @@ def avto(x):
         pravice = ima_pravice()
         if (pravice != 3) or pravice is None:
             return
-        cur.execute("SELECT avto.* FROM avto JOIN priljubljeni ON avto.id = priljubljeni.id_avto WHERE uporabnik = %s", (uporabnik,))
+        cur.execute("SELECT avto.* FROM avto JOIN priljubljeni ON avto.id = priljubljeni.id_avto WHERE uporabnik = %s", (id_uporabnik,))
         naslov = 'Priljubljeni avti'
         return rtemplate('priljubljeni.html', avto=cur, naslov=naslov, uporabnik=uporabnik, registracija=registracija, napaka=napaka, status=status)
 
@@ -348,15 +350,15 @@ def dodaj_pripravo():
 # za gumb dodaj med priljubljene - vstavi v bazo
 @get('/avto_vsi/dodaj_pod_priljubljene/<id>')
 def priljubljeni_avto(id):
-    uporabnik = request.get_cookie('account', secret=skrivnost)
-    cur.execute("INSERT INTO priljubljeni (uporabnik, id_avto) VALUES (%s, %s)", (uporabnik, id))
+    id_uporabnik = request.get_cookie('id', secret=skrivnost)
+    cur.execute("INSERT INTO priljubljeni (uporabnik, id_avto) VALUES (%s, %s)", (id_uporabnik, id))
     redirect('{}'.format(ROOT))
 
 # za gumb odstrani (iz priljubljenih) - izbrise iz baze
 @get('/avto/priljubljeni/<id>')
 def odstrani_priljubljeni_avto(id):
-    uporabnik = request.get_cookie('account', secret=skrivnost)
-    cur.execute("DELETE FROM priljubljeni WHERE uporabnik = %s AND id_avto = %s", (uporabnik, id, ))
+    id_uporabnik = request.get_cookie('id', secret=skrivnost)
+    cur.execute("DELETE FROM priljubljeni WHERE uporabnik = %s AND id_avto = %s", (id_uporabnik, id, ))
     redirect('{}avto/priljubljeni'.format(ROOT)) 
 
 ###############################
@@ -525,7 +527,8 @@ def prijava_post():
         cur.execute("SELECT id FROM prijava WHERE ime LIKE %s", (ime,))
         ID = cur.fetchall()
         ID = ID[0][0]
-        response.set_cookie('account', ID, secret=skrivnost)
+        response.set_cookie('id', ID, secret=skrivnost)
+        response.set_cookie('account', ime, secret=skrivnost)
         response.set_cookie('username', username, secret=skrivnost)
         response.delete_cookie('napaka')
         response.set_cookie('dovoljenje', status, secret=skrivnost)
@@ -537,8 +540,10 @@ def prijava_post():
 @get('/odjava')
 def odjava():
     response.delete_cookie('account')
+    response.delete_cookie('id')
     response.delete_cookie('dovoljenje')
     response.delete_cookie('username')
+    response.delete_cookie('napaka')
     redirect('{}avto/vsi'.format(ROOT))
 
     

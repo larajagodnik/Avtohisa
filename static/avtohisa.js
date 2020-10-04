@@ -61,4 +61,42 @@ if(document.getElementById("datum_zadnjega_servisa")){
     document.getElementById("datum_zadnjega_servisa").max = today;
 }
 
+function preveriEmso(polje){
+    console.log(polje.validity)
+    if(polje.validity.valueMissing){
+      polje.setCustomValidity('To polje je obvezno!')
+    }
+    else if(polje.validity.patternMismatch){
+      polje.setCustomValidity('Emšo mora biti oblike DDMMLLLŠŠŠŠŠŠ!')
+    }
+    else{
+      polje.setCustomValidity('')
+    }
+  }
+
+  function preveriTelefon(polje){
+    console.log(polje.validity)
+    if(polje.validity.valueMissing){
+      polje.setCustomValidity('To polje je obvezno!')
+    }
+    else if(polje.validity.patternMismatch){
+      polje.setCustomValidity('Telefonska številka ni pravilne oblike!')
+    }
+    else{
+      polje.setCustomValidity('')
+    }
+  }
+
+  function preveriPlaco(polje){
+    console.log(polje.validity)
+    if(polje.validity.valueMissing){
+      polje.setCustomValidity('To polje je obvezno!')
+    }
+    else if(polje.validity.stepMismatch){
+      polje.setCustomValidity('Vpisati morate vrednost na največ 2 decimalni mesti natančno!')
+    }
+    else{
+      polje.setCustomValidity('')
+    }
+  }
 

@@ -87,7 +87,7 @@ function preveriEmso(polje){
     }
   }
 
-  function preveriPlaco(polje){
+  function preveriDvomestno(polje){
     console.log(polje.validity)
     if(polje.validity.valueMissing){
       polje.setCustomValidity('To polje je obvezno!')
@@ -99,4 +99,18 @@ function preveriEmso(polje){
       polje.setCustomValidity('')
     }
   }
+
+  function preveriStevilo(polje){
+    console.log(polje.validity)
+    if(polje.validity.valueMissing){
+      polje.setCustomValidity('To polje je obvezno!')
+    }
+    else if(polje.validity.stepMismatch){
+      polje.setCustomValidity('Vpisati morate točno letnico!')
+    }
+    else{
+      polje.setCustomValidity('')
+    }
+  }
+
 

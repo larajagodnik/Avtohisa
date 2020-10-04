@@ -32,14 +32,14 @@
       <div class="col-sm-10">
         <input name="cena" type="number" min="0" step = ".01" lang="en" placeholder="Vpišite ceno avta" class="form-control"
           style="padding:12px 20px; margin:8px 0px; width:50%;" required
-          oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')" />
+          oninput="preveriDvomestno(this)" oninvalid="preveriDvomestno(this)" />
       </div> 
 
       <label for="leto_izdelave" class="col-sm-2 col-form-label"><b>Leto izdelave:</b></label>
       <div class="col-sm-10">
-        <input name="leto_izdelave" type="number" min="1970" max="2020" lang="en" placeholder="Vpišite leto izdelave"
+        <input name="leto_izdelave" type="number" min="1950" max="2020" step="1" lang="en" placeholder="Vpišite leto izdelave"
           class="form-control" style="padding:12px 20px; margin:8px 0px;width:50%;" required
-          oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('To polje je obvezno!')"/>
+          oninput="preveriStevilo(this)" oninvalid="preveriStevilo(this)"/>
       </div>
 
       <label for="novi" class="col-sm-2 col-form-label"><b>Starost:</b></label>
@@ -55,7 +55,9 @@
           <span class="close" onclick="zapri_okno()">&times;</span>
             <h3 style="font-size : 22px; margin: 5px 0px 12px 0px">Vpišite podatke o rabljenem avtomobilu</h3>
           <span class="input"><b>Število kilometrov:</b></span>
-            <input id="st_kilometrov" name="st_kilometrov"  type="number" min="0" lang="en" type="number" placeholder="Vpišite število prevoženih kilometrov" class="form-control" style="padding:12px 20px; margin-top: 8px; width:78%;"/><br>
+            <input id="st_kilometrov" name="st_kilometrov"  type="number" min="0" lang="en" type="number" step="any" 
+            placeholder="Vpišite število prevoženih kilometrov" class="form-control" style="padding:12px 20px;
+            margin-top: 8px; width:78%;"/><br>
 
 
           <!-- datum zadnjega servisa -->
